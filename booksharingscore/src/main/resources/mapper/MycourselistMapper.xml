@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.booksharingscore.dao.MycourselistDao">
+    <resultMap id="BaseResultMap" type="com.hidm.booksharingscore.entity.Course">
+        <id property="id" column="id" />  
+        <result property="title" column="title"/>
+        <result property="courseStartDate" column="coursestartdate" />
+        <result property="courseEndDate" column="courseenddate" />
+        <result property="duration" column="duration" />
+        <result property="phase" column="phase" />
+        <result property="week" column="week" />   
+        <result property="address" column="address"/>
+        <result property="lecturerName" column="lecturername"/>     
+        <result property="lecturerNo" column="lecturerno"/>
+        <result property="fileName" column="filename"/>     
+        <result property="score" column="score"/>
+        <result property="comments" column="comments"/>     
+    </resultMap>
+    <resultMap id="UserResultMap" type="com.hidm.booksharingscore.entity.User">
+        <id property="id" column="id" />
+        <result property="userName" column="employeeno"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    	<!-- 插入数据库用户表 -->
+	  <insert id="insert">
+        INSERT INTO t_course(id, title, coursestartdate, courseenddate, phase,week,duration,address, lecturername, lecturerno, filename,score, comments)
+        VALUES(#{id}, #{title}, #{courseStartDate},#{courseEndDate}, #{phase},#{week},#{duration}, #{address}, #{lecturerName}, #{lecturerNo}, #{fileName},#{score}, #{comments})
+    </insert>
+     
+     <select id="mycourse" resultMap="BaseResultMap">
+        select * from t_course m
+		<where>
+           m.del_flag = 0
+               <if test="employeeNo != null and employeeNo != ''">
+                    AND m.lecturerno =  #{employeeNo} 
+                </if>
+                <if test="course.title != null and course.title != ''">
+                    AND m.title  =  #{course.title} 
+                </if>
+                <if test="course.courseStartDate != null and course.courseStartDate != ''">
+                    AND m.coursestartdate =  #{course.courseStartDate} 
+                </if>
+                <if test="course.courseEndDate != null and course.courseEndDate != ''">
+                    AND m.courseenddate =  #{course.courseEndDate} 
+                </if>
+        </where>
+        order by m.id
+        <if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	   </if>
+    </select>
+    
+  <select id="count" resultType="int">
+	select count(*) from t_course  u
+	 <where>
+	    <if test="course != null">
+		  <if test="course.id != null and course.id != 0">
+			AND id = #{course.id}
+		  </if>
+          <if test="course.title != null and course.title != ''">
+            AND u.title =  #{course.title} 
+          </if>
+          <if test="course.courseStartDate != null and course.courseStartDate != ''">
+            AND u.coursestartdate =  #{course.courseStartDate} 
+          </if>
+          <if test="course.courseEndDate != null and course.courseEndDate != ''">
+            AND u.courseenddate =  #{course.courseEndDate} 
+          </if>
+       </if>
+	</where>
+ </select>
+</mapper>

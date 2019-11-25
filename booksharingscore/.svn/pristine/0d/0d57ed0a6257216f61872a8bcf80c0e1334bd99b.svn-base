@@ -1,0 +1,112 @@
+package com.hidm.booksharingscore.controller;
+
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hidm.booksharingscore.constant.CourseConstant;
+import com.hidm.booksharingscore.entity.Course;
+import com.hidm.booksharingscore.entity.Score;
+import com.hidm.booksharingscore.entity.User;
+import com.hidm.booksharingscore.service.CourseService;
+import com.hidm.booksharingscore.service.ScoreService;
+import com.hidm.booksharingscore.service.UserService;
+import com.hidm.booksharingscore.util.LoginUtil;
+import com.hidm.booksharingscore.vo.CourseSearchVo;
+import com.hidm.booksharingscore.vo.PaginationVo;
+import com.hidm.booksharingscore.vo.ScoreSearchVo;
+import com.hidm.booksharingscore.vo.ScoreVo;
+
+
+
+@Controller
+public class ScoreController {
+
+	@Autowired
+    private ScoreService scoreService;
+	
+	@Autowired
+    private CourseService courseService;
+	
+	@Autowired
+    private UserService userService;
+ 
+    @RequestMapping("score/manage")
+    public String score(Model model, HttpSession session){
+        return "/score/manage";
+    }
+    
+    @RequestMapping("scoreResult/manage")
+    public String scoreResult(Model model, HttpSession session){
+        return "/scoreresult/manage";
+    }
+    
+    @RequestMapping("score/search")
+    @ResponseBody
+    public Map<String, Object> search(Course course, PaginationVo page, Model model, HttpSession session) {
+    	ScoreSearchVo searchVo = new ScoreSearchVo();
+
+    	User user = LoginUtil.getUserInfo();
+        List<User> users = userService.selectUser(user);
+        
+        searchVo.setUserId(users.get(0).getId());
+        searchVo.setCourse(course);
+        searchVo.setPage(page);
+        page.setRowStart((page.getPage() - 1) * page.getRows());
+        List<ScoreVo> scoreVo = scoreService.selectList(searchVo);
+        
+        int total = scoreService.count(searchVo);
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("rows", scoreVo);
+        return result;
+    }
+    
+    @RequestMapping("score/save")
+    @ResponseBody
+    public String save(Score score, Model model, HttpSession session) {
+        User user = LoginUtil.getUserInfo();
+        List<User> users = userService.selectUser(user);
+        score.setUserId(users.get(0).getId());
+        
+        if (null == score.getId()) {
+        	score.setAddTime(new Date());
+            scoreService.insert(score);
+        } else {
+        	scoreService.updateById(score);
+        }
+        
+        return "true";
+    }
+    
+    @RequestMapping("scoreResult/search")
+    @ResponseBody
+    public Map<String, Object> searchResult(Course course, PaginationVo page, Model model, HttpSession session) {
+        CourseSearchVo vo = new CourseSearchVo();
+        course.setStatus(CourseConstant.COURSE_SCORE);
+        vo.setCourse(course);
+        vo.setPage(page);
+        page.setRowStart((page.getPage() - 1) * page.getRows());
+        
+        int total = courseService.count(vo);
+        List<Course> list = courseService.selectList(vo);
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("rows", list);
+        return result;
+    }
+    
+}

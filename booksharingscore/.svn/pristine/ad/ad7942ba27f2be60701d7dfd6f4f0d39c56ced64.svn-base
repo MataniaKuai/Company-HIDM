@@ -1,0 +1,67 @@
+package com.hidm.booksharingscore.vo;
+
+import com.hidm.booksharingscore.entity.Score;
+
+public class ScoreVo extends Score{
+
+	private String title;
+	
+	private String courseDate;
+	
+	private String address;
+	
+	private String lecturerName;
+	
+	private String fileName;
+	
+	private String filePath;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getCourseDate() {
+		return courseDate;
+	}
+
+	public void setCourseDate(String courseDate) {
+		this.courseDate = courseDate;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getLecturerName() {
+		return lecturerName;
+	}
+
+	public void setLecturerName(String lecturerName) {
+		this.lecturerName = lecturerName;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
+}

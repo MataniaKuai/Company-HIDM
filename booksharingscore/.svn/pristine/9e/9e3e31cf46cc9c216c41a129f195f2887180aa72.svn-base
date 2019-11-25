@@ -1,0 +1,23 @@
+package com.hidm.booksharingscore.service;
+
+import java.util.List;
+
+import com.hidm.booksharingscore.entity.Course;
+
+
+
+public interface CourseService {
+
+    public int insert(Course course);
+   
+    public void updateById(Course course);
+    
+   
+    public int count(Course course);
+    
+    
+    public List<Course> selectList(Course course);
+    
+    public int deleteByIds(Long[] ids);
+  
+}

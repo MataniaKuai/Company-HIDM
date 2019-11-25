@@ -1,0 +1,13 @@
+package com.hidm.booksharingscore;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BooksharingscoreApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BooksharingscoreApplication.class, args);
+	}
+
+}

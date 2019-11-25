@@ -1,0 +1,21 @@
+package com.hidm.booksharingscore.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hidm.booksharingscore.dao.UserDao;
+import com.hidm.booksharingscore.entity.User;
+import com.hidm.booksharingscore.service.UserService;
+
+@Service(value = "userService")
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserDao userDao;
+    
+    public List<User> selectUser(User user) {
+        List<User> users = userDao.selectUser(user);
+        return users;
+    }
+}

@@ -1,0 +1,103 @@
+package com.hidm.booksharingscore.controller;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.hidm.booksharingscore.constant.CourseConstant;
+import com.hidm.booksharingscore.entity.Course;
+import com.hidm.booksharingscore.entity.User;
+import com.hidm.booksharingscore.service.CourseService;
+import com.hidm.booksharingscore.util.FileUtil;
+import com.hidm.booksharingscore.util.LoginUtil;
+
+
+@Controller
+public class CourseController {
+	
+	private String fileNameGlobal = "";
+    private String filePathGlobal = "";
+	
+    @Value("${file.root.path}")
+    private String rootPath;
+    
+    @Autowired
+    private CourseService courseService;
+ 
+    @RequestMapping("course/manage")
+    public String hello(Model model, HttpSession session){
+        return "/course/manage";
+    }
+    
+    @RequestMapping("course/save")
+    @ResponseBody
+    public String save(Course course, Model model, HttpSession session) {
+        User user = LoginUtil.getUserInfo();
+        course.setFilename(fileNameGlobal);
+        course.setFilepath(filePathGlobal);
+        course.setStatus(CourseConstant.COURSE_WAITING_START);
+        course.setAddTime(new Date());
+        course.setAddUser(user.getUserName());
+        course.setUpdateUser(user.getUserName());
+        
+        if (null == course.getId() || 0 == course.getId()) {
+            courseService.insert(course);
+        } else {
+        	courseService.updateById(course);
+        }
+        
+        return "true";
+    }
+    
+    @RequestMapping("course/upload")
+    @ResponseBody
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public Map<String, String> fileUpload(@RequestParam("file") MultipartFile file) {
+    	
+        //返回map信息；0：上传失败；1：上传成功
+        HashMap<String, String> errorMap = new HashMap<String, String>();
+        if (file.isEmpty()) {
+            errorMap.put("status", "0");
+            errorMap.put("msg", "上传失败");
+            return errorMap;
+        }
+        FileUtil.createDir(rootPath);        
+        String fileName = file.getOriginalFilename();
+        long timeInMillis = Calendar.getInstance().getTimeInMillis();
+        String filePath = rootPath + "/" + fileName.substring(0, fileName.lastIndexOf(".")) + timeInMillis + "." + fileName.substring(fileName.lastIndexOf(".") + 1);        
+        File dest = new File(filePath);
+        try {
+			file.transferTo(dest);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+			errorMap.put("status", "0");
+	        errorMap.put("msg", "上传失败");
+	        return errorMap;
+		}
+        
+        fileNameGlobal = fileName;
+        filePathGlobal = filePath;
+        errorMap.put("status", "1");
+        errorMap.put("msg", "上传成功");
+        return errorMap;
+            
+    }
+}

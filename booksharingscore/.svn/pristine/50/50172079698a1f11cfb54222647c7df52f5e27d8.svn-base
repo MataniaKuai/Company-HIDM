@@ -1,0 +1,22 @@
+package com.hidm.booksharingscore.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.hidm.booksharingscore.entity.Score;
+import com.hidm.booksharingscore.vo.ScoreSearchVo;
+import com.hidm.booksharingscore.vo.ScoreVo;
+
+@Mapper
+public interface ScoreDao {
+
+	public int count(ScoreSearchVo score);
+
+	public List<ScoreVo> selectList(ScoreSearchVo score);
+
+	public void insert(Score score);
+
+	public void updateById(Score score);
+
+}

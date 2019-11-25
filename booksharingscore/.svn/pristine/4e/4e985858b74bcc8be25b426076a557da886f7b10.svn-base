@@ -1,0 +1,4 @@
+INSERT INTO t_user(id,employeeno,PASSWORD, update_time, add_time, del_flag)
+ VALUES(2,'E101250', '','2019-10-23 15:11:10','2019-10-23 15:11:10',0);
+
+COMMIT;

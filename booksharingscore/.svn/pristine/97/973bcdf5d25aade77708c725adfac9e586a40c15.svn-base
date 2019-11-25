@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.booksharingscore.dao.CourseDao">
+    <resultMap id="BaseResultMap" type="com.hidm.booksharingscore.entity.Course">
+        <id property="id" column="id" />
+        <id property="title" column="title" />
+        <id property="courseDate" column="coursedate" />
+        <id property="address" column="address" />
+        <id property="lecturerName" column="lecturername" />
+        <id property="lecturerNo" column="lecturerno" />
+        <id property="fileName" column="filename" />
+        <id property="filePath" column="filepath" />
+        <id property="status" column="status" />
+        <id property="score" column="score" />
+        <id property="comments" column="comments" />
+        <id property="updateTime" column="update_time" />
+        <id property="addTime" column="add_time" />
+        <id property="addUser" column="add_user" />
+        <id property="delFlag" column="del_flag" />
+    </resultMap>
+    <insert id="insert">
+        INSERT INTO t_course(id, title, coursedate, address, lecturername, lecturerno, filename, filepath, status, score, comments, add_time, add_user)
+        VALUES(#{id}, #{title}, #{courseDate}, #{address}, #{lecturerName}, #{lecturerNo}, #{fileName}, #{filePath}, #{status}, #{score}, #{comments}, #{addTime}, #{addUser})
+    </insert>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+	select * from t_course
+	<where>
+	    del_flag = 0
+	    <if test="course != null">
+		  <if test="course.id != null and course.id != 0">
+			AND id = #{course.id}
+		  </if>
+		  <if test="course.title != null and course.title != ''">
+			AND title = #{course.title}
+		  </if>
+		  <if test="course.courseDate != null and course.courseDate != ''">
+			AND coursedate = #{course.courseDate}
+		  </if>
+		  <if test="course.lecturerName != null and course.lecturerName != ''">
+			AND lecturername = #{course.lecturerName}
+		  </if>
+		  <if test="course.status != null and course.status != -1">
+			AND status = #{course.status}
+		  </if>
+		</if>
+	</where>
+	order by id
+	<if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_course
+	<where>
+	    del_flag = 0
+	    <if test="course != null">
+		  <if test="course.id != null and course.id != 0">
+			AND id = #{course.id}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="selectById" resultMap="BaseResultMap">
+		select * from t_course
+		where id=#{id}
+    </select>
+    
+    <update id="updateById">
+        UPDATE t_course SET   
+            title=#{title}, coursedate=#{courseDate}, address=#{address}, lecturername=#{lecturerName}, lecturerno=#{lecturerNo}, filename=#{fileName}, 
+            filepath=#{filePath},status=#{status},score=#{score},comments=#{comments},add_time=#{addTime},add_user=#{addUser},del_flag=#{delFlag}
+        WHERE id=#{id}
+    </update>
+    
+    <delete id="deleteByIds">
+        delete from t_course
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

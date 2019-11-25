@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.booksharingscore.dao.ScoreDao">
+    <resultMap id="BaseResultMap" type="com.hidm.booksharingscore.vo.ScoreVo">
+        <id property="id" column="id" />
+        <id property="title" column="title" />
+        <id property="courseDate" column="coursedate" />
+        <id property="address" column="address" />
+        <id property="lecturerName" column="lecturername" />
+        <id property="fileName" column="filename" />
+        <id property="filePath" column="filepath" />
+        <id property="courseId" column="cid" />
+        <id property="comment" column="comment" />
+        <id property="score" column="score" />
+    </resultMap>
+    
+     <select id="selectList" resultMap="BaseResultMap">
+     SELECT s.*, c.title, c.coursedate, c.address, c.lecturername, c.filename, c.filepath,c.id cid
+     FROM t_course c
+     LEFT JOIN t_score s ON s.courseid = c.id AND s.userid = #{userId}
+     WHERE c.status = 2
+	 order by c.id desc
+	<if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_course
+		where status = 2
+    </select>
+    
+    <insert id="insert">
+        INSERT INTO t_score(id, courseid, userid, comment, score, add_time)
+        VALUES(#{id}, #{courseId}, #{userId}, #{comment}, #{score}, #{addTime})
+    </insert>
+    
+    <update id="updateById">
+        UPDATE t_score SET   
+            score=#{score}, comment=#{comment}
+        WHERE id=#{id}
+    </update>
+    
+</mapper>

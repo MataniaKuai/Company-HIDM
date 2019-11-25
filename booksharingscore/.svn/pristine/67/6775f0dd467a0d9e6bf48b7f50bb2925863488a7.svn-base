@@ -1,0 +1,11 @@
+package com.hidm.booksharingscore.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.hidm.booksharingscore.entity.Course;
+
+@Mapper
+public interface CourseDao {
+    public int insert(Course course);
+   
+}

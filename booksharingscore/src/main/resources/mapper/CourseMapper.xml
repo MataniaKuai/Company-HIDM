@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.booksharingscore.dao.CourseDao">
+    <resultMap id="BaseResultMap" type="com.hidm.booksharingscore.entity.Course">
+        <id property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="courseStartDate" column="coursestartdate" />
+        <result property="courseEndDate" column="courseenddate" />
+        <result property="duration" column="duration" />
+        <result property="phase" column="phase" />
+        <result property="week" column="week" />
+        <result property="address" column="address" />
+        <result property="lecturerName" column="lecturername" />
+        <result property="lecturerNo" column="lecturerno" />
+        <result property="fileName" column="filename" />
+        <result property="filePath" column="filepath" />
+        <result property="status" column="status" />
+        <result property="score" column="score" />
+        <result property="comments" column="comments" />
+        <result property="updateTime" column="update_time" />
+        <result property="addTime" column="add_time" />
+        <result property="addUser" column="add_user" />
+        <result property="delFlag" column="del_flag" />
+    </resultMap>
+    
+    <resultMap id="AssessmentMap" type="com.hidm.booksharingscore.entity.Score">
+        <id property="score" column="score" />
+        <id property="comment" column="comment" />
+    </resultMap>
+    <insert id="insert">
+        INSERT INTO t_course(id, title, coursestartdate, courseenddate, phase, week, duration, address, lecturername, lecturerno, filename, filepath, status, score, comments, add_time, add_user)
+        VALUES(#{id}, #{title}, #{courseStartDate}, #{courseEndDate}, #{phase}, #{week}, #{duration}, #{address}, #{lecturerName}, #{lecturerNo}, #{fileName}, #{filePath}, #{status}, #{score}, #{comments}, #{addTime}, #{addUser})
+    </insert>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+	select * from t_course
+	<where>
+	    del_flag = 0
+	    <if test="course != null">
+		  <if test="course.id != null and course.id != 0">
+			AND id = #{course.id}
+		  </if>
+		  <if test="course.title != null and course.title != ''">
+			AND title = #{course.title}
+		  </if>
+		  <if test="course.courseStartDate != null and course.courseStartDate != ''">
+			AND coursestartdate = #{course.courseStartDate}
+		  </if>
+		  <if test="course.courseEndDate != null and course.courseEndDate != ''">
+			AND courseenddate = #{course.courseEndDate}
+		  </if>
+		  <if test="course.lecturerName != null and course.lecturerName != ''">
+			AND lecturername = #{course.lecturerName}
+		  </if>
+		  <if test="course.status != null and course.status != 0">
+			AND status = #{course.status}
+		  </if>
+		</if>
+	</where>
+	order by phase+0 desc
+	<if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_course
+	<where>
+	    del_flag = 0
+	    <if test="course != null">
+		  <if test="course.id != null and course.id != 0">
+			AND id = #{course.id}
+		  </if>
+		  <if test="course.status != null and course.status != 0">
+			AND status = #{course.status}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="selectById" resultMap="BaseResultMap">
+		select * from t_course
+		where id=#{id}
+    </select>
+    
+    <update id="updateById">
+        UPDATE t_course SET   
+            title=#{title}, coursestartdate=#{courseStartDate}, courseenddate=#{courseEndDate}, duration=#{duration}, phase=#{phase}, week=#{week}, address=#{address}, lecturername=#{lecturerName}, lecturerno=#{lecturerNo}, filename=#{fileName}, 
+            filepath=#{filePath},status=#{status},score=#{score},comments=#{comments},add_time=#{addTime},add_user=#{addUser},del_flag=#{delFlag}
+        WHERE id=#{id}
+    </update> 
+    
+    <delete id="deleteByIds">
+        delete from t_course
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <update id="updateStatus">
+        UPDATE t_course SET   
+            status=#{status}
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectAssessment" resultMap="AssessmentMap">
+		select id, score, comment from t_score
+		where courseid=#{id}
+    </select>
+    
+     <update id="updateAssessment">
+        UPDATE t_course SET   
+            comments=#{comments},score=#{score}
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectTodyInfoByPage" resultMap="BaseResultMap">
+	select * from t_course
+	<where>
+		 <if test="nowDate != null and nowDate != ''">
+			AND DATE_FORMAT(coursestartdate, '%Y-%m-%d') = #{nowDate}
+		 </if>
+	</where>
+	<if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	</if>
+    </select>
+    
+    <select id="selectTodyInfo" resultMap="BaseResultMap" parameterType="String">
+	select * from t_course
+	<where>
+		 <if test="dateStr != null and dateStr != ''">
+			AND DATE_FORMAT(coursestartdate, '%Y-%m-%d') = #{dateStr}
+		 </if>
+	</where>
+    </select>
+    
+    <select id="countSpeaker" resultType="int" parameterType="String">
+	select count(*) from t_course
+	<where>
+		 <if test="employeeNo != null and employeeNo != ''">
+			AND lecturerno = #{employeeNo}
+		 </if>
+	</where>
+    </select>
+    
+</mapper>

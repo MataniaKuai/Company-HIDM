@@ -1,0 +1,24 @@
+package com.hidm.booksharingscore.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.hidm.booksharingscore.entity.Course;
+import com.hidm.booksharingscore.vo.CourseSearchVo;
+
+@Mapper
+public interface CourseDao {
+    public int insert(Course course);
+
+	public int count(CourseSearchVo course);
+
+	public List<Course> selectList(CourseSearchVo course);
+
+	public Course selectById(Long id);
+
+	public void updateById(Course course);
+
+	public int deleteByIds(Long[] ids);
+   
+}

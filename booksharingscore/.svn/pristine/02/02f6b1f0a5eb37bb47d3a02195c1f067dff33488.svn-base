@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="My demo">
+	<meta name="description" content="My demo">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<title>读书会分享评分系统</title>
+	<link rel="stylesheet" type="text/css" href="vendors/bootstrap/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function showcontent(url){
+			$.get(url, {stamp: Math.random()},
+		    	function(data,status) {
+				    $('#content').empty();
+		    		$('#content').html(data);
+		        }
+		    );
+		}
+		
+		function showContentWithParam(url, param){
+			$.get(url, param,
+		    	function(data,status) {
+		    		$('#content').html(data);
+		        }
+		    );
+		}
+		
+		function logout() {
+			self.location='/booksharingscore/logout'; 
+		}
+		
+		function login() {
+			self.location='/booksharingscore/login'; 
+		}
+		
+		$(function() {
+			<@shiro.hasRole name="admin">
+				showcontent('/booksharingscore/course/manage');
+			</@shiro.hasRole>
+			<@shiro.hasRole name="user">
+				showcontent('/booksharingscore/score/manage');
+			</@shiro.hasRole>
+		});
+	</script>
+	
+	<style type="text/css"> 
+    .dropdown-submenu { 
+      position: relative; 
+    } 
+    .dropdown-submenu > .dropdown-menu { 
+      top: 0; 
+      left: 100%; 
+      margin-top: -6px; 
+      margin-left: -1px; 
+      -webkit-border-radius: 0 6px 6px 6px; 
+      -moz-border-radius: 0 6px 6px; 
+      border-radius: 0 6px 6px 6px; 
+    } 
+    .dropdown-submenu:hover > .dropdown-menu { 
+      display: block; 
+    } 
+    .dropdown-submenu > a:after { 
+      display: block; 
+      content: " "; 
+      float: right; 
+      width: 0; 
+      height: 0; 
+      border-color: transparent; 
+      border-style: solid; 
+      border-width: 5px 0 5px 5px; 
+      border-left-color: #ccc; 
+      margin-top: 5px; 
+      margin-right: -10px; 
+    } 
+    .dropdown-submenu:hover > a:after { 
+      border-left-color: #fff; 
+    } 
+    .dropdown-submenu.pull-left { 
+      float: none; 
+    } 
+    .dropdown-submenu.pull-left > .dropdown-menu { 
+      left: -100%; 
+      margin-left: 10px; 
+      -webkit-border-radius: 6px 0 6px 6px; 
+      -moz-border-radius: 6px 0 6px 6px; 
+      border-radius: 6px 0 6px 6px; 
+    } 
+  </style>
+</head>
+<body style="margin:5px;">
+  <div style="margin-bottom:0; height:70px;">
+    <div class="row">
+          <div class="col-md-3">
+              <img src="images/logo.png"  alt="HiDM" />
+          </div>
+          <div class="col-md-6 text-center">
+              <font size="8">读书会分享评分系统</font>
+          </div>
+          <div class="col-md-3">
+ 		  	<#if islogin >
+	              <a href="#" onclick="logout()" class="pull-right" style="margin-top:50px;margin-right:10px">注销</a>
+			   <#else>
+	              <a href="#" onclick="login()" class="pull-right" style="margin-top:50px;margin-right:10px">登录</a>
+          	</#if>
+            <label class="pull-right" style="margin-top:50px;margin-right:30px"><@shiro.principal property="userName"/></label>
+          </div>
+    </div>
+  </div>
+    
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <@shiro.hasRole name="admin">
+        <li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程管理<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="showcontent('/booksharingscore/course/manage')">课程管理</a></li>
+          </ul>
+        </li>
+        </@shiro.hasRole>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程评分列表<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="showcontent('/booksharingscore/scoreResult/manage')">评分结果列表</a></li>
+              <li><a href="#" onclick="showcontent('/booksharingscore/score/manage')">待评分列表</a></li>
+            </ul>
+        </li>
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">我的课程列表<b class="caret"></b></a>
+        	<ul class="dropdown-menu">
+              <li><a href="#" onclick="showcontent('/booksharingscore/mycourse/manage')">我的课程列表</a></li>
+            </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </nav>
+ 
+  <div id="content" class="container">
+  </div>
+</body>
+</html>
