@@ -1,0 +1,168 @@
+<style>
+table, table tr th, table tr td {
+	border: 1px solid #000000;
+}
+
+table {
+	min-height: 25px;
+	line-height: 25px;
+	text-align: center;
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0 auto;
+}
+
+a:link {
+	color: #8A2BE2;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #8A2BE2
+}
+
+a:hover {
+	color: red
+}
+</style>
+
+<script type="text/javascript">
+     function getDetail(name) {
+     	window.open('/charts/report1Detail?name='+encodeURI(name));
+     }
+    
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+                title : {
+                    text: '库存绩效报表'
+                },
+        	    tooltip: {
+        	        trigger: 'axis',
+        	        axisPointer: {
+        	            type: 'cross',
+        	            crossStyle: {
+        	                color: '#999'
+        	            }
+        	        }
+        	    },
+        	    toolbox: {
+        	        feature: {
+        	            dataView: {show: true, readOnly: false},
+        	            magicType: {show: true, type: ['line', 'bar']},
+        	            restore: {show: true},
+        	            saveAsImage: {show: true}
+        	        }
+        	    },
+        	    legend: {
+        	        data:['总库存金额','出库金额','不良品金额','库存周转天数']
+        	    },
+        	    xAxis: [
+        	        {
+        	            type: 'category',
+        	            data: ${yearMonthList},
+        	            axisPointer: {
+        	                type: 'shadow'
+        	            }
+        	        }
+        	    ],
+        	    yAxis: [
+        	        {
+        	            type: 'value',
+        	            name: '(Unit:RMB)'
+        	        },
+        	        {
+        	            type: 'value',
+        	            name: '(Unit:Day)',
+        	            interval: 5000000
+        	        }
+        	    ],
+        	    series: [
+        	        {
+        	            name:'总库存金额',
+        	            type:'bar',
+         	            //data:[2000, 4209, 75420, 23312, 25216, 76217, 13536, 12312, 32316, 20310, 2314, 2313]
+        	            data:${totaltList}
+ 
+        	        },
+        	        {
+        	            name:'出库金额',
+        	            type:'bar',
+        	            data:${consumeList}
+        	        },
+                    {
+                        name:'不良品金额',
+                        type:'bar',                  
+                      // data:[2236, 5239, 9230, 26234, 28237, 70237, 17236, 12232, 48237, 1838, 6230, 2233]
+                        data:${badtotalsList}
+                    },
+        	        {
+        	            name:'库存周转天数',
+        	            type:'line',
+        	            yAxisIndex: 1,        	           
+        	            //data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                        data:${daysList}
+        	        }
+        	    ]
+        	};
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+        function getDetail(date, type) {
+        	window.open('/charts/report3Detail?date='+encodeURI(date) + '&type=' + encodeURI(type));
+         }
+   </script>
+<form id="inputForm" class="form-horizontal">
+	<div style="width: 99%;">
+		<div id="container"
+			style="height: 500px; width: 100%; margin: 0 auto;"></div>
+	</div>
+</form>
+<div>
+	<table>
+		<tr>
+			<td>月份</td>
+			<#list tableyear as yearMon>
+			<td>${yearMon}</td>
+			</#list>
+		</tr>
+
+		<tr>
+			<td>总库存金额</td>
+			<#list tabletotaltList as total>
+			<td><a href="#" onclick="getDetail('${yearMonList[total_index]}', '1')" style="font-weight: bold;">${total}</a></td>
+			</#list>
+		</tr>
+		<tr>
+			<td>出库金额</td>
+			<#list tableconsumeList as totalout>
+			<td>
+			  ${totalout}
+			  </td>
+			</#list>
+		</tr>
+		<tr>
+			<td>不良品金额</td>
+			<#list tablebadtotalsList as badprice>
+			<td><a href="#" onclick="getDetail('${yearMonList[badprice_index]}', '2')" style="font-weight: bold;">${badprice}</a></td>
+			</#list>
+		</tr>
+		<tr>
+			<td>不良率</td>
+			<#list tablePoorrateList as rate>
+			<td>${rate}%</td>
+			</#list>
+		</tr>
+		<td>库存周转天数</td>
+		<#list tabledaysList as days>
+		<td>
+		${days}
+		</td>
+		</#list>
+		</tr>
+
+	</table>
+</div>

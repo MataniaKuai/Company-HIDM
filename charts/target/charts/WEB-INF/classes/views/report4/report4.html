@@ -1,0 +1,235 @@
+      <style style="height:50%" id="dataModal">
+        table,table tr th, table tr td { border:1px solid #000000; border-left:10px }
+        .table { line-height: 5px; text-align: center;text-valign:middle;border-collapse: collapse;width:90%; height:50px;margin: 10 auto; font-size: 13px;}
+        .report{
+          cellpadding:10px;line-height:26px; text-align: center;text-valign:middle;border-collapse: collapse;width:90%; height:50px;margin: 10 auto; font-size: 13px;
+          
+           }
+		.blue {
+		    color: #d9eef7;
+		    border: solid 1px #0076a3;
+		    background: #0095cd;
+		}
+		th, td {
+      padding: 0em 0.3em;
+        }
+		label {
+        font-size: 18px;
+         float: left;
+           }
+         .text {
+         font-weight:bold
+         
+         }
+         .text1{
+         text-align:right
+         }
+		
+    </style>
+
+    <script>          
+
+  
+	$(function() {
+		  var m="";
+			m = ${mon}; 		
+		document.getElementById("month").value = m;
+
+	});
+						
+					
+          
+					function action() {
+						var month = $('select  option:selected').val();
+						var param = {
+							date : month
+						};
+						showContentWithParam('/charts/report4', param);
+					}
+       
+   
+				</script>
+    
+      <div class="row">
+     <label  style="width:20.5%;height:4%;text-align:right">Material KPI Index Report:</label>
+     <div class="col-sm-4">
+     <select class="edline" id="month"  onchange="action()" style="width:200px;height:25px;margin:0px 0px 6px 5px">
+      <option value="0" >请选择月份：                                                             </option>  
+      <option value="1" >一月</option>
+      <option value="2" >二月</option>
+      <option value="3" >三月</option>
+      <option value="4" >四月</option>
+      <option value="5" >五月</option>
+      <option value="6" >六月</option>
+      <option value="7" >七月</option>
+      <option value="8" >八月</option>
+      <option value="9" >九月</option>
+      <option value="10" >十月</option>
+      <option value="11" >十一月</option>
+      <option value="12" >十二月</option>      
+      </select>
+      </div>
+       <span style="width:21%;height:2%;float:right;" >Amount Unit: RMB </span>
+      </div>
+        <table  class="report"   style="float:left; border:1px solid #000000;" >   
+        <tbody>
+       <tr class="firstRow"  >
+            <td rowspan="2"  align="center" height="54" class="text"  width="20px" valign="middle"  style="border-left:0px;border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;"  >
+               No  
+            </td>
+            <td rowspan="2"  align="center"  class="text" width="20px" valign="middle"  style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;" >
+                Material <br/>Type
+            </td>
+             <td rowspan="2" align="center"    class="text"width="150px" valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;" >
+                Material<br/>Group
+         </td>     
+        <td align="center"   class="text" valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;" rowspan="1" colspan="2">
+                Monthly Expense
+            </td>
+            <td align="center"   class="text" valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;" rowspan="1" colspan="2">
+                Total Inventory
+            </td>
+            <td align="center"  class="text"  valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);text-align:center;vertical-align:middle;" rowspan="1" colspan="2">
+                Non-good  Inventory
+            </td>
+            <td rowspan="2" align="center"  class="text"  valign="middle" width="120px" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Inventory <br/>Turnover days
+            </td>
+            <td rowspan="2" align="center"  class="text" valign="middle" width="140px" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Lifetime Alarm <br/>Inventory Amount
+            </td>
+        </tr>
+         <tr>
+            <td  class="text" align="center"  valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Amount
+            </td>
+            <td  class="text" align="center"   valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Ratio
+            </td>
+             <td  class="text" align="center" valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Amount
+            </td>
+            <td  class="text" align="center" valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Ratio
+            </td>
+             <td  class="text" align="center"  valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Amount
+            </td>
+            <td  class="text" align="center"   valign="middle" style="border-color: rgb(0, 0, 0); word-break: break-all; background-color: rgb(198, 217, 240);">
+                Ratio
+            </td>
+           
+        </tr>
+        <#assign x = 0 > 
+            <#list Grouplist as list>
+			<#list KPIvalue as values>
+            <#if  values.group == list>
+            <tr>
+              <td width="36" >
+              <#assign x = x + 1> 
+                ${x}
+              </td>
+              <#if  x == 1 >
+              <td width="80" rowspan="3" style="text-align:center;vertical-align:middle;"> ${list}</td>
+              </#if>
+               <#if x == 3 >
+              <td width="80" rowspan="12" style="text-align:center;vertical-align:middle;"> ${list}</td>
+              </#if>
+               <#if x == 14>
+              <td width="80" rowspan="3" style="text-align:center;vertical-align:middle;"> ${list}</td>
+              </#if>
+               <td style="text-align:left">
+                ${(values.type)!''}
+	           </td>	
+	           <td class="text1">
+               ${(values.expenseValue)!''}
+	           </td>   
+	            <td class="text1">
+               ${(values.expenseRate)!''}%
+	           </td>   
+	            <td class="text1">
+               ${(values.inventoryValue)!''}
+	           </td>   
+	            <td class="text1">
+               ${(values.inventoryRate)!''}%
+	           </td>   
+	            <td class="text1">
+               ${(values.idleValue)!''}
+	           </td>   
+	            <td class="text1">
+               ${(values.idleRate)!''}%
+	           </td>   
+	               <td class="text1">
+               ${(values.daytime)!''}
+	           </td>   
+	            <td class="text1">
+               ${(values.lifetime)!''}
+	           </td>   
+          </tr>
+          </#if>
+          </#list>
+          <#list totalvalue as total>
+	           <#if  total.group == list>
+             <tr class="text">
+	              <td></td>
+	              <td align="left">
+	              <span style="color: #3333ff " > ${(total.type)!''}</span>
+		           </td>	
+		           <td class="text1">
+	               ${(total.expenseValue)!''}
+		           </td>   
+		            <td class="text1">
+	               ${(total.expenseRate)!''}%
+		           </td>   
+		            <td class="text1">
+	               ${(total.inventoryValue)!''}
+		           </td>   
+		            <td class="text1">
+	               ${(total.inventoryRate)!''}%
+		           </td>   
+		            <td class="text1">
+	               ${(total.idleValue)!''}
+		           </td>   
+		            <td class="text1">
+	               ${(total.idleRate)!''}%
+		           </td>   
+		               <td class="text1">
+	               ${(total.daytime)!''}
+		           </td>   
+		            <td class="text1"> 
+	               ${(total.lifetime)!''}
+		           </td>  
+             </tr>
+	          </#if> 
+          </#list>
+          </#list>
+          <tr class="text">
+             <td>  </td>  
+             <td>  </td>  
+             <td align="left"><span style="color: #3333ff ">Total</span></td>  
+             <td class="text1">${lasttotal[0]}</td> 
+             <#if lasttotal[0] ==0>
+             <td class="text1">0%</td> 
+             </#if>
+              <#if lasttotal[0] !=0>
+             <td class="text1">100%</td> 
+             </#if>
+             <td class="text1">${lasttotal[1]}</td>    
+             <#if lasttotal[1] ==0>
+             <td class="text1">0%</td> 
+             </#if>
+              <#if lasttotal[1] !=0>
+             <td class="text1">100%</td> 
+             </#if>
+             <td class="text1">${lasttotal[2]}</td>   
+             <#if lasttotal[2] ==0>
+             <td class="text1">0%</td> 
+             </#if>
+              <#if lasttotal[2] !=0>
+             <td class="text1">100%</td> 
+             </#if>
+             <td class="text1">${lasttotal[3]}</td>   
+             <td class="text1">${lasttotal[4]}</td>    
+          </tr>
+	 	</tbody>
+	 </table>

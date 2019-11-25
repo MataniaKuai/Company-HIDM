@@ -1,0 +1,103 @@
+<style>
+    table,table tr th, table tr td { border:1px solid #000000; }
+    table {min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;width:100%;margin: 0 auto;}
+    a:link {color: #8A2BE2;text-decoration:none;} a:visited {color: #8A2BE2} a:hover {color: red}
+</style>
+
+    <script type="text/javascript">
+     function getDetail(name) {
+     	window.open('/charts/report1Detail?name='+encodeURI(name));
+     }
+    
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+                title : {
+                    text: 'HiDM Material Master Data Analysis Report'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'value',
+                        boundaryGap : [0, 0.01]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : ${typeData}
+                    }
+                ],
+                grid:{
+                    　                                       　x:200
+                },
+                series : [
+                    {
+                        type:'bar',
+                        data:${countData},
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true, //开启显示
+                                    position: 'right', //在上方显示
+                                    textStyle: { //数值样式
+                                        color: '#008B00 ',
+                                        fontSize: 16
+                                    }
+                                },
+                                //柱形图圆角，顺时针左上，右上，右下，左下）
+                                barBorderRadius: [0, 12, 12, 0],
+                                color:'#1C86EE'
+                            }
+                        }
+                    }
+                ]
+            };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+   </script>
+<form id="inputForm" class="form-horizontal">
+    <div style="width:99%; ">
+         <div id="container" style="height:500px; width:100%;margin: 0 auto;"></div>
+    </div>
+</form>
+    <div>
+        <table>
+            <tr style="font-size:10px">
+                 <td style="background-color: rgb(198, 217, 240)" >
+                     Material Group
+                 </td>
+             <#list typeList as type>
+                 <td style="background-color: rgb(198, 217, 240)">
+                     ${type}
+                 </td>
+             </#list>
+            </tr>
+            <tr>
+                 <td>
+                     Count
+                 </td>
+             <#list countList as count>
+                      <td>
+                          <a href="#" onclick="getDetail('${nameList[count_index]}')" style="font-weight: bold;">${count}</a>
+                      </td>
+             </#list>
+            </tr>
+        </table>
+   </div>

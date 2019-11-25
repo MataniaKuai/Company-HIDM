@@ -1,0 +1,10 @@
+#for tests only !
+#Tue Jul 30 16:11:36 CST 2019
+jco.client.lang=ZH
+jco.destination.peak_limit=10
+jco.client.client=600
+jco.client.passwd=e,8K@:$MExbzdEs8!D}I{oANqiLwz8j`gg9(mnmFBlJjeMKG
+jco.client.user=jck_rfc
+jco.client.sysnr=10
+jco.destination.pool_capacity=3
+jco.client.ashost=ERPDEV01

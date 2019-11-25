@@ -1,0 +1,98 @@
+    <style style="height:100%" id="dataModal">
+        table,table tr th, table tr td { border:1px solid #000000; }
+        table {min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;width:75%;margin: 10 auto;}
+        .button {
+		    display: inline-block;
+		    zoom: 1;
+		    vertical-align: baseline;
+		    margin: 10 40px;
+		    outline: none;
+		    cursor: pointer;
+		    text-align: center;
+		    text-decoration: none;
+		    font: 14px/100% Arial, Helvetica, sans-serif;
+		    padding: .5em 2em .55em;
+		    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		    border-radius: .5em;
+		}
+		
+		.blue {
+		    color: #d9eef7;
+		    border: solid 1px #0076a3;
+		    background: #0095cd;
+		}
+    </style>
+        <div>
+	        <!-- <button type="button" class="button blue" onclick="javascript :history.back(-1);">返回</button> -->
+        </div>
+        <div>
+            <table>
+                <tr style="font-size:16px;font-weight:bold">
+                     <td>
+                                                                             序号
+                     </td>
+                     <td>
+                                                                             物料号
+                     </td>
+                     <td>
+                                                                            物料描述
+                     </td>
+                     <td>
+                                                                              基本单位
+                     </td>
+                     <td>
+                                                                                创建日期
+                     </td>
+                     <td>
+                                                                              创建者
+                     </td>
+                     
+                     <td>
+                                                                            供应商
+                     </td>
+                     <td>
+                                                                            价格控制
+                     </td>
+                     <td>
+                                                                            价格
+                     </td>
+                     <td>
+                                                                            货币
+                     </td>
+                </tr>
+                 <#list materialList as material>
+	                <tr>
+                        <td>
+                            ${material_index+1}
+                        </td>
+	                    <td>
+	                        ${(material.matnr)!''}
+	                    </td>
+	                    <td style="text-align:left">
+	                        ${(material.maktx)!''}
+	                    </td>
+	                    <td>
+	                        ${(material.meins)!''}
+	                    </td>
+	                    <td>
+                             ${(material.ersda)!''}
+                        </td>
+                        <td>
+                             ${(material.ernam)!''}
+                        </td>
+	                    <td>
+	                        ${(material.atwrt1)!''}
+	                    </td>
+                        <td>
+                            ${(material.vprsv)!''}
+                        </td>
+                        <td>
+                            ${(material.stprs)!''}
+                        </td>
+                        <td>
+                            ${(material.waers)!''}
+                        </td>
+	                </tr>
+               </#list>
+            </table>
+       </div>

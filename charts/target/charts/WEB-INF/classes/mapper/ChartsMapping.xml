@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.importexport.dao.ChartsDao">
+    <resultMap id="ChartstMap" type="com.hidm.importexport.entity.ChartsResult">
+        <result column="wgbez" property="type"/>
+        <result column="count" property="count"/>
+    </resultMap>
+    <resultMap id="MaterialMap" type="com.hidm.importexport.entity.Material">
+        <result column="wgbez" property="wgbez"/>
+        <result column="maktx" property="maktx"/>
+        <result column="matnr" property="matnr"/>
+        <result column="mtart" property="mtart"/>
+        <result column="waers" property="waers"/>
+        <result column="stprs" property="stprs"/>
+    </resultMap>
+    <select id="countMaterial" resultMap="ChartstMap">
+        SELECT z.wgbez,count(z.wgbez) as count FROM T_MATERIAL z
+        inner join T_MATERIALTYPE M on M.TYPE = z.wgbez
+        where (z.lvorm = '' or z.lvorm is null) 
+        and z.matnr not like 'H%' and z.matnr not like 'M%' and z.matnr not like 'N%'
+        and z.werks ='1000'
+        group by z.wgbez, M.id
+        order by M.id desc
+    </select>
+    <select id="findByType" resultMap="MaterialMap">
+        SELECT * FROM T_MATERIAL z
+        inner join T_MATERIALTYPE M on M.TYPE = z.wgbez
+        <choose>
+		    <when test="_parameter == 'Total'">
+		        where (z.lvorm = '' or z.lvorm is null) 
+		        and z.matnr not like 'H%' and z.matnr not like 'M%' and z.matnr not like 'N%'
+		        and z.werks ='1000'
+		    </when>
+		    <otherwise>
+                where (z.lvorm = '' or z.lvorm is null) 
+                and z.matnr not like 'H%' and z.matnr not like 'M%' and z.matnr not like 'N%'
+                and z.werks ='1000'
+                and z.wgbez like concat(concat('%',#{name}),'%')
+		    </otherwise>
+	  </choose>
+        order by M.id desc
+    </select>
+    <delete id="delMaterialHis">
+        delete from T_MATERIAL_HIS t
+        where to_char(t.update_time,'yyyy-MM-dd')&lt; to_char(sysdate-1,'yyyy-MM-dd')
+    </delete>
+    <delete id="delMaterial">
+        delete from T_MATERIAL
+    </delete>
+    
+    <insert id="insertMaterials" parameterType="java.lang.Long">
+        <selectKey resultType="java.lang.Long" order="BEFORE"
+            keyProperty="id">
+            SELECT T_MATERIAL_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into T_MATERIAL
+        (id, matnr, bismt, maktx, mtart, mtbez, meins, matkl, wgbez, spart, bstme, ersda, lvorm, ernam, laeda, 
+        aenam, mhdrz, mhdhb, iprkz, werks, mtvfp, ekgrp, xchpf, dismm, dispo, disls, bstmi, bstrf, beskz, sobsl, 
+        rgekz, lgpro, lgfsb, dzeit, plifz, fhori, eisbe, strgr, sbdkz, fevor, ncost, mmsta, vint1, vint2, ueeto, 
+        insmk, lvorm1, bklas, vprsv, peinh, ekalr, hkmat, mlast, kosgr, ktgrm, mtpos, vkorg, vtweg, dwerk, vmsta, 
+        vmstd, taxm1, atwrt, atwrt1, atwrt2, atwrt4, atwrt5, atwrt6, atwrt7, atwrt8, lgort, lgpbe, kautb, ausme, 
+        umrez, umren, qmpur, stprs, waers, matnr1)
+        select T_MATERIAL_SEQ.nextval, A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.matnr, jdbcType=VARCHAR},#{item.bismt, jdbcType=VARCHAR}, #{item.maktx, jdbcType=VARCHAR}, 
+            #{item.mtart, jdbcType=VARCHAR}, #{item.mtbez, jdbcType=VARCHAR}, #{item.meins, jdbcType=VARCHAR}, 
+            #{item.matkl, jdbcType=VARCHAR}, #{item.wgbez, jdbcType=VARCHAR}, #{item.spart, jdbcType=VARCHAR}, 
+            #{item.bstme, jdbcType=VARCHAR}, #{item.ersda, jdbcType=VARCHAR}, #{item.lvorm, jdbcType=VARCHAR}, 
+            #{item.ernam, jdbcType=VARCHAR}, #{item.laeda, jdbcType=VARCHAR}, #{item.aenam, jdbcType=VARCHAR}, 
+            #{item.mhdrz, jdbcType=VARCHAR}, #{item.mhdhb, jdbcType=VARCHAR}, #{item.iprkz, jdbcType=VARCHAR}, 
+            #{item.werks, jdbcType=VARCHAR}, #{item.mtvfp, jdbcType=VARCHAR}, #{item.ekgrp, jdbcType=VARCHAR}, 
+            #{item.xchpf, jdbcType=VARCHAR}, #{item.dismm, jdbcType=VARCHAR}, #{item.dispo, jdbcType=VARCHAR}, 
+            #{item.disls, jdbcType=VARCHAR}, #{item.bstmi, jdbcType=VARCHAR}, #{item.bstrf, jdbcType=VARCHAR}, 
+            #{item.beskz, jdbcType=VARCHAR}, #{item.sobsl, jdbcType=VARCHAR}, #{item.rgekz, jdbcType=VARCHAR}, 
+            #{item.lgpro, jdbcType=VARCHAR}, #{item.lgfsb, jdbcType=VARCHAR}, #{item.dzeit, jdbcType=VARCHAR}, 
+            #{item.plifz, jdbcType=VARCHAR}, #{item.fhori, jdbcType=VARCHAR}, #{item.eisbe, jdbcType=VARCHAR}, 
+            #{item.strgr, jdbcType=VARCHAR}, #{item.sbdkz, jdbcType=VARCHAR}, #{item.fevor, jdbcType=VARCHAR}, 
+            #{item.ncost, jdbcType=VARCHAR}, #{item.mmsta, jdbcType=VARCHAR}, #{item.vint1, jdbcType=VARCHAR}, 
+            #{item.vint2, jdbcType=VARCHAR}, #{item.ueeto, jdbcType=VARCHAR}, #{item.insmk, jdbcType=VARCHAR}, 
+            #{item.lvorm1, jdbcType=VARCHAR}, #{item.bklas, jdbcType=VARCHAR}, #{item.vprsv, jdbcType=VARCHAR}, 
+            #{item.peinh, jdbcType=VARCHAR}, #{item.ekalr, jdbcType=VARCHAR}, #{item.hkmat, jdbcType=VARCHAR}, 
+            #{item.mlast, jdbcType=VARCHAR}, #{item.kosgr, jdbcType=VARCHAR}, #{item.ktgrm, jdbcType=VARCHAR}, 
+            #{item.mtpos, jdbcType=VARCHAR}, #{item.vkorg, jdbcType=VARCHAR}, #{item.vtweg, jdbcType=VARCHAR}, 
+            #{item.dwerk, jdbcType=VARCHAR}, #{item.vmsta, jdbcType=VARCHAR}, #{item.vmstd, jdbcType=VARCHAR}, 
+            #{item.taxm1, jdbcType=VARCHAR}, #{item.atwrt, jdbcType=VARCHAR}, #{item.atwrt1, jdbcType=VARCHAR}, 
+            #{item.atwrt2, jdbcType=VARCHAR}, #{item.atwrt4, jdbcType=VARCHAR}, #{item.atwrt5, jdbcType=VARCHAR}, 
+            #{item.atwrt6, jdbcType=VARCHAR}, #{item.atwrt7, jdbcType=VARCHAR}, #{item.atwrt8, jdbcType=VARCHAR}, 
+            #{item.lgort, jdbcType=VARCHAR}, #{item.lgpbe, jdbcType=VARCHAR}, #{item.kautb, jdbcType=VARCHAR}, 
+            #{item.ausme, jdbcType=VARCHAR}, #{item.umrez, jdbcType=VARCHAR}, #{item.umren, jdbcType=VARCHAR}, 
+            #{item.qmpur, jdbcType=VARCHAR}, #{item.stprs, jdbcType=VARCHAR}, #{item.waers, jdbcType=VARCHAR}, #{item.matnr1, jdbcType=VARCHAR}
+            from
+            dual
+        </foreach>
+        ) A
+    </insert>
+    
+    
+    <insert id="insertMaterialHis" parameterType="java.lang.Long">
+        <selectKey resultType="java.lang.Long" order="BEFORE"
+            keyProperty="id">
+            SELECT T_MATERIAL_HIS_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into T_MATERIAL_HIS
+        (id, matnr,bismt, maktx, mtart, mtbez, meins, matkl, wgbez, spart, bstme, ersda, lvorm, ernam, laeda, 
+        aenam, mhdrz, mhdhb, iprkz, werks, mtvfp, ekgrp, xchpf, dismm, dispo, disls, bstmi, bstrf, beskz, sobsl, 
+        rgekz, lgpro, lgfsb, dzeit, plifz, fhori, eisbe, strgr, sbdkz, fevor, ncost, mmsta, vint1, vint2, ueeto, 
+        insmk, lvorm1, bklas, vprsv, peinh, ekalr, hkmat, mlast, kosgr, ktgrm, mtpos, vkorg, vtweg, dwerk, vmsta, 
+        vmstd, taxm1, atwrt, atwrt1, atwrt2, atwrt4, atwrt5, atwrt6, atwrt7, atwrt8, lgort, lgpbe, kautb, ausme, 
+        umrez, umren, qmpur, stprs, waers, matnr1)
+        select T_MATERIAL_HIS_SEQ.nextval, A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.matnr, jdbcType=VARCHAR}, #{item.bismt, jdbcType=VARCHAR}, #{item.maktx, jdbcType=VARCHAR}, 
+            #{item.mtart, jdbcType=VARCHAR}, #{item.mtbez, jdbcType=VARCHAR}, #{item.meins, jdbcType=VARCHAR}, 
+            #{item.matkl, jdbcType=VARCHAR}, #{item.wgbez, jdbcType=VARCHAR}, #{item.spart, jdbcType=VARCHAR}, 
+            #{item.bstme, jdbcType=VARCHAR}, #{item.ersda, jdbcType=VARCHAR}, #{item.lvorm, jdbcType=VARCHAR}, 
+            #{item.ernam, jdbcType=VARCHAR}, #{item.laeda, jdbcType=VARCHAR}, #{item.aenam, jdbcType=VARCHAR}, 
+            #{item.mhdrz, jdbcType=VARCHAR}, #{item.mhdhb, jdbcType=VARCHAR}, #{item.iprkz, jdbcType=VARCHAR}, 
+            #{item.werks, jdbcType=VARCHAR}, #{item.mtvfp, jdbcType=VARCHAR}, #{item.ekgrp, jdbcType=VARCHAR}, 
+            #{item.xchpf, jdbcType=VARCHAR}, #{item.dismm, jdbcType=VARCHAR}, #{item.dispo, jdbcType=VARCHAR}, 
+            #{item.disls, jdbcType=VARCHAR}, #{item.bstmi, jdbcType=VARCHAR}, #{item.bstrf, jdbcType=VARCHAR}, 
+            #{item.beskz, jdbcType=VARCHAR}, #{item.sobsl, jdbcType=VARCHAR}, #{item.rgekz, jdbcType=VARCHAR}, 
+            #{item.lgpro, jdbcType=VARCHAR}, #{item.lgfsb, jdbcType=VARCHAR}, #{item.dzeit, jdbcType=VARCHAR}, 
+            #{item.plifz, jdbcType=VARCHAR}, #{item.fhori, jdbcType=VARCHAR}, #{item.eisbe, jdbcType=VARCHAR}, 
+            #{item.strgr, jdbcType=VARCHAR}, #{item.sbdkz, jdbcType=VARCHAR}, #{item.fevor, jdbcType=VARCHAR}, 
+            #{item.ncost, jdbcType=VARCHAR}, #{item.mmsta, jdbcType=VARCHAR}, #{item.vint1, jdbcType=VARCHAR}, 
+            #{item.vint2, jdbcType=VARCHAR}, #{item.ueeto, jdbcType=VARCHAR}, #{item.insmk, jdbcType=VARCHAR}, 
+            #{item.lvorm1, jdbcType=VARCHAR}, #{item.bklas, jdbcType=VARCHAR}, #{item.vprsv, jdbcType=VARCHAR}, 
+            #{item.peinh, jdbcType=VARCHAR}, #{item.ekalr, jdbcType=VARCHAR}, #{item.hkmat, jdbcType=VARCHAR}, 
+            #{item.mlast, jdbcType=VARCHAR}, #{item.kosgr, jdbcType=VARCHAR}, #{item.ktgrm, jdbcType=VARCHAR}, 
+            #{item.mtpos, jdbcType=VARCHAR}, #{item.vkorg, jdbcType=VARCHAR}, #{item.vtweg, jdbcType=VARCHAR}, 
+            #{item.dwerk, jdbcType=VARCHAR}, #{item.vmsta, jdbcType=VARCHAR}, #{item.vmstd, jdbcType=VARCHAR}, 
+            #{item.taxm1, jdbcType=VARCHAR}, #{item.atwrt, jdbcType=VARCHAR}, #{item.atwrt1, jdbcType=VARCHAR}, 
+            #{item.atwrt2, jdbcType=VARCHAR}, #{item.atwrt4, jdbcType=VARCHAR}, #{item.atwrt5, jdbcType=VARCHAR}, 
+            #{item.atwrt6, jdbcType=VARCHAR}, #{item.atwrt7, jdbcType=VARCHAR}, #{item.atwrt8, jdbcType=VARCHAR}, 
+            #{item.lgort, jdbcType=VARCHAR}, #{item.lgpbe, jdbcType=VARCHAR}, #{item.kautb, jdbcType=VARCHAR}, 
+            #{item.ausme, jdbcType=VARCHAR}, #{item.umrez, jdbcType=VARCHAR}, #{item.umren, jdbcType=VARCHAR}, 
+            #{item.qmpur, jdbcType=VARCHAR}, #{item.stprs, jdbcType=VARCHAR}, #{item.waers, jdbcType=VARCHAR}, #{item.matnr1, jdbcType=VARCHAR}
+            from
+            dual
+        </foreach>
+        ) A
+    </insert>
+</mapper>

@@ -1,0 +1,185 @@
+<style>
+    table,table tr th, table tr td { border:1px solid #000000; }
+    table {min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;width:100%;margin: 0 auto;}
+    a:link {color: #8A2BE2;text-decoration:none;} a:visited {color: #8A2BE2} a:hover {color: red}
+</style>
+
+    <script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var seriesData=[];
+    var typeList1 = ${typeList};
+    for(var i = 0; i < typeList1.length - 2; i++){
+    	seriesData.push({type: 'bar'});
+     }
+    seriesData.push({type: 'bar'});
+    option = null;
+    option = {
+            title : {
+                text: '库存消耗趋势图'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+    	    legend: {},
+    	    tooltip: {},
+    	    dataset: {
+    	        source: [
+    	            ${typeList},
+    	            ${januaryList},
+                    ${februaryList},
+                    ${marchList},
+                    ${aprilList},
+                    ${mayList},
+                    ${juneList},
+                    ${julyList},
+                    ${augustList},
+                    ${septemberList},
+                    ${octoberList},
+                    ${novemberList},
+                    ${decemberList}
+    	        ]
+    	    },
+    	    xAxis: {type: 'category'},
+    	    yAxis: {name: '(Unit:RMB)'},
+            series: seriesData
+    	};
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+     	
+        $(document).ready(function() {
+            $("#reportBtn").click(function() {
+                var mTypes = [];
+                $("input[name='materialTypesO']:checked").each(function(){
+                    var materialTypeV = $(this).val();
+                    mTypes.push(materialTypeV);
+                });
+                if (mTypes) {
+                    var param = {materialTypes: mTypes};
+                    showContentWithParam('/charts/inventoryReport', param);
+                }
+            });
+        });
+        
+        function getDetail(date, type) {
+        	window.open('/charts/report2Detail?date='+encodeURI(date) + '&type=' + encodeURI(type));
+         }
+   </script>
+<form id="inputForm" class="form-horizontal">
+	<div class="row" style="margin-top: 0px;margin-bottom: 10px">
+    <label class="col-sm-2 control-label"
+	style="width: 23%; text-align: right; padding-top:0px">Material Type：</label>
+	<div id="materialTypes" class="col-sm-8">
+		<#list materialTypeList as item> 
+			<input type="checkbox" name="materialTypesO" value="${item.type}" />${item.shotType}
+		</#list>
+	</div>
+	</div>
+	<div class="row" style="margin-left: 100px;">
+	<div id="materialTypes" class="col-sm-2">
+		<button id="reportBtn" type="button" class="btn btn-primary"
+			style="margin: 0 0 10px 150px">确认</button>
+		</div>
+	</div>
+	<div style="width: 99%;">
+	<div id="container"
+	style="height: 500px; width: 100%; margin: 0 auto;"></div>
+	</div>
+</form>
+<div>
+       <table>
+           <tr >
+               <td>Material type</td>
+            <#list yearMonthList as yearMon>
+                   <td>${yearMon}</td>    
+            </#list>
+               <td>Total</td>
+           </tr>
+           <#list typeLists as type>
+             <tr>   
+               <#if type_index &gt; 0>
+               
+                 <td style="width: 200px;">
+                 	${typeLists[type_index]!}
+                 </td>
+                 
+                 <td style="width: 100px;">
+               	 	<a href="#" onclick="getDetail('${yearMonList[0]}', '${typeLists[type_index]}')" style="font-weight: bold;">${januaryList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[1]}', '${typeLists[type_index]}')" style="font-weight: bold;">${februaryList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                	<a href="#" onclick="getDetail('${yearMonList[2]}', '${typeLists[type_index]}')" style="font-weight: bold;">${marchList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[3]}', '${typeLists[type_index]}')" style="font-weight: bold;">${aprilList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[4]}', '${typeLists[type_index]}')" style="font-weight: bold;">${mayList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[5]}', '${typeLists[type_index]}')" style="font-weight: bold;">${juneList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[6]}', '${typeLists[type_index]}')" style="font-weight: bold;">${julyList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                	 <a href="#" onclick="getDetail('${yearMonList[7]}', '${typeLists[type_index]}')" style="font-weight: bold;">${augustList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                     <a href="#" onclick="getDetail('${yearMonList[8]}', '${typeLists[type_index]}')" style="font-weight: bold;">${septemberList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[9]}', '${typeLists[type_index]}')" style="font-weight: bold;">${octoberList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[10]}', '${typeLists[type_index]}')" style="font-weight: bold;">${novemberList1[type_index]?number?int?string(',###')!}</a>
+                 </td>
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${yearMonList[11]}', '${typeLists[type_index]}')" style="font-weight: bold;">${decemberList1[type_index]?number?int?string(',###')!}</a>
+                 </td> 
+                 
+                 <td style="width: 100px;">
+                 	<a href="#" onclick="getDetail('${year}', '${typeLists[type_index]}')" style="font-weight: bold;">${typeAmountList[type_index]?int!}</a>
+                 </td> 
+                 
+            </#if>  
+            </tr>
+        </#list>
+        <tr >
+            <td>Summary</td>
+            <#list monAmountList as amount>
+                <td>
+                	<a href="#" onclick="getDetail('${yearMonList[amount_index]}', '')" style="font-weight: bold;">${amount?int!}</a>
+                </td>    
+            </#list>
+            <td>
+            	<a href="#" onclick="getDetail('${year}', '')" style="font-weight: bold;">${amount?int!}</a>
+            </td>    
+        </tr>
+     </table> 
+   </div>

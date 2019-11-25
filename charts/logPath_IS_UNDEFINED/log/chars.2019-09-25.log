@@ -1,0 +1,18 @@
+2019-09-25 13:58:28,697 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/charts] 179 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-09-25 13:58:28,700 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet 489 - FrameworkServlet 'dispatcherServlet': initialization started
+2019-09-25 13:58:28,702 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet 508 - FrameworkServlet 'dispatcherServlet': initialization completed in 2 ms
+2019-09-25 13:58:31,853 [http-nio-8080-exec-8] INFO  c.h.i.controller.LoginController 79 - 登陆成功！ userName:E101157
+2019-09-25 13:58:33,410 [http-nio-8080-exec-10] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:58:33,469 [http-nio-8080-exec-10] INFO  freemarker.beans 64 - Detected multiple classes with the same name, "com.hidm.importexport.vo.KPIReportVo". Assuming it was a class-reloading. Clearing class introspection caches to release old data.
+2019-09-25 13:58:46,394 [http-nio-8080-exec-1] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:58:50,051 [http-nio-8080-exec-2] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:59:15,803 [http-nio-8080-exec-4] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:59:21,922 [http-nio-8080-exec-5] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:59:41,874 [http-nio-8080-exec-8] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:59:49,635 [http-nio-8080-exec-9] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 13:59:57,939 [http-nio-8080-exec-3] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 14:00:12,395 [http-nio-8080-exec-6] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 14:00:16,217 [http-nio-8080-exec-7] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 14:00:49,418 [http-nio-8080-exec-10] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 14:00:52,135 [http-nio-8080-exec-1] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.
+2019-09-25 16:06:33,358 [http-nio-8080-exec-6] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.

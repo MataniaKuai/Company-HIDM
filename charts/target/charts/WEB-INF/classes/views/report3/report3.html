@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta name="format-detection" content="telephone=no">
+<style>
+table, table tr th, table tr td {
+	border: 1px solid #000000;
+}
+
+table {
+	min-height: 25px;
+	line-height: 25px;
+	text-align: center;
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0 auto;
+}
+
+a:link {
+	color: #8A2BE2;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #8A2BE2
+}
+
+a:hover {
+	color: red
+}
+</style>
+
+<script type="text/javascript">
+     function getDetail(name) {
+     	window.open('/charts/report1Detail?name='+encodeURI(name));
+     }
+    
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+                title : {
+                    text: 'Inventory Performance Report',
+                   textStyle:{
+                	   fontSize:15
+                   }
+                       
+                        
+                },
+        	    tooltip: {
+        	        trigger: 'axis',
+        	        axisPointer: {
+        	            type: 'cross',
+        	            crossStyle: {
+        	                color: '#999'
+        	            }
+        	        }
+        	    },
+        	    toolbox: {
+        	        feature: {
+        	            dataView: {show: true, readOnly: false},
+        	            magicType: {show: true, type: ['line', 'bar']},
+        	            restore: {show: true},
+        	            saveAsImage: {show: true}
+        	        }
+        	    },
+        	    legend: {
+        	        data:['Total Inventory','Monthly Expense','Non-good  Inventory','Inventory Turnover days']
+        	    },
+        	    color:["blue", "green", "red", "blueviolet"],
+        	    xAxis: [
+        	        {
+        	            type: 'category',
+        	            data: ${yearMonthList},
+        	            axisPointer: {
+        	                type: 'shadow'
+        	            }
+        	        }
+        	    ],
+        	    yAxis: [
+        	        {
+        	            type: 'value',
+        	            name: '(Unit:RMB)'
+        	        },
+        	        {
+        	            type: 'value',
+        	            name: '(Unit:Day)',
+        	            splitLine:{
+        	            	show:false
+        	            }
+        	        }
+        	    ],
+        	    series: [
+        	        {
+        	            name:'Total Inventory',
+        	            type:'bar',
+         	            //data:[2000, 4209, 75420, 23312, 25216, 76217, 13536, 12312, 32316, 20310, 2314, 2313]
+        	            data:${totaltList}
+ 
+        	        },
+        	        {
+        	            name:'Monthly Expense',
+        	            type:'bar',
+        	            data:${consumeList}
+        	        },
+                    {
+                        name:'Non-good  Inventory',
+                        type:'bar',                  
+                      // data:[2236, 5239, 9230, 26234, 28237, 70237, 17236, 12232, 48237, 1838, 6230, 2233]
+                        data:${badtotalsList}
+                    },
+        	        {
+        	            name:'Inventory Turnover days',
+        	            type:'line',
+        	            yAxisIndex: 1,        	           
+        	            //data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                        data:${daysList}
+        	        }
+        	    ]
+        	};
+        
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+        function getDetail(date, type) {
+        	window.open('/charts/report3Detail?date='+encodeURI(date) + '&type=' + encodeURI(type));
+         }
+   </script>
+<form id="inputForm" class="form-horizontal">
+	<div style="width: 99%;">
+		<div id="container"
+			style="height: 500px; width: 100%; margin: 0 auto;"></div>
+	</div>
+</form>
+<div>
+	<table>
+		<tr>
+			<td style="background-color: rgb(198, 217, 240);">Month</td>
+			<#list tableyear as yearMon>
+			<td style="background-color: rgb(198, 217, 240);">${yearMon}</td>
+			</#list>
+		</tr>
+
+		<tr>
+			<td style="text-align:left">Total Inventory</td>
+			<#list tabletotaltList as total>
+			<td style="text-align:right">
+			<#if total?? && total != 0.01>
+			<a href="#" onclick="getDetail('${yearMonList[total_index]}', '1')" style="font-weight: bold;">${total}</a>
+			</#if>
+			</td>
+			</#list>
+		</tr>
+		<tr>
+			<td style="text-align:left">Monthly Expense</td>
+			<#list tableconsumeList as totalout>
+			<td style="text-align:right">
+			  <#if totalout?? && totalout != 0.01>
+			   ${totalout?int!}
+			  </#if>
+			  </td>
+			</#list>
+		</tr>
+		<tr>
+			<td style="text-align:left">Non-good  Inventory</td>
+			<#list tablebadtotalsList as badprice>
+			<td style="text-align:right">
+			 <#if badprice?? && badprice != 0.01>
+			 <a href="#" onclick="getDetail('${yearMonList[badprice_index]}', '2')" style="font-weight: bold;">${badprice}</a>
+			 </#if>			
+			</td>
+			</#list>
+		</tr>
+		<tr>
+			<td style="text-align:left">Non-good Ratio</td>
+			<#list tablePoorrateList as rate>
+			<td style="text-align:right">  
+			 ${rate}
+			</td>
+			</#list>
+		</tr>
+		<td style="text-align:left">Inventory Turnover days</td>
+		<#list tabledaysList as days>
+		<td style="text-align:right">
+		<#if days?? && days != 0.01>
+		    <#if days = 0>
+		          No Expense		       
+		    <#else>
+		       ${days}
+		    </#if>
+		</#if>
+		</td>
+		</#list>
+		</tr>
+
+	</table>
+</div>
+</html>

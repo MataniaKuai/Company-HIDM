@@ -1,0 +1,1 @@
+2019-10-17 08:51:33,941 [http-nio-8080-exec-6] INFO  o.a.shiro.realm.AuthorizingRealm 248 - No cache or cacheManager properties have been set.  Authorization cache cannot be obtained.

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.importexport.dao.KPIReportDao">
+<resultMap id="KPIReportMap" type="com.hidm.importexport.entity.KPIReport">     
+		<result column="matnr" property="matnr" />
+		<result column="werks" property="werks" />
+		<result column="lgort" property="lgort" />
+		<result column="maktx" property="maktx" />
+		<result column="lgpbe" property="lgpbe" />
+		<result column="meins" property="meins" />
+		<result column="matkl" property="matkl" />
+		<result column="zprice" property="zprice" />
+		<result column="zqty" property="zqty" /> 
+		<result column="monthdate" property="monthdate" /> 
+		</resultMap>
+	 <resultMap id="MaterialTypeMap" type="com.hidm.importexport.entity.MaterialType">
+		<result column="type" property="type" />
+		<result column="matkl" property="Typesmatkl" />
+		<result column="materialtype" property="materialtype"  />
+	</resultMap>
+	<select id="getMatkl" resultMap="MaterialTypeMap">
+	select distinct s.id,s.TYPE,s.materialtype,m.MATKL
+  from T_MATERIALTYPE s
+  left JOIN T_MATERIAL m
+  ON s.type=m.wgbez
+  order by s.id
+	</select>
+	<select id="getKPIReport" resultMap="KPIReportMap">
+		SELECT * FROM
+		T_KPIREPORT
+	</select>
+	   <insert id="insertKPIReport" parameterType="java.lang.Long">
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT T_KPIREPORT_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into T_KPIREPORT
+		(id, matnr, werks, lgort, maktx, lgpbe,
+		meins, matkl, zprice, zqty,monthdate)
+		select T_KPIREPORT_SEQ.nextval, A.*
+		FROM (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+			#{item.matnr, jdbcType=VARCHAR}, 
+			#{item.werks, jdbcType=VARCHAR},
+			#{item.lgort, jdbcType=VARCHAR}, 
+			#{item.maktx, jdbcType=VARCHAR},
+			#{item.lgpbe, jdbcType=VARCHAR}, 
+			#{item.meins, jdbcType=VARCHAR},
+			#{item.matkl, jdbcType=VARCHAR}, 
+			#{item.zprice, jdbcType=VARCHAR},
+			#{item.zqty, jdbcType=VARCHAR},
+			#{item.monthdate, jdbcType=VARCHAR}			
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+	<insert id="insertKPIReportHis" parameterType="java.lang.Long">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_KPIREPORT_HIS_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into T_KPIREPORT_HIS
+		(id, matnr, werks, lgort, maktx, lgpbe,
+		meins, matkl, zprice, zqty,monthdate)
+		select T_KPIREPORT_HIS_SEQ.nextval, A.*
+		FROM (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+			#{item.matnr, jdbcType=VARCHAR}, 
+			#{item.werks, jdbcType=VARCHAR},
+			#{item.lgort, jdbcType=VARCHAR}, 
+			#{item.maktx, jdbcType=VARCHAR},
+			#{item.lgpbe, jdbcType=VARCHAR}, 
+			#{item.meins, jdbcType=VARCHAR},
+			#{item.matkl, jdbcType=VARCHAR}, 
+			#{item.zprice, jdbcType=VARCHAR},
+			#{item.zqty, jdbcType=VARCHAR},
+			#{item.monthdate, jdbcType=VARCHAR}
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+		<delete id="delKPIReportHis">
+		delete from T_KPIREPORT_HIS t
+		where 
+		to_char(t.update_time,'yyyy-MM-dd') &lt; to_char(sysdate-1,'yyyy-MM-dd')
+	</delete>
+	<delete id="delKPIReport">
+		delete from T_KPIREPORT
+	</delete>
+</mapper>

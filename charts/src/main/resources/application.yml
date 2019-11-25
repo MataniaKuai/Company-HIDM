@@ -1,0 +1,29 @@
+app:
+    name: charts
+
+server:
+    port: 8080
+    context-path: /charts
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+    profiles:
+        active: @activatedProperties@
+    #datasource:
+        #jndi-name: jdbc/charts
+        
+mybatis:
+    mapperLocations: classpath:mapper/*.xml
+    type-aliases-package: com.hidm.hrs.entity
+    
+logging:
+    level:
+        com.hidm.charts.dao: info

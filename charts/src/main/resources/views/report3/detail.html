@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+  <meta name="format-detection" content="telephone=no">
+    <style style="height:100%" id="dataModal">
+        table,table tr th, table tr td { border:1px solid #000000; }
+        table {min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;width:75%;margin: 10 auto;}
+        .button {
+		    display: inline-block;
+		    zoom: 1;
+		    vertical-align: baseline;
+		    margin: 10 40px;
+		    outline: none;
+		    cursor: pointer;
+		    text-align: center;
+		    text-decoration: none;
+		    font: 14px/100% Arial, Helvetica, sans-serif;
+		    padding: .5em 2em .55em;
+		    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		    border-radius: .5em;
+		}
+		
+		.blue {
+		    color: #d9eef7;
+		    border: solid 1px #0076a3;
+		    background: #0095cd;
+		}
+		.cen{
+		}
+    </style>
+    </head>
+        <div style="margin:0 auto;width: 100 px;">
+            <table style="margin: auto">
+                <tr style="font-size:16px;font-weight:bold">
+                     <td>
+                                                                                   序号
+                     </td>
+                     <td>
+                                                                            物料编码                                                    
+                     </td>
+                     <td>
+                                                                            物料描述
+                     </td>
+                     <td>
+                                                                           物料组
+                     </td>
+                     <td>
+                                                                            库存地点
+                     </td>
+                     <td>
+                                                                          库存数量
+                     </td>
+                     <td>
+                                                                                  单位
+                     </td>
+                     <td>
+                                                                          单价
+                     </td>
+                     <td>
+                                                                         金额
+                     </td>                    
+                </tr style="font-size:16px;font-weight:bold">
+                 <#list achievementsList as achievements>
+	                <tr >
+	                 <td>
+                            ${achievements_index+1}
+                        </td>
+                        <td style="text-align:left;">
+                            ${(achievements.matnr)!''}
+                        </td>
+	                    <td  style="text-align:left;">
+	                        ${(achievements.maktx)!''}
+	                    </td>
+	                    <td  style="text-align:left;">
+	                        ${(achievements.wgbez)!''}
+	                    </td>
+	                    <td>
+	                        ${(achievements.lgort)!''}
+	                    </td>	                    
+	                    <td  style="text-align:right;">
+	                        ${(achievements.zqmsl)!''}
+	                    </td>
+	                    <td>
+	                        ${(achievements.meins)!''}
+	                    </td>
+                        <td style="text-align:right;">
+                            ${(achievements.stprs)!''}
+                        </td>
+                        <td style="text-align:right;">
+                            ${(achievements.money)!''}
+                        </td>                    
+ 	                </tr>
+               </#list>
+            </table>
+       </div>
+</html>

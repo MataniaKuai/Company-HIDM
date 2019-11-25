@@ -1,0 +1,107 @@
+    <style style="height:100%" id="dataModal">
+        table,table tr th, table tr td { border:1px solid #000000; }
+        table {min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;width:75%;margin: 10 auto;}
+        .button {
+		    display: inline-block;
+		    zoom: 1;
+		    vertical-align: baseline;
+		    margin: 10 40px;
+		    outline: none;
+		    cursor: pointer;
+		    text-align: center;
+		    text-decoration: none;
+		    font: 14px/100% Arial, Helvetica, sans-serif;
+		    padding: .5em 2em .55em;
+		    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		    border-radius: .5em;
+		}
+		
+		.blue {
+		    color: #d9eef7;
+		    border: solid 1px #0076a3;
+		    background: #0095cd;
+		}
+    </style>
+        <div>
+	        <!-- <button type="button" class="button blue" onclick="javascript :history.back(-1);">返回</button> -->
+        </div>
+        <div>
+            <table>
+                <tr style="font-size:16px;font-weight:bold">
+                     <td>
+                                                                             序号
+                     </td>
+                     <td>
+                                                                             物料组
+                     </td>
+                     <td>
+                                                                            料号
+                     </td>
+                     <td>
+                                                                              品名描述
+                     </td>
+                     <td>
+                                                                            移动类型
+                     </td>
+                     <td>
+                                                                            物料凭证
+                     </td>
+                     <td>
+                                                                            领退时间
+                     </td>
+                     <td>
+                                                                            数量
+                     </td>
+                     <td>
+                                                                            单价
+                     </td>
+                     <td>
+                                                                            金额
+                     </td>
+                </tr>
+                 <#list inventoryList as inventory>
+	                <tr>
+                        <td>
+                            ${inventory_index+1}
+                        </td>
+	                    <td>
+	                        ${(inventory.wgbez)!''}
+	                    </td>
+	                    <td style="text-align:left">
+	                        ${(inventory.matnr)!''}
+	                    </td>
+	                    <td>
+	                        ${(inventory.maktx)!''}
+	                    </td>
+	                    <td>
+	                   		<#if inventory.bwart == '201'>
+                        		领料
+                        	</#if>
+                        	<#if inventory.bwart == '202'>
+                        		退料
+                        	</#if>
+	                    </td>
+	                    <td>
+	                        ${(inventory.mblnr)!''}
+	                    </td>
+                        <td>
+                            ${(inventory.date)!''}
+                        </td>
+                        <td>
+                            ${(inventory.erfmg)!''}
+                        </td>
+                        <td>
+                        	<#if inventory.vprsv == 'S'>
+                        		${inventory.stprs}
+                        	</#if>
+                        	<#if inventory.vprsv == 'V'>
+                        		${inventory.verpr}
+                        	</#if>
+                        </td>
+                        <td>
+                        	${(inventory.money)!''}
+                        </td>
+ 	                </tr>
+               </#list>
+            </table>
+       </div>

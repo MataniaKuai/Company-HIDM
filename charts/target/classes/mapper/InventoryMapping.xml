@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.importexport.dao.InventoryDao">
+	 <resultMap id="InventoryMap" type="com.hidm.importexport.entity.InventoryResult">
+		<result column="type" property="materialType" />
+		<result column="budat" property="date" />
+		<result column="bwart" property="bwart" />
+		<result column="erfmg" property="erfmg" />
+		<result column="vprsv" property="vprsv" />
+		<result column="stprs" property="stprs" />
+		<result column="verpr" property="verpr" />
+		<result column="maktx" property="maktx" />
+		<result column="matnr" property="matnr" />
+	</resultMap>
+	<resultMap id="MaterialTypeMap" type="com.hidm.importexport.entity.MaterialType">
+		<result column="type" property="type" />
+	</resultMap>
+
+    <select id="selectInventory" resultMap="InventoryMap">      
+	    select w.wgbez, w.budat, w.bwart, w.erfmg, w.vprsv, w.stprs, w.verpr
+	    from T_INVENTORY w  
+	    inner join T_MATERIALTYPE m on m.TYPE = w.wgbez
+	    where w.matnr not like 'H%' and w.matnr not like 'M%' and w.matnr not like 'N%'
+	    and w.werks ='1000' and w.budat like (select extract(year from sysdate) from dual) || '%'
+	    <if test="materialTypes != null and materialTypes.size > 0">
+			<foreach collection="materialTypes" item="mType" index="index"  open=" and (" separator="or" close=")">
+                w.wgbez = #{mType} 
+            </foreach>
+		</if>
+	    order by m.id desc
+    </select> 
+    
+    <select id="findByDateAndType" resultMap="InventoryMap">
+        SELECT * FROM T_INVENTORY w
+        where w.matnr not like 'H%' and w.matnr not like 'M%' and w.matnr not like 'N%'
+        and w.werks ='1000'
+        
+        <choose>
+		    <when test= "wgbez !='' and wgbez !=null and date != '' and date != null">
+		        and w.wgbez like concat(concat('%',#{wgbez}),'%')
+		        and w.budat like concat(concat('%',#{date}),'%')
+		    </when>
+		    <otherwise>
+                and w.budat like concat(concat('%',#{date}),'%')
+		    </otherwise>
+	   </choose>
+        order by w.id desc
+    </select>
+	
+	<select id="countInventory" resultMap="InventoryMap">	   
+		SELECT M.type,z.budat,z.bwart,  z.erfmg, z.vprsv, z.stprs, z.verpr  FROM T_MATERIALTYPE M 
+        left join (Select * from T_INVENTORY w  
+        where w.matnr not like 'H%' and w.matnr not like 'M%' and w.matnr not like 'N%'
+        and w.werks ='1000'
+         <if test= "date !='' and date !=null" >
+		    and w.budat like concat(concat('%',#{date}),'%') 
+		   </if> 
+		   <if test= "materialType !='' and materialType !=null" >
+		    and w.wgbez like concat(concat('%',#{materialType}),'%')
+		   </if>  
+		   ) z
+		on M.TYPE = z.wgbez  	 
+		group by M.id,M.type,z.budat,z.bwart,  z.erfmg, z.vprsv, z.stprs, z.verpr
+		order by M.id
+	</select> 
+	
+	<delete id="delInventoryHis">
+		delete from T_INVENTORY_HIS t
+		where
+		to_char(t.update_time,'yyyy-MM-dd')=to_char(sysdate-#{days},'yyyy-MM-dd')
+	</delete>
+	<delete id="delInventory">
+		delete from T_INVENTORY
+	</delete>
+	
+	
+	<select id="getMaterialType" resultMap="MaterialTypeMap">
+	    SELECT z.type FROM T_MATERIALTYPE z
+	</select> 
+
+	<insert id="insertInventory" parameterType="java.lang.Long">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_INVENTORY_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into T_INVENTORY
+		(id, matnr, maktx, matkl, wgbez, werks, lgort, bwart, z_bwart, mblnr, mjahr,
+		zeile, budat, erfmg, erfme,
+		bktxt_jck, ebeln, ebelp, mtart, xblnr, bktxt, name_text, stprs, verpr, vprsv, waers)
+		select T_INVENTORY_SEQ.nextval, A.* FROM (
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			select
+			#{item.matnr, jdbcType=VARCHAR}, #{item.maktx, jdbcType=VARCHAR}, #{item.matkl,
+			jdbcType=VARCHAR},
+			#{item.wgbez, jdbcType=VARCHAR}, #{item.werks, jdbcType=VARCHAR}, #{item.lgort,
+			jdbcType=VARCHAR},
+			#{item.bwart, jdbcType=VARCHAR}, #{item.z_bwart, jdbcType=VARCHAR}, #{item.mblnr,
+			jdbcType=VARCHAR},
+			#{item.mjahr, jdbcType=VARCHAR}, #{item.zeile, jdbcType=VARCHAR}, #{item.budat,
+			jdbcType=VARCHAR},
+			#{item.erfmg, jdbcType=VARCHAR}, #{item.erfme, jdbcType=VARCHAR}, #{item.bktxt_jck,
+			jdbcType=VARCHAR},
+			#{item.ebeln, jdbcType=VARCHAR}, #{item.ebelp, jdbcType=VARCHAR}, #{item.mtart,
+			jdbcType=VARCHAR},
+			#{item.xblnr, jdbcType=VARCHAR}, #{item.bktxt, jdbcType=VARCHAR}, #{item.name_text,
+			jdbcType=VARCHAR},
+			#{item.stprs, jdbcType=VARCHAR}, #{item.verpr, jdbcType=VARCHAR}, #{item.vprsv,
+			jdbcType=VARCHAR},
+			#{item.waers, jdbcType=VARCHAR}
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+	
+	
+	<insert id="insertInventoryHis" parameterType="java.lang.Long">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_INVENTORY_HIS_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into T_INVENTORY_HIS
+		(id, matnr, maktx, matkl, wgbez, werks, lgort, bwart, z_bwart, mblnr, mjahr,
+		zeile, budat, erfmg, erfme,
+		bktxt_jck, ebeln, ebelp, mtart, xblnr, bktxt, name_text, stprs, verpr, vprsv, waers)
+		select T_INVENTORY_HIS_SEQ.nextval, A.* FROM (
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			select
+			#{item.matnr, jdbcType=VARCHAR}, #{item.maktx, jdbcType=VARCHAR}, #{item.matkl,
+			jdbcType=VARCHAR},
+			#{item.wgbez, jdbcType=VARCHAR}, #{item.werks, jdbcType=VARCHAR}, #{item.lgort,
+			jdbcType=VARCHAR},
+			#{item.bwart, jdbcType=VARCHAR}, #{item.z_bwart, jdbcType=VARCHAR}, #{item.mblnr,
+			jdbcType=VARCHAR},
+			#{item.mjahr, jdbcType=VARCHAR}, #{item.zeile, jdbcType=VARCHAR}, #{item.budat,
+			jdbcType=VARCHAR},
+			#{item.erfmg, jdbcType=VARCHAR}, #{item.erfme, jdbcType=VARCHAR}, #{item.bktxt_jck,
+			jdbcType=VARCHAR},
+			#{item.ebeln, jdbcType=VARCHAR}, #{item.ebelp, jdbcType=VARCHAR}, #{item.mtart,
+			jdbcType=VARCHAR},
+			#{item.xblnr, jdbcType=VARCHAR}, #{item.bktxt, jdbcType=VARCHAR}, #{item.name_text,
+			jdbcType=VARCHAR},
+			#{item.stprs, jdbcType=VARCHAR}, #{item.verpr, jdbcType=VARCHAR}, #{item.vprsv,
+			jdbcType=VARCHAR},
+			#{item.waers, jdbcType=VARCHAR}
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+
+	
+	
+</mapper>
