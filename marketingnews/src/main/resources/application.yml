@@ -1,0 +1,26 @@
+app:
+    name: fileandsys
+
+server:
+    context-path: /newsmanage
+    port: 8088
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+
+    profiles:
+      active: '@activatedProperties@'
+#       active: test
+
+mybatis:
+    mapperLocations: classpath:mapper/*.xml
+    type-aliases-package: com.hidm.hrs.entity
+

@@ -1,0 +1,477 @@
+package com.hidm.newsmanage.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+import javax.naming.AuthenticationException;
+import javax.naming.Context;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.servlet.http.HttpSession;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.hidm.newsmanage.entity.User;
+import com.hidm.newsmanage.entity.MailContent;
+import com.hidm.newsmanage.entity.MailReceiver;
+import com.hidm.newsmanage.entity.NewsFile;
+import com.hidm.newsmanage.entity.NewsSystem;
+import com.hidm.newsmanage.entity.NewsSystemFile;
+import com.hidm.newsmanage.service.UserService;
+import com.hidm.newsmanage.service.MailContentService;
+import com.hidm.newsmanage.service.MailReceiverService;
+import com.hidm.newsmanage.service.NewsFileService;
+import com.hidm.newsmanage.service.NewsSystemService;
+import com.hidm.newsmanage.util.FileUtil;
+import com.hidm.newsmanage.util.SendMailUtil;
+import com.hidm.newsmanage.vo.PaginationVo;
+import com.hidm.newsmanage.vo.MailReceiverSearchVo;
+import com.hidm.newsmanage.vo.NewsFileSearchVo;
+import com.hidm.newsmanage.vo.NewsFileVo;
+import com.hidm.newsmanage.vo.NewsSystemSearchVo;
+
+@Controller
+
+public class NewsSystemController {
+	
+	private static final Logger log = LoggerFactory.getLogger(NewsSystemController.class);
+	
+	private String fileTime = "";
+	
+	@Value("${file.root.path}")
+	private String rootPath;
+	
+	@Value("${url.path}")
+	private String urlPath;
+
+	@Autowired
+	private NewsSystemService newsSystemService;
+
+	@Autowired
+	private NewsFileService newsFileService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private MailContentService mailConetentService;
+	
+	@Autowired
+	private MailReceiverService mailReceiverService;
+
+	@RequestMapping("login")
+	public String login(Model model,HttpSession session) {
+		//return deal(model, session);
+		return "/login";
+	}
+	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		return "/newssystem/list_readonly";
+	}
+
+	@RequestMapping("list")
+	public String list(Model model, HttpSession session) {
+		return "/newssystem/list_readonly";
+	}
+	
+	@RequestMapping("mailreceiver")
+	public String maintain(Model model, HttpSession session) {
+		return "/newssystem/mail_receiver";
+	}
+
+	@RequestMapping("managesystem")
+	public String manageSystem(Model model, HttpSession session) {
+		
+		Subject subject = SecurityUtils.getSubject();
+		Object principal = subject.getPrincipal();
+		User user = (User)principal;
+		model.addAttribute("username",userService.selectName(user).getUserName());
+		return "/newssystem/manage_system";
+	}
+	
+    @Scheduled(cron= "0 00 11 ? * MON")
+    public void deal() throws UnsupportedEncodingException, MessagingException {
+    	int total = mailConetentService.countWeekContent();
+		List<NewsSystemFile> list = mailConetentService.selectWeekContent();
+		if(list.size() > 0) {
+			log.info("新闻数目：" + list.size());
+			StringBuilder sb = new StringBuilder();
+			sb.append("<!DOCTYPE html>");
+			sb.append("<html lang=\"en\" id=\"test\">");
+			sb.append("<head>");
+			sb.append("<meta charset=\"UTF-8\">");
+			sb.append("<title>新闻列表</title>");
+			sb.append("<body>");
+			sb.append("<table  width=\"800\" height=\"600\">");
+			for(int i = 0; i < list.size(); i++) {
+				log.info("新闻标题：" + list.get(i).getName());
+				sb.append("<tr>");
+				if(list.get(i).getUrl().equals("")) {
+					sb.append("<td width=\"80%\"><font style=\"font-size:16px;font-weight:bold;font-family:微软雅黑\"><a href=" + "\"" + urlPath + list.get(i).getFilePath() + "\"" + ">" + (i + 1)
+							+ "." + list.get(i).getName() + "</a></font></td>");
+				}else {
+					sb.append("<td width=\"80%\"><font style=\"font-size:16px;font-weight:bold;font-family:微软雅黑\"><a href=" + "\"" +  list.get(i).getUrl() + "\"" + ">" + (i + 1)
+							+ "." + list.get(i).getName() + "</a></font></td>");
+				}
+				sb.append("<td width=\"20%\" align=\"right\" height=\"50\"><p style=\"font-size:14px; color:grey; font-family:Arial\">" + 
+						list.get(i).getNewsdate() + "</p></td>");
+				sb.append("</tr>");
+				sb.append("<tr>");
+				sb.append("<td colspan=\"2\"><p style=\"font-size:14px;font-family:微软雅黑\">" + list.get(i).getDesc() + "</p></td>");
+				sb.append("</tr>");
+				sb.append("<tr></tr><tr></tr><tr></tr>");
+			}
+			sb.append("<tr>");
+			sb.append("<td colspan=\"2\" align=\"right\"><a href=" + "\"" + urlPath + "list" + "\" style=\" color:red; font-size:14px; font-family: 微软雅黑\">历史新闻/History News</a></td>");
+			sb.append("</tr>");
+			sb.append("</table>");
+			sb.append("</body>");
+			sb.append("</html>");
+			MailContent mailContent = new MailContent();
+			mailContent.setMailContent(sb.toString());
+			getMailContent(mailContent);
+		}
+		else {
+			System.out.println("邮箱内容为空，无法发送！");
+			log.info("邮箱内容为空，无法发送！");
+		}
+    }
+	
+	@RequestMapping("testEmail")
+    public void deal2() throws UnsupportedEncodingException, MessagingException {
+    	int total = mailConetentService.countWeekContent();
+		List<NewsSystemFile> list = mailConetentService.selectWeekContent();
+		if(list.size() > 0) {
+			log.info("新闻数目：" + list.size());
+			StringBuilder sb = new StringBuilder();
+			sb.append("<!DOCTYPE html>");
+			sb.append("<html lang=\"en\" id=\"test\">");
+			sb.append("<head>");
+			sb.append("<meta charset=\"UTF-8\">");
+			sb.append("<title>新闻列表</title>");
+			sb.append("<body>");
+			sb.append("<table  width=\"800\" height=\"600\">");
+			for(int i = 0; i < list.size(); i++) {
+				log.info("新闻标题：" + list.get(i).getName());
+				sb.append("<tr>");
+				if(list.get(i).getUrl().equals("")) {
+					sb.append("<td width=\"80%\"><font style=\"font-size:16px;font-weight:bold;font-family:微软雅黑\"><a href=" + "\"" + urlPath + list.get(i).getFilePath() + "\"" + ">" + (i + 1)
+							+ "." + list.get(i).getName() + "</a></font></td>");
+				}else {
+					sb.append("<td width=\"80%\"><font style=\"font-size:16px;font-weight:bold;font-family:微软雅黑\"><a href=" + "\"" +  list.get(i).getUrl() + "\"" + ">" + (i + 1)
+							+ "." + list.get(i).getName() + "</a></font></td>");
+				}
+				sb.append("<td width=\"20%\" align=\"right\" height=\"50\"><p style=\"font-size:14px; color:grey; font-family:Arial\">" + 
+						list.get(i).getNewsdate() + "</p></td>");
+				sb.append("</tr>");
+				sb.append("<tr>");
+				sb.append("<td colspan=\"2\"><p style=\"font-size:14px;font-family:微软雅黑\">" + list.get(i).getDesc() + "</p></td>");
+				sb.append("</tr>");
+				sb.append("<tr></tr><tr></tr><tr></tr>");
+			}
+			sb.append("<tr>");
+			sb.append("<td colspan=\"2\" align=\"right\"><a href=" + "\"" + urlPath + "list" + "\" style=\" color:red; font-size:14px; font-family: 微软雅黑\">历史新闻/History News</a></td>");
+			sb.append("</tr>");
+			sb.append("</table>");
+			sb.append("</body>");
+			sb.append("</html>");
+			MailContent mailContent = new MailContent();
+			mailContent.setMailContent(sb.toString());
+			getMailContent(mailContent);
+		}
+		else {
+			System.out.println("邮箱内容为空，无法发送！");
+		}
+    }
+
+	@RequestMapping("managefile")
+	public String manageFile(Model model, HttpSession session) {
+		return "/newssystem/manage_file";
+	}
+
+	@RequestMapping("doLogin")
+	public String doLogin(@RequestParam(value = "employeeNo") String employeeNo,
+			@RequestParam(value = "password") String password, Model model, HttpSession session) {
+		
+		User user = new User();
+		user.setUserName(employeeNo);
+		
+		boolean auc = false;
+		if (StringUtils.isEmpty(employeeNo) || StringUtils.isEmpty(password)) {
+			model.addAttribute("message", "登录失败:用户名和密码不能为空！");
+		} else if(!userService.checkUser(user)) {
+			model.addAttribute("message", "登录失败:请检查用户名！");
+		}
+		else {
+			String host = "hidmgroup.com";
+			String domain = "@hidmgroup.com";
+			String url = new String("ldap://" + host);
+
+			Hashtable<String, Object> env = new Hashtable<String, Object>();// 实例化一个Env
+			DirContext ctx = null;
+			env.put(Context.SECURITY_AUTHENTICATION, "simple");// LDAP访问安全级别(none,simple,strong),一种模式，这么写就行
+			env.put(Context.SECURITY_PRINCIPAL, employeeNo + domain); // 用户名
+			env.put(Context.SECURITY_CREDENTIALS, password);
+			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+			env.put(Context.PROVIDER_URL, url);
+			try {
+				ctx = new InitialDirContext(env);// 初始化上下文
+				auc = true;
+				log.info("登陆成功！ employeeNo:" + employeeNo);
+			} catch (AuthenticationException e) {
+				log.error("身份验证失败! employeeNo:" + employeeNo + ", password:" + password, e);
+			} catch (javax.naming.CommunicationException e) {
+				log.error("AD域连接失败! employeeNo:" + employeeNo + ", password:" + password, e);
+			} catch (Exception e) {
+				log.error("身份验证未知异常! employeeNo:" + employeeNo + ", password:" + password, e);
+			} finally {
+				if (null != ctx) {
+					try {
+						ctx.close();
+						ctx = null;
+					} catch (Exception e) {
+						log.error("AD链接关闭异常! employeeNo:" + employeeNo + ", password:" + password, e);
+					}
+				}
+			}
+		}
+		if (auc) {
+            Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(employeeNo, password);
+            subject.login(token);
+			return "redirect:managesystem";
+
+		} else {
+			model.addAttribute("message", "登录失败:请检查您的用户名和密码！");
+		}
+		return "login";
+	}
+
+	@RequestMapping("search")
+	@ResponseBody
+	public Map<String, Object> search(NewsSystem newsSystem, PaginationVo page, Model model, HttpSession session) throws ParseException {
+		NewsSystemSearchVo vo = new NewsSystemSearchVo();
+		vo.setNewsSystem(newsSystem);
+		vo.setPage(page);
+		page.setRowStart((page.getPage() - 1) * page.getRows());
+
+		int total = newsSystemService.count(vo);
+		List<NewsSystemFile> list = newsSystemService.selectList(vo);
+		
+		for(int i = 0; i < list.size(); i++) {
+			NewsSystemFile news = list.get(i);
+			Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(news.getUpdatetime());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String dateNowStr = sdf.format(d);
+			news.setUpdatetime(dateNowStr);
+		}
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("total", total);
+		result.put("rows", list);
+		return result;
+	}
+
+	@RequestMapping("add")
+	public String add(Model model, HttpSession session) {
+		return "/newssystem/edit";
+	}
+
+	@RequestMapping("save")
+	@ResponseBody
+	public String saveSystem( NewsSystem newsSystem, Model model,HttpSession session) {
+		
+		if(newsSystem.getUrl() == null) {
+			newsSystem.setUrl("");
+		}
+		
+		NewsSystemFile newsSystemFile = new NewsSystemFile();
+		String fileName = "";
+		String filePath = "";
+		
+		if (newsSystem.getDisplayFileName().equals("") && (newsSystem.getUrl() == null || newsSystem.getUrl().equals(""))) {
+			return "empty";
+		}
+		
+		if(newsSystem.getUrl().equals("") || newsSystem.getUrl() == null) {
+			newsSystem.setUrl("");
+			
+			fileName = newsSystem.getDisplayFileName();
+			String destName = fileTime + "_" + fileName;
+			filePath = "upload/" + destName;
+		}
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+		String dateNowStr = sdf.format(d);
+
+		newsSystem.setUpdatetime(dateNowStr);
+
+		newsSystemFile.setId(newsSystem.getId());
+		newsSystemFile.setName(newsSystem.getName());
+		newsSystemFile.setDesc(newsSystem.getDesc());
+		newsSystemFile.setUrl(newsSystem.getUrl());
+		newsSystemFile.setUpdatetime(newsSystem.getUpdatetime());
+		newsSystemFile.setFileName(fileName);
+		newsSystemFile.setFilePath(filePath);
+		newsSystemFile.setDisplayFileName(newsSystem.getDisplayFileName());
+		newsSystemFile.setNewsdate(newsSystem.getNewsdate());
+		
+		if (null == newsSystem.getId() || 0 == newsSystem.getId()) {
+			newsSystemService.insert(newsSystemFile);
+		} else {
+			newsSystemService.updateById(newsSystemFile);
+		}
+
+		return "ok";
+	}
+	
+	@RequestMapping(value="saveFile")
+	@ResponseBody
+	public Map<String, String> saveFile(@RequestParam("fileName") MultipartFile file, NewsSystem newsSystem, Model model,
+			HttpSession session) {
+		HashMap<String, String> infoMap = new HashMap<String, String>();
+		if (file.isEmpty()) {
+			infoMap.put("msg", "文件为空");
+			return infoMap;
+		}
+
+		FileUtil.createDir(rootPath);
+
+		String fileOriginalName = file.getOriginalFilename();
+		String fileName = fileOriginalName.substring(fileOriginalName.lastIndexOf("\\") + 1);
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String dateNowStr = sdf.format(d);
+		fileTime = dateNowStr;
+		String destName = dateNowStr + "_" + fileName;
+		String filePath = "" + destName;
+		
+		File dest = new File(rootPath + filePath);
+		try {
+			file.transferTo(dest);
+			infoMap.put("msg", "upload/" + fileTime);
+			return infoMap;
+		} catch (IllegalStateException e) {
+			infoMap.put("msg", "上传失败");
+			return infoMap;
+		} catch (IOException e) {
+			infoMap.put("msg", "上传失败");
+			return infoMap;
+		}
+	}
+	
+	@RequestMapping("delete")
+	@ResponseBody
+	public boolean deleteSystem(@RequestParam(value = "ids[]") Long[] ids, Model model, HttpSession session) {
+		newsSystemService.deleteByIds(ids);
+		return true;
+	}
+
+	@RequestMapping("newsfile/search")
+	@ResponseBody
+	public Map<String, Object> searchUsualFile(NewsFile newsFile, PaginationVo page, Model model,
+			HttpSession session) throws ParseException {
+		NewsFileSearchVo vo = new NewsFileSearchVo();
+		vo.setNewsFile(newsFile);
+		vo.setPage(page);
+		page.setRowStart((page.getPage() - 1) * page.getRows());
+
+		int total = newsFileService.count(vo);
+		List<NewsFileVo> list = newsFileService.selectList(vo);
+
+		for(int i = 0; i < list.size(); i++) {
+			NewsFileVo news = list.get(i);
+			Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(news.getUpdatetime());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String dateNowStr = sdf.format(d);
+			news.setUpdatetime(dateNowStr);
+		}
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("total", total);
+		result.put("rows", list);
+		return result;
+	}
+	
+	public void getMailContent(MailContent mailContent) throws UnsupportedEncodingException, MessagingException {
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String dateNowStr = sdf.format(d);
+		mailContent.setUpdateTime(dateNowStr);
+		mailConetentService.insert(mailContent);
+		List<MailContent> summaryContent = mailConetentService.selectSummaryContent(mailContent);
+		MailContent summary = (MailContent)summaryContent.get(0);
+		//从数据库中取出收件人
+		List<MailReceiver> receivers = mailReceiverService.select();
+		int number = mailReceiverService.counter();
+		String [] to = new String[number];
+		for(int i = 0; i < receivers.size(); i++) {
+			to[i] = receivers.get(i).getMailAddress();
+		}
+		SendMailUtil.sendHtmlMail("marketing_newsletter@hidmgroup.com", "", to, "Marketing Newsletter  " + dateNowStr, summary.getMailContent());
+	}
+	
+	@RequestMapping("mailreceiver/search")
+	@ResponseBody
+	public Map<String, Object> search(MailReceiver mailReceiver, PaginationVo page, Model model, HttpSession session) {
+		MailReceiverSearchVo vo = new MailReceiverSearchVo();
+		vo.setMailReceiver(mailReceiver);
+		vo.setPage(page);
+		page.setRowStart((page.getPage() - 1) * page.getRows());
+
+		int total = mailReceiverService.count(vo);
+		List<MailReceiver> list = mailReceiverService.selectList(vo);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("total", total);
+		result.put("rows", list);
+		return result;
+	}
+	
+	@RequestMapping("mailreceiver/save")
+	@ResponseBody
+	public String saveMailReceiver(MailReceiver mailReceiver, Model model,HttpSession session) {
+		
+		if(mailReceiver.getName().equals("") || mailReceiver.getMailAddress().equals("")) {
+			return "empty";
+		}
+		
+		if (null == mailReceiver.getId() || 0 == mailReceiver.getId()) {
+			mailReceiverService.insert(mailReceiver);
+		} else {
+			mailReceiverService.updateById(mailReceiver);
+		}
+		return "ok";
+	}
+	
+	@RequestMapping("mailreceiver/delete")
+	@ResponseBody
+	public boolean deleteMailReceiver(@RequestParam(value = "ids[]") Long[] ids, Model model, HttpSession session) {
+		mailReceiverService.deleteByIds(ids);
+		return true;
+	}
+}

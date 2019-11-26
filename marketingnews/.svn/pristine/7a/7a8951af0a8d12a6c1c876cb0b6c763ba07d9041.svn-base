@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.newsmanage.dao.NewsSystemDao">
+    <resultMap id="BaseResultMap" type="com.hidm.newsmanage.entity.NewsSystemFile">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="desc" column="description"/>
+        <result property="url" column="url"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="fileName" column="filename"/>
+        <result property="filePath" column="filepath"/>
+        <result property="displayFileName" column="displayfilename"/>
+    </resultMap>
+    
+    <insert id="insert">
+        INSERT INTO news_system(name, description, url, updatetime, filename, filepath)
+        VALUES(#{name}, #{desc}, #{url}, #{updatetime}, #{fileName}, #{filePath})
+    </insert>
+  
+    <update id="updateById">
+        UPDATE news_system SET   
+            name=#{name}, description=#{desc}, url=#{url}, filename=#{fileName}, filepath=#{filePath}, updatetime=#{updatetime}, displayfilename=#{displayFileName}
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+	select top ${page.rows} u.* from news_system u
+	<where>
+	    <if test="newsSystem != null">
+		  <if test="newsSystem.id != null and newsSystem.id != ''">
+			AND id = #{newsSystem.id}
+		  </if>
+		  <if test="newsSystem.name != null and newsSystem.name != '' and newsSystem.desc != null and newsSystem.desc != ''">
+			AND (name like '%' + #{newsSystem.name} + '%' OR description like '%' + #{newsSystem.desc} + '%')
+		  </if>
+		</if>
+		and u.id not in (
+		    select top ${page.rowStart} id from news_system u
+		    <where>
+	         <if test="newsSystem != null">
+				  <if test="newsSystem.id != null and newsSystem.id != ''">
+					AND id = #{newsSystem.id}
+				  </if>
+				  <if test="newsSystem.name != null and newsSystem.name != '' and newsSystem.desc != null and newsSystem.desc != ''">
+					AND (name like '%' + #{newsSystem.name} + '%' OR description like '%' + #{newsSystem.desc} + '%')
+		 		 </if>
+			</if>
+		    </where>
+		    order by id desc
+		)
+	</where>
+	order by u.id desc
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from news_system
+	<where>
+	    <if test="newsSystem != null">
+		  <if test="newsSystem.id != null and newsSystem.id != ''">
+			AND id = #{newsSystem.id}
+		  </if>
+		  <if test="newsSystem.name != null and newsSystem.name != '' and newsSystem.desc != null and newsSystem.desc != ''">
+			AND (name like '%' + #{newsSystem.name} + '%' OR description like '%' + #{newsSystem.desc} + '%')
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from news_system
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

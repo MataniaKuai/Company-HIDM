@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" id="test">
+<head>
+<meta charset="UTF-8">
+<title>新闻列表</title>
+<script type="text/javascript" src="vendors/easyui/jquery.min.js"></script>
+<body>
+	<table  width="800" height="600">
+		<#list mailcontent as mail>
+				<tr>
+					<td width="80%"><h3><a href=${mail.filePath}>${mail_index+1}.${mail.name}</a><h3></td>
+					<td width="20%" align="right" height="50"><p style="font-size:14px; color:grey">${mail.updatetime}</p></td>
+				</tr>
+				<tr>
+					<td colspan="2"><p style="font-size:16px">${mail.desc}</p></td>
+				</tr>
+		
+		</#list>
+	</table>
+</body>
+<script>
+	var str = document.getElementById("test").innerHTML;
+	$.ajax({
+		type : 'post',
+		data : {
+			mailContent : str
+		},
+		url : "/newsmanage/mailContent",
+		dataType : "json",
+		success : function(res) {
+		}
+	});
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

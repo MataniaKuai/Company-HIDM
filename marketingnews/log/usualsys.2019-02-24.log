@@ -1,0 +1,115 @@
+2019-02-24 22:44:32,627 [main] INFO  com.hidm.newsmanage.Application 48 - Starting Application on Hapc-T100059 with PID 21292 (D:\Software\Eclipse\MyProject\usual-sys\target\classes started by T100059 in D:\Software\Eclipse\MyProject\usual-sys)
+2019-02-24 22:44:32,642 [main] INFO  com.hidm.newsmanage.Application 593 - No active profile set, falling back to default profiles: default
+2019-02-24 22:44:32,674 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext 583 - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@4ec4f3a0: startup date [Sun Feb 24 22:44:32 CST 2019]; root of context hierarchy
+2019-02-24 22:44:32,919 [background-preinit] INFO  o.h.validator.internal.util.Version 30 - HV000001: Hibernate Validator 5.3.6.Final
+2019-02-24 22:44:33,227 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory 828 - Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Tomcat; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]]
+2019-02-24 22:44:33,618 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 327 - Bean 'customRealm' of type [com.hidm.newsmanage.security.CustomRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-02-24 22:44:33,626 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 327 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$62ceb169] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-02-24 22:44:33,658 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 327 - Bean 'shiroConfig' of type [com.hidm.newsmanage.security.ShiroConfig$$EnhancerBySpringCGLIB$$2e8a61f2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-02-24 22:44:33,998 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 327 - Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-02-24 22:44:34,294 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer 89 - Tomcat initialized with port(s): 8088 (http)
+2019-02-24 22:44:34,310 [main] INFO  o.a.catalina.core.StandardService 179 - Starting service [Tomcat]
+2019-02-24 22:44:34,310 [main] INFO  o.a.catalina.core.StandardEngine 179 - Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-02-24 22:44:34,560 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/newsmanage] 179 - Initializing Spring embedded WebApplicationContext
+2019-02-24 22:44:34,560 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 276 - Root WebApplicationContext: initialization completed in 1886 ms
+2019-02-24 22:44:34,685 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 190 - Mapping servlet: 'dispatcherServlet' to [/]
+2019-02-24 22:44:34,693 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 258 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-02-24 22:44:34,693 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 258 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-02-24 22:44:34,693 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 258 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-02-24 22:44:34,693 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 258 - Mapping filter: 'requestContextFilter' to: [/*]
+2019-02-24 22:44:34,693 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 258 - Mapping filter: 'shirFilter' to: [/*]
+2019-02-24 22:44:35,359 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 534 - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@4ec4f3a0: startup date [Sun Feb 24 22:44:32 CST 2019]; root of context hierarchy
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/add]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.add(org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/list]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.list(org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/search]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.hidm.newsmanage.controller.NewsSystemController.search(com.hidm.newsmanage.entity.NewsSystem,com.hidm.newsmanage.vo.PaginationVo,org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/managesystem]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.manageSystem(org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/logout]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.logout(javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/testEmail]}" onto public void com.hidm.newsmanage.controller.NewsSystemController.deal() throws java.io.UnsupportedEncodingException,javax.mail.MessagingException
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/login]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.login(org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/saveFile],produces=[text/html;charset=utf-8]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.saveFile(org.springframework.web.multipart.MultipartFile,com.hidm.newsmanage.entity.NewsSystem,org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/newsfile/search]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.hidm.newsmanage.controller.NewsSystemController.searchUsualFile(com.hidm.newsmanage.entity.NewsFile,com.hidm.newsmanage.vo.PaginationVo,org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/delete]}" onto public boolean com.hidm.newsmanage.controller.NewsSystemController.deleteSystem(java.lang.Long[],org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/save]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.saveSystem(org.springframework.web.multipart.MultipartFile,com.hidm.newsmanage.entity.NewsSystem,org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/doLogin]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.doLogin(java.lang.String,java.lang.String,org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/managefile]}" onto public java.lang.String com.hidm.newsmanage.controller.NewsSystemController.manageFile(org.springframework.ui.Model,javax.servlet.http.HttpSession)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-02-24 22:44:35,405 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 543 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-02-24 22:44:35,437 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 362 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-02-24 22:44:35,437 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 362 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-02-24 22:44:35,468 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 362 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-02-24 22:44:35,624 [main] INFO  o.s.w.s.v.f.FreeMarkerConfigurer 127 - ClassTemplateLoader for Spring macros added to FreeMarker configuration
+2019-02-24 22:44:35,786 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 431 - Registering beans for JMX exposure on startup
+2019-02-24 22:44:35,798 [main] INFO  o.a.coyote.http11.Http11NioProtocol 179 - Initializing ProtocolHandler ["http-nio-8088"]
+2019-02-24 22:44:35,798 [main] INFO  o.a.coyote.http11.Http11NioProtocol 179 - Starting ProtocolHandler ["http-nio-8088"]
+2019-02-24 22:44:35,814 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 179 - Using a shared selector for servlet write/read
+2019-02-24 22:44:35,845 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer 201 - Tomcat started on port(s): 8088 (http)
+2019-02-24 22:44:35,845 [main] INFO  com.hidm.newsmanage.Application 57 - Started Application in 3.815 seconds (JVM running for 4.867)
+2019-02-24 22:44:47,525 [http-nio-8088-exec-1] INFO  o.a.c.c.C.[.[.[/newsmanage] 179 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-02-24 22:44:47,538 [http-nio-8088-exec-1] INFO  o.s.web.servlet.DispatcherServlet 489 - FrameworkServlet 'dispatcherServlet': initialization started
+2019-02-24 22:44:47,540 [http-nio-8088-exec-1] INFO  o.s.web.servlet.DispatcherServlet 508 - FrameworkServlet 'dispatcherServlet': initialization completed in 2 ms
+2019-02-24 22:44:54,107 [http-nio-8088-exec-4] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] 181 - Servlet.service() for servlet [dispatcherServlet] in context with path [/newsmanage] threw exception [Circular view path [testEmail]: would dispatch back to the current handler URL [/newsmanage/testEmail] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)] with root cause
+javax.servlet.ServletException: Circular view path [testEmail]: would dispatch back to the current handler URL [/newsmanage/testEmail] again. Check your ViewResolver setup! (Hint: This may be the result of an unspecified view, due to default view name generation.)
+	at org.springframework.web.servlet.view.InternalResourceView.prepareForRendering(InternalResourceView.java:205)
+	at org.springframework.web.servlet.view.InternalResourceView.renderMergedOutputModel(InternalResourceView.java:145)
+	at org.springframework.web.servlet.view.AbstractView.render(AbstractView.java:303)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1286)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1041)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:984)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:901)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:861)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:635)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:61)
+	at org.apache.shiro.web.servlet.AdviceFilter.executeChain(AdviceFilter.java:108)
+	at org.apache.shiro.web.servlet.AdviceFilter.doFilterInternal(AdviceFilter.java:137)
+	at org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125)
+	at org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:66)
+	at org.apache.shiro.web.servlet.AbstractShiroFilter.executeChain(AbstractShiroFilter.java:449)
+	at org.apache.shiro.web.servlet.AbstractShiroFilter$1.call(AbstractShiroFilter.java:365)
+	at org.apache.shiro.subject.support.SubjectCallable.doCall(SubjectCallable.java:90)
+	at org.apache.shiro.subject.support.SubjectCallable.call(SubjectCallable.java:83)
+	at org.apache.shiro.subject.support.DelegatingSubject.execute(DelegatingSubject.java:383)
+	at org.apache.shiro.web.servlet.AbstractShiroFilter.doFilterInternal(AbstractShiroFilter.java:362)
+	at org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:108)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2019-02-24 22:53:05,744 [http-nio-8088-exec-4] INFO  c.h.n.c.NewsSystemController 174 - 登陆成功！ employeeNo:T100059

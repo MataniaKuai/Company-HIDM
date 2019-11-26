@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.newsmanage.dao.UserDao">
+   <resultMap id="BaseResultMap" type="com.hidm.newsmanage.entity.User">
+   		<result property="userName" column="name"/>
+        <result property="employeeNo" column="employeeNo"/>
+    </resultMap>
+ 	
+	<select id="checkUser" resultType="int">
+		select count(*) from user_info
+		<where>
+			  <if test="employeeNo != null and employeeNo != ''">
+				AND employeeNo=#{employeeNo}
+			  </if>
+		</where>
+	</select>
+
+	<select id="selectName" resultMap="BaseResultMap">
+		select name from user_info
+		<where>
+			  <if test="employeeNo != null and employeeNo != ''">
+				AND employeeNo=#{employeeNo}
+			  </if>
+		</where>
+	 </select>
+</mapper>

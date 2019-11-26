@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="jquery,ui,easy,easyui,web">
+	<meta name="description" content="easyui help you build your web page easily!">
+	<title>Marketing News</title>
+	<link rel="stylesheet" type="text/css" href="vendors/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="vendors/easyui/themes/icon.css">
+	<script type="text/javascript" src="vendors/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="vendors/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="vendors/easyui/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="vendors/easyui/locale/easyui-lang-zh_CN.js"></script>	
+	<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			color:#666;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		#fileName{
+/*             display:none; */
+		}
+		
+		.file-btn{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+    			left: 0;
+    			outline: none;
+    			background-color: transparent;
+    			filter:alpha(opacity=0);
+				-moz-opacity:0;
+				-khtml-opacity: 0;
+				opacity: 0;
+			}
+			
+		#file-box{
+/* 				display: inline-block; */
+				position: absolute;
+				padding: 3px 5px;
+				overflow: hidden;
+				color:black;
+				background-color: grey;
+				height:18px;
+			}
+	</style>
+	<script type="text/javascript">
+		var url;
+		function add(){
+			$('#dlg').dialog('open').dialog('setTitle','新增新闻/Add');
+			$('#file').html("");
+			$('input[name="displayFileName"]').val("");
+			$('#dg').datagrid('clearSelections');
+			$('#name').val("");
+			$('#desc').val("");
+			$('#url').val("");
+			$('#aa').text("");
+			$("#radio_url").prop("checked",true);
+			$("#radio_file").prop("checked",false);
+			$('input[name="id"]').val("");
+			$("#url").removeAttr("disabled");
+	    	$("#fileName").attr("readonly","readonly");
+	    	$("#file-box").css("background-color","grey");
+		}
+		function edit(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','编辑新闻/Edit');
+				$("#file").html('<a href="' + row.filePath + '" style="color:#0000ff">' + row.fileName + '</a>');
+				if(row.url != ""){
+					$("#radio_url").prop("checked",true);
+					$("#radio_file").prop("checked",false);
+					
+					$("#url").removeAttr("disabled");
+			    	$("#fileName").attr("readonly","readonly");
+			    	$("#file-box").css("background-color","grey");
+			    	$('input[name="displayFileName"]').val("");
+					
+				}else{
+					$("#radio_url").prop("checked",false);
+					$("#radio_file").prop("checked",true);
+					
+			   		$("#url").attr("disabled","disabled");
+			   		$("#fileName").removeAttr("readonly");
+			   		$("#file-box").css("background-color","orange");
+			   		$('#url').val("");
+			   		$('#aa').text("");
+				}
+				$('#fm').form('load',row);
+			}
+		}
+		function save(){
+			$('#fm').form('submit',{
+				url: "/newsmanage/save",
+				data : new FormData($('#fm')[0]),
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					if(result == "ok"){
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					}else if(result == "empty"){
+						$.messager.show({
+							title: '链接及文件均为空/Links and files are empty',
+							msg: '请填写链接或上传不为空的文件/Please fill in the link or upload the file which is not empty',
+							width: '350',
+							height: '150',
+							style:{
+								bottom:'100'
+							}
+						});
+					}else{
+						$.messager.show({
+							title: '错误/Error',
+							msg: '系统错误/System Error'
+						});
+					}
+				}
+			});
+		}
+		function remove(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('确认/Sure','确认删除该新闻吗?/Are you sure to delete the news?',function(r){
+					if (r){
+						var ids = new Array();
+						ids.push(row.id);
+						$.post('/newsmanage/delete',{ids: ids},function(result){
+							if (result){
+								$('#dg').datagrid('reload');
+							} else {
+								$.messager.show({
+									title: '错误/Error',
+									msg: '系统错误/System Error'
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+		
+		function doSearch(){
+			$('#dg').datagrid('load',{
+	            name: $('#keyWord').val(),
+	            desc: $('#keyWord').val()
+	        });
+		}
+		
+		function logout() {
+			self.location='/newsmanage/login';
+		}
+		
+		function maintain() {
+			window.open('/newsmanage/mailreceiver','_blank');
+		}
+		
+		
+		function formatUrl(val,row) {
+			return '<a href="' + row.filePath + '" style="color:#0000ff">' + val + '</a>';
+		}
+
+		function format(val,row) {
+			return '<a href="' + row.url + '" target="_blank" style="color:#0000ff">' + val + '</a>';
+		}
+		
+		function sendEmail(){
+			self.location='/newsmanage/testEmail';
+		}
+		
+		//设置默认的分页参数
+		if ($.fn.datagrid){
+		    $.fn.datagrid.defaults.pageSize = 20;//这里一定要用datagrid.defaults.pageSize，用pagination.defaults.pageSize一直不行
+		    $.fn.datagrid.defaults.pageList = [10, 20, 30, 40, 50];//这里一定要有，不然上面的也不起效
+		}
+	</script>
+  </head>
+  <body>
+  <center>
+	<div style="width:1200px" align="left">
+	<img src="images/logo.png" alt="" border="0"/>
+		<div style="text-align:center;margin-top: -67px">
+			<font size="7"  face="微软雅黑">Marketing News</font>
+		</div>
+	<div id="searchDiv">
+		<div style="display:inline;float:left">
+			<label>关键词/Keywrods:</label>
+			<input id="keyWord" style="line-height:17px;border:1px solid #ccc;height:25px">
+	        <a href="#" class="easyui-linkbutton"  onclick="doSearch()">搜索/Search</a>
+	        <input type="button"  style="border-style:none; background-color:transparent" value="          " onclick="sendEmail()">
+		</div>
+ 		<div style="display:inline;float:right">
+ 			<a href="javascript:void(0)" onclick="maintain()">收件人维护</a>
+	        <label><b>${username}</b></label>
+	        <a href="#" onclick="logout()" class="pull-right" 0>注销/Logout</a>
+   	    </div>
+	</div>
+	
+	<table id="dg" title="新闻列表/News List" class="easyui-datagrid" style="width:1200px;height:615px"
+			url="/newsmanage/search" toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="name" width="30"><b>名称/Title</b></th>
+				<th field="desc" width="30" align="left"><b>描述/Description</b></th>
+				<th field="url" width="15" align="left" formatter="format"><b>外部链接/URL</b></th>
+				<th field="fileName" url="filePath" width="15" formatter="formatUrl"><b>文件/File</b></th>
+				<th field="updatetime" width="10" align="center"><b>时间/Date</b></th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">新增/Add</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">编辑/Edit</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="remove()">删除/Delete</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:600px;height:480px;padding:10px 20px"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">新闻信息/Information</div>
+		<form id="fm" method="post" enctype="multipart/form-data" novalidate>
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">名称/Name:</font></label>
+				<div class="col-sm-6">
+					<input id="name" name="name" class="easyui-validatebox" required="true" style="width:485px;height:25px;">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">描述/Description:</font></label>
+				<div class="col-sm-6">
+					<textarea id="desc" name="desc" class="easyui-validatebox" cols="58" rows="10" required = "true"></textarea>
+				</div>
+			</div>
+			<label><font size="2">选择一种操作方式/select a mode of operation:</font></label><br/>
+			<label><input name="selectMode" type="radio" value="url" id="radio_url">输入链接/URL</label>
+			<label><input name="selectMode" type="radio" value="file" id="radio_file">上传文件/Upload File</label>
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">外部链接/URL:</font></label>
+				<a id = "aa" href="" target="_blank" style="font-size:15px;"></a>
+				<div class="col-sm-6">
+					<input id="url" name="url" class="easyui-validatebox" value="" style="width:485px;height:25px;">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">文件/File:</font></label>
+				<label id="file" name="file"></label>
+				<input type="text" id="displayFileName" name="displayFileName" style="border-style:none; background-color:transparent; display:none">
+				<div class="col-sm-6" id="file-box">
+						<input id="fileName" type="file" class="file-btn" name="fileName" readonly="true">
+						上传文件/Upload
+				</div>
+			</div>
+			
+			<input name="id" type="hidden">
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存/Save</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消/Cancel</a>
+	</div>
+	</div>
+  </center>
+  </body>
+</html>
+<script>
+	
+	$("input[name=selectMode]").click(function(){
+	    var s = $(this).val();
+	    if(s == 'url'){
+	    	$("#url").removeAttr("disabled");
+	    	$("#fileName").attr("readonly","readonly");
+	    	$("#file-box").css("background-color","grey");
+	    	$("#file").html('');
+	    }
+	   	if(s == 'file'){
+	   		$("#url").attr("disabled","disabled");
+	   		$("#fileName").removeAttr("readonly");
+	   		$("#file-box").css("background-color","orange");
+	   		$('#url').val("");
+	   		$('#aa').text("");
+	   	}
+	});
+
+	document.getElementById("url").addEventListener("input",function () {
+		$('#aa').attr('href',$('#url').val());
+		$('#aa').text($('#url').val());
+	});
+	
+	document.getElementById("fileName").addEventListener("change",function () {
+			var result = "";
+			$.ajax({
+			url : "/newsmanage/saveFile",
+			type : 'POST',
+			cache : false,
+			data : new FormData($('#fm')[0]),
+			processData : false,
+			contentType : false,
+			dataType : "json",
+			beforeSend : function() {
+			},
+			success : function(data) {
+				result = data;
+				if(result.msg == "上传失败"){
+					 alert(result + "/Upload failed");
+				 }else if(result.msg == "文件为空"){
+					 alert("file is empty!");
+				 }else{
+					var f = document.getElementById("fileName").files; 
+					$('input[name="displayFileName"]').val(f[0].name);
+				 	$("#file").html('<a href="' + result.msg + "_" + f[0].name + '" style="color:#0000ff">' + f[0].name + '</a>');
+			   }
+			}
+		});
+	});
+</script>

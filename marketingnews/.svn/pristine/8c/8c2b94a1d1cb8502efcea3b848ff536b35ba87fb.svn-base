@@ -1,0 +1,33 @@
+app:
+    name: fileandsys
+
+server:
+    context-path: /newsmanage
+    port: 8088
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+    datasource:
+        url: jdbc:sqlserver://10.10.16.28\\SQLEXPRESS:1433;DatabaseName=newsmanage
+        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        username: sa
+        password: 1qaz@wsx
+        hikari:
+            maxLifetime: 1765000
+            maximumPoolSize: 15
+    profiles:
+      active: '@activatedProperties@'
+
+mybatis:
+    mapperLocations: classpath:mapper/*.xml
+    type-aliases-package: com.hidm.hrs.entity
+
+file.root.path: C:/program1/tomcat-newsmanage/webapps/newsmanage/upload/

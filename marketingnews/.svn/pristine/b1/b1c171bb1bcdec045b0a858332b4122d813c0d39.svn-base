@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: newsmanage
+Implementation-Version: 1.0.0
+Built-By: T100059
+Implementation-Vendor-Id: com.hidm
+Build-Jdk: 1.8.0_161
+Implementation-URL: http://projects.spring.io/spring-boot/newsmanage/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

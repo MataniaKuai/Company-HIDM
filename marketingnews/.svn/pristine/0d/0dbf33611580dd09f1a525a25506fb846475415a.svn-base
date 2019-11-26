@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="jquery,ui,easy,easyui,web">
+	<meta name="description" content="easyui help you build your web page easily!">
+	<title>Marketing News</title>
+	<link rel="stylesheet" type="text/css" href="vendors/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="vendors/easyui/themes/icon.css">
+	<script type="text/javascript" src="vendors/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="vendors/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="vendors/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			color:#666;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		
+		input{
+			box-sizing: border-box;
+		}
+		
+		body {font-family: "Microsoft YaHei";}
+	</style>
+	<script type="text/javascript">		
+		
+		function formatUrl(val,row) {
+			if(row.url == "" || row.url == null){
+				return '<a href="' + row.filePath + '" style="color:#0000ff">' + val + '</a>';
+			}else{
+				return '<a href="' + row.url + '" target="_blank" style="color:#0000ff">' + val + '</a>';
+			}
+			
+		}
+
+		function doSearch(){
+			$('#dgFile').datagrid('load',{
+	            name: $('#keyWord').val(),
+	            desc: $('#keyWord').val()
+	        });
+		}
+		
+		function login() {
+			self.location='/newsmanage/login'; 
+		}
+		
+		function edit(){
+			var row = $('#dgFile').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','查看新闻/View');
+				$('#fm').form('load',row);
+			}
+		}
+		
+		//设置默认的分页参数
+		if ($.fn.datagrid){
+		    $.fn.datagrid.defaults.pageSize = 20;//这里一定要用datagrid.defaults.pageSize，用pagination.defaults.pageSize一直不行
+		    $.fn.datagrid.defaults.pageList = [10, 20, 30, 40, 50];//这里一定要有，不然上面的也不起效
+		}
+	</script>
+  </head>
+  <body>
+  <center>
+	<div style="width:1200px" align="left">
+    	<img src="images/logo.png" alt="" border="0"/>
+		<div style="text-align:center;margin-top: -72px">
+			<font size="7"  face="微软雅黑">Marketing News</font>
+		</div>
+		<div id="searchFileDiv">	    
+	        <label>关键词/Keywords:</label>
+	        <input id="keyWord" style="line-height:17px;border:1px solid #ccc; height:25px">
+	        <a href="javascript:void(0);" class="easyui-linkbutton" onclick="doSearch()">搜索/Search</a>
+<!-- 	        <input type="text" disabled="true" value="                                 " style="border-style:none; background-color:transparent"> -->
+	<!--         <input type="button"  disabled="disabled" style="border-style:none; background-color:transparent" value="       "> -->
+	<!--         <a href="#" onclick="login()" class="pull-right" style="margin-top:50px;margin-right:10px">管理员登录</a> -->
+		</div>
+	
+	<table id="dgFile" title="新闻列表/News List" class="easyui-datagrid" style="width:1200px;height:615px"
+			url="/newsmanage/newsfile/search" toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="name" width="30" formatter="formatUrl"><b>名称/Title</b></th>
+				<th field="desc" width="60" align="left"><b>描述/Description</b></th>
+<!-- 				<th field="fileName" url="filePath" width="40" formatter="formatUrl">文件/File</th> -->
+				<th field="updatetime" width="10" align="center"><b>时间/Date</b></th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="edit()">查看/View</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px;align:center"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">新闻信息/Information</div>
+		<form id="fm" method="post" enctype="multipart/form-data" novalidate>
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">名称/Name:</font></label>
+				<div class="col-sm-6">
+					<input name="name" class="easyui-validatebox" required="true" disabled="disabled" style="width:485px;height:25px;">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><font size="2">描述/Description:</font></label>
+				<div class="col-sm-6">
+					<textarea name="desc" class="easyui-validatebox" cols="58" rows="14" disabled></textarea>
+				</div>
+			</div>
+			
+			<input name="id" type="hidden">
+		</form>
+	</div>
+	</div>
+  </center></body>
+</html>

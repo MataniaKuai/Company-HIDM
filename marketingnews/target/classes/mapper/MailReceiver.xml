@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.newsmanage.dao.MailReceiverDao">
+    <resultMap id="BaseResultMap" type="com.hidm.newsmanage.entity.MailReceiver">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mailAddress" column="mailaddress"/>
+    </resultMap>
+    
+    <insert id="insert">
+        INSERT INTO mail_receiver(name, mailaddress)
+        VALUES(#{name}, #{mailAddress})
+    </insert>
+  
+    <update id="updateById">
+        UPDATE mail_receiver SET   
+            name=#{name}, mailaddress=#{mailAddress}
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+	select top ${page.rows} u.* from mail_receiver u
+	<where>
+	    <if test="mailReceiver != null">
+		  <if test="mailReceiver.id != null and mailReceiver.id != ''">
+			AND id = #{mailReceiver.id}
+		  </if>
+		  <if test="mailReceiver.name != null and mailReceiver.name != '' and mailReceiver.mailAddress != null and mailReceiver.mailAddress != ''">
+			AND (name like '%' + #{mailReceiver.name} + '%' OR mailaddress like '%' + #{mailReceiver.mailAddress} + '%')
+		  </if>
+		</if>
+		and u.id not in (
+		    select top ${page.rowStart} id from mail_receiver u
+		    <where>
+	         <if test="mailReceiver != null">
+				  <if test="mailReceiver.id != null and mailReceiver.id != ''">
+					AND id = #{mailReceiver.id}
+				  </if>
+				  <if test="mailReceiver.name != null and mailReceiver.name != '' and mailReceiver.mailAddress != null and mailReceiver.mailAddress != ''">
+					AND (name like '%' + #{mailReceiver.name} + '%' OR mailaddress like '%' + #{mailReceiver.mailAddress} + '%')
+		 		 </if>
+			</if>
+		    </where>
+		    order by id desc
+		)
+	</where>
+	order by u.id desc
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from mail_receiver
+	<where>
+	    <if test="mailReceiver != null">
+		  <if test="mailReceiver.id != null and mailReceiver.id != ''">
+			AND id = #{mailReceiver.id}
+		  </if>
+		  <if test="mailReceiver.name != null and mailReceiver.name != '' and mailReceiver.mailAddress != null and mailReceiver.mailAddress != ''">
+			AND (name like '%' + #{mailReceiver.name} + '%' OR mailaddress like '%' + #{mailReceiver.mailAddress} + '%')
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from mail_receiver
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="select" resultMap="BaseResultMap">
+	 	select * from mail_receiver u
+    </select>
+    
+    <select id="counter" resultType="int">
+		select count(*) from mail_receiver
+	</select>
+</mapper>

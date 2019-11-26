@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.newsmanage.dao.MailContentDao">
+    <resultMap id="BaseResultMap" type="com.hidm.newsmanage.entity.NewsSystemFile">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="desc" column="description"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="fileName" column="filename"/>
+        <result property="filePath" column="filepath"/>
+    </resultMap>
+    
+    <resultMap id="SummaryMap" type="com.hidm.newsmanage.entity.MailContent">
+        <result property="id" column="id"/>
+        <result property="updateTime" column="updatetime"/>
+        <result property="mailContent" column="mailcontent"/>
+    </resultMap>
+    <insert id="insert">
+        INSERT INTO mail_content(updatetime, mailcontent)
+        VALUES(#{updateTime}, #{mailContent})
+    </insert>
+    
+	<select id="selectWeekContent" resultMap="BaseResultMap">
+	 select * from news_system u
+	<where>
+		abs(datediff(hh,[updatetime],CONVERT(varchar(100), GETDATE(), 20))) &lt;= 168
+	</where>
+	order by u.id
+    </select>
+    
+    <select id="countWeekContent" resultType="int">
+	select count(*) from news_system
+	<where>
+		abs(datediff(hh,[updatetime],CONVERT(varchar(100), GETDATE(), 20))) &lt;= 168
+	</where>
+    </select>
+    
+    <select id="selectSummaryContent" resultMap="SummaryMap">
+	 select * from mail_content u
+	<where>
+		updatetime=#{updateTime}
+	</where>
+	order by u.id
+    </select>
+    
+    <select id="countSummaryContent" resultType="int">
+	select count(*) from mail_content
+	<where>
+		updatetime=#{updateTime}
+	</where>
+    </select>
+</mapper>

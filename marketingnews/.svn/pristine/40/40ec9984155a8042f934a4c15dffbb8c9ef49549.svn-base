@@ -1,0 +1,11 @@
+spring.datasource.url=jdbc:sqlserver://10.10.16.28\\SQLEXPRESS:1433;DatabaseName=newsmanage
+spring.datasource.username=sa
+spring.datasource.password=1qaz@wsx
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+spring.datasource.hikari.maximum-pool-size=15
+spring.datasource.hikari.max-lifetime=1765000
+
+logging.path=C:/program1/tomcat-newsmanage
+file.root.path=C:/program1/tomcat-newsmanage/webapps/newsmanage/upload/
+url.path=http://10.10.16.28:8088/newsmanage/
+debug=true
