@@ -1,0 +1,152 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="js/business/unreceive.js"></script>
+	<script type="text/javascript" src="js/business/itemHis.js"></script>
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	
+	<script type="text/javascript">
+
+	function statusFormatter(value, row, index) {
+	     if (value == 0) {
+	    	 return "未收货";
+	     }
+	
+	     if (value == 1) {
+	    	 return "已收货";
+	     }
+	}
+	
+	var grNoV;
+	$(function(){
+		grNoV = $('input[id="grNo"]').val().trim();
+		$('#importInfoTable').bootstrapTable({
+			pagination: true,
+			cache:false,
+			pageNumber:1,
+			pageSize:10,
+			pageList: [1, 10, 25, 50],
+			sidePagination: "server",
+			height:530,
+		    columns: [{
+		        checkbox: true,
+		        select: false,
+		    }, {
+		        field: 'poNo',
+		        title: 'PO NO'
+		    }, {
+		        field: 'poItem',
+		        title: 'PO Item'
+		    }, {
+		        field: 'irNo',
+		        title: 'IR NO'
+		    }, {
+		        field: 'materialNo',
+		        title: 'Material No',
+		    }, {
+		        field: 'assetNo',
+		        title: 'Asset NO'
+		    }, {
+		        field: 'goodsDesc',
+		        title: 'Goods Description'
+		    }, {
+		        field: 'qty',
+		        title: 'Qty'
+		    }, {
+		        field: 'relatedGrNo',
+		        title: 'RelatedGr No'
+		    }, {
+		        field: 'grNo',
+		        title: 'GR NO'
+		    }, {
+		    	field: 'stock',
+		    	title: '库存地点'
+		    }, {
+		    	field: 'moveType',
+		    	title: 'Move Type'
+		    }, {
+		    	field: 'status',
+		    	title: '状态',
+		        formatter: statusFormatter
+		    }, {
+    	       field: 'operate',
+    	       title: '操作',
+    	       align: 'center',
+        	   formatter: operateFormatter,
+    	       events: "operateEvents"
+   	        },{
+		       field: 'id',
+		       title: 'id',
+		       visible: false
+		    }],
+		    url : '/importexport/importItem/searchGrNo',
+		    queryParams : function (params) {
+		    	grNoV = $('input[id="grNo"]').val().trim();
+	            var temp = {   
+	                rows: params.limit,
+	                page: (params.offset / params.limit) + 1,
+	                sort: params.sort,
+	                sortOrder: params.order,
+	                grNo: grNoV
+	            };
+	            return temp;
+	        },
+	        clickToSelect: true
+		});
+		
+		$('.form_date').datetimepicker({
+			format: 'yyyy-mm-dd',
+	        language:  'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });
+
+		//item历史记录查看
+		function operateFormatter(value, row, index) {
+            return ['<button type="button" class="itemHisView btn btn-primary">查看历史</button>',
+            ].join('')
+ 	   }
+		window.operateEvents = {
+            'click .itemHisView': function (e, value, row, index) {
+				var itemId = row.id;
+					
+				getHisModel(itemId);
+			}	
+        }
+		
+	});
+	</script>
+	
+	<h4>收货管理</h4>
+	
+	<div id="listDiv">
+	<div id="searchDiv">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="input-group">
+            <span class="input-group-addon">GR No:</span>
+            <input id="grNo" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button id="search-file-btn" class="btn btn-primary" type="button" onclick="doSearchList()">搜索</button>
+          </div>
+        </div>
+	</div>
+	
+	<div class="btn-group" style="margin-top:2px;margin-bottom:2px">
+        <button id="receive-button" type="button" class="btn btn-default" onclick="unReceiveItems()">取消收货</button>
+    </div>
+	<table id="importInfoTable"></table>
+	<#include "../itemhis/itemhis_view.html">
+	<#include "../batchhis/batchhis_view.html">
+	</div>

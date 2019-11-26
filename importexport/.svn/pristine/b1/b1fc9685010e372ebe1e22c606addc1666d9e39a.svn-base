@@ -1,0 +1,232 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="js/business/receiveItem.js"></script>
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	
+	<script type="text/javascript">
+	function itemStockFormatter(value, row, index) {
+		var stockV = value;
+		if(!stockV) {
+			stockV = "";
+		}
+		
+		return "<input type='text' id='stock_" + row.id + "' name='stock' value='" + stockV + "' style='width:50px;height:25px'>";
+	}
+	
+	    function batchReceive() {
+	    	$('#batchsDiv').show();
+	    	$('#itemsDiv').hide();
+	    }
+	    
+        function noBatchReceive() {
+        	$('#batchsDiv').hide();
+        	$('#itemsDiv').show();
+	    }
+        
+		$(function(){
+			var irNoV = $('#itemIrNo').val();
+		    if (!irNoV) {
+		    	irNoV = 'empty';
+		    }
+		    
+			$('#importItemTable').bootstrapTable({
+				pagination: true,
+				cache:false,
+				pageNumber:1,
+				pageSize:100,
+				pageList: [100, 500],
+				sidePagination: "server",
+				height:530,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'poNo',
+			        title: 'PO NO'
+			    }, {
+			        field: 'poItem',
+			        title: 'PO Item'
+			    }, {
+			        field: 'materialNo',
+			        title: 'Material No',
+			    }, {
+			        field: 'assetNo',
+			        title: 'Asset NO'
+			    }, {
+			        field: 'goodsDesc',
+			        title: 'Goods Description'
+			    }, {
+			        field: 'qty',
+			        title: 'Qty'
+			    }, {
+			        field: 'batchQty',
+			        title: 'Batch Qty'
+			    }, {
+			    	field: 'stock',
+			    	title: '库存地点',
+			    	formatter: itemStockFormatter
+			    }, {
+			        field: 'grNo',
+			        title: 'GR NO'
+			    }, {
+			        field: 'moveType',
+			        title: 'Move Type',
+			    }, {
+			        field: 'status',
+			        title: '收货状态',
+			        formatter: statusFormatter
+			    }, {
+	    	       field: 'operate',
+	    	       title: '操作',
+	    	       align: 'center',
+	        	   formatter: operateItemFormatter,
+	    	       events: "operateItemEvents"
+	   	        },{
+			        field: 'isBatch',
+			        title: 'isBatch',
+			        visible: false
+	   	        },{
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }],
+			    url : '/importexport/importItem/search',
+			    queryParams : function (params) {
+                    var temp = {   
+                        rows: params.limit,
+                        page: (params.offset / params.limit) + 1,
+                        sort: params.sort,
+                        sortOrder: params.order,
+                        irNo: irNoV,
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+			itemDoSearch();
+
+			//item历史记录查看
+			function operateItemFormatter(value, row, index) {
+	            return ['<button type="button" class="itemHisView btn btn-primary">查看历史</button>',
+	            ].join('')
+	 	   }
+			window.operateItemEvents = {
+	            'click .itemHisView': function (e, value, row, index) {
+					var itemId = row.id;
+					getHisModel(itemId);
+				}	
+	        }
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+			
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	            // 获取已激活的标签页的名称
+	            var activeTab = $(e.target).text();
+	            // 获取前一个激活的标签页的名称
+	            var previousTab = $(e.relatedTarget).text();
+	            
+	            if (activeTab.trim() == '收货') {
+
+	            }
+	        });
+			
+			$.post('/importexport/alltaxprepertys', {}, function(result){
+				if (result){
+					var list = result.rows;
+					for (var i=0; i < list.length; i++)
+					{
+		    	        var item = list[i];
+		    	        var html = "<option value='" + item.code + "'>" + item.name + "</option>";
+		    	        $(".taxPreperty").append(html);
+					}
+					$('.taxPreperty').selectpicker('refresh');
+				} else {
+					alert('系统错误');
+				}
+			},'json');
+			
+			$.post('/importexport/allTradingTypes', {}, function(result){
+				if (result){
+					var list = result.rows;
+					for (var i=0; i < list.length; i++)
+					{
+		    	        var item = list[i];
+		    	        var html = "<option value='" + item.code + "'>" + item.name + "</option>";
+		    	        $(".tradingType").append(html);
+					}
+					$('.tradingType').selectpicker('refresh');
+				} else {
+					alert('系统错误');
+				}
+			},'json');
+		});
+	</script>
+	
+	<div style="margin-top:2px;margin-bottom:2px">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="input-group">
+            <span class="input-group-addon">IR No:</span>
+            <input id="itemIrNo" class="form-control" disabled>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button id="search-file-btn" class="btn btn-primary" type="button" onclick="itemDoSearch()">搜索</button>
+            <label>按批次收货</label>
+            <label><input type="radio" name="isBatch" id="batchY" value="1" onclick="batchReceive()">是</label>
+            <label><input type="radio" name="isBatch" id="batchN" value="0" onclick="noBatchReceive()">否</label>
+          </div>
+        </div>
+	</div>
+	
+	<div class="panel-group" id="accordion">
+	<div id="batchsDiv" class="panel panel-default" style="display:none">
+	    <div class="panel-heading">
+	    <a data-toggle="collapse" href="#collapseBatch">
+	        批次信息
+	    </a>
+	    </div>
+	    
+	    <div id="collapseBatch" class="panel-collapse collapse in">
+	    <div class="panel-body">
+        <#include "receive_batch_manage.html">
+        </div>
+        </div>
+    </div>
+	
+	<div id="itemsDiv" class="panel panel-default">
+	    <div class="panel-heading">
+	    <a data-toggle="collapse" href="#collapseItem">
+	        项目信息
+	    </a>
+	    </div>
+	    
+	    <div id="collapseItem" class="panel-collapse collapse in">
+	    <div class="panel-body">
+	        <div class="btn-group" style="margin-top:2px;margin-bottom:2px">
+                <button type="button" class="btn btn-default" onclick="itemView()">查看</button>
+                <button type="button" class="btn btn-default" onclick="receiveItems()">收货</button>
+            </div>
+	        <table id="importItemTable"></table>
+	
+	        <#include "receive_item_edit.html">
+	        <#include "receive_error.html">
+	    </div>
+	    </div>
+    </div>
+    </div>

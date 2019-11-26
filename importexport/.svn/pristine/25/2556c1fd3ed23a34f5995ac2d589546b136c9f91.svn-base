@@ -1,0 +1,636 @@
+package com.hidm.importexport.service.impl;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import com.hidm.importexport.constant.ImportInfoConstant;
+import com.hidm.importexport.constant.ReceiveConstant;
+import com.hidm.importexport.constant.SapConstant;
+import com.hidm.importexport.dao.ImportInfoDao;
+import com.hidm.importexport.dao.ImportItemDao;
+import com.hidm.importexport.dao.ReleaseHisDao;
+import com.hidm.importexport.entity.ImportBatch;
+import com.hidm.importexport.entity.ImportBatchHis;
+import com.hidm.importexport.entity.ImportInfo;
+import com.hidm.importexport.entity.ImportItem;
+import com.hidm.importexport.entity.ImportItemHis;
+import com.hidm.importexport.entity.ReleaseHis;
+import com.hidm.importexport.entity.User;
+import com.hidm.importexport.service.ImportBatchHisService;
+import com.hidm.importexport.service.ImportBatchService;
+import com.hidm.importexport.service.ImportInfoService;
+import com.hidm.importexport.service.ImportItemHisService;
+import com.hidm.importexport.service.ImportItemService;
+import com.hidm.importexport.service.UserService;
+import com.hidm.importexport.util.SAPConn;
+import com.hidm.importexport.vo.ImportBatchSearchVo;
+import com.hidm.importexport.vo.ImportBatchVo;
+import com.hidm.importexport.vo.ImportInfoSearchVo;
+import com.hidm.importexport.vo.ImportInfoVo;
+import com.hidm.importexport.vo.ImportItemSearchVo;
+import com.hidm.importexport.vo.ImportItemVo;
+import com.hidm.importexport.vo.ImportReportVo;
+import com.hidm.importexport.vo.PortalUserVo;
+import com.hidm.importexport.vo.ReceiveVo;
+import com.sap.conn.jco.JCoDestination;
+import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.JCoParameterList;
+import com.sap.conn.jco.JCoTable;
+
+@Service(value = "importInfoService")
+public class ImportInfoServiceImpl implements ImportInfoService {
+    private static Logger log = Logger.getLogger(ImportInfoServiceImpl.class);
+    
+    @Autowired
+    private ImportInfoDao importInfoDao;
+    
+    @Autowired
+    private ImportItemDao importItemDao;
+    
+    @Autowired
+    private ImportItemHisService itemHisService;
+    
+    @Autowired
+    private ImportBatchHisService batchHisService;
+    
+    @Autowired
+    private ImportBatchService importBatchService;
+    
+    @Autowired
+    private UserService portalUserService;
+    
+    @Autowired
+    private ImportItemService importItemService;
+    
+    @Autowired
+    private ImportInfoService importInfoService;
+    
+    @Autowired
+    private SAPConn sapConService;
+    
+    @Autowired
+    private ReleaseHisDao releaseHisDao;
+    
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public int insert(ImportInfo importInfo) {
+        return importInfoDao.insert(importInfo);
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public void updateById(ImportInfo importInfo) {
+        importInfo.setUpdateTime(new Date());
+        importInfoDao.updateById(importInfo);
+    }
+    
+    public int count(ImportInfoSearchVo importInfo) {
+        return importInfoDao.count(importInfo);
+    }
+    
+    public List<ImportInfoVo> selectList(ImportInfoSearchVo importInfo) {
+        return importInfoDao.selectList(importInfo);
+    }
+    
+    public int reportCount(ImportItemSearchVo vo) {
+        return importInfoDao.reportCount(vo);
+    }
+    
+    public List<ImportReportVo> selectReportList(ImportItemSearchVo vo) {
+        return importInfoDao.selectReportList(vo);
+    }
+    
+    public List<ImportReportVo> selectExport(ImportItemSearchVo importInfo) {
+        return importInfoDao.selectExport(importInfo);
+    }
+
+    public ImportInfoVo selectByIrNo(String irNo) {
+        return importInfoDao.selectByIrNo(irNo);
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public int deleteByIds(Long[] ids) {
+        if (null != ids && ids.length > 0) {
+            int itemCount = importItemDao.countByImportIds(ids);
+            if (itemCount > 0) {
+                return -1;
+            }
+            int batchCount = importBatchService.countByImportIds(ids);
+            if (batchCount > 0) {
+                return -2;
+            }
+            importInfoDao.deleteByIds(ids);
+        }
+        return 0;
+    }
+    
+    public ReceiveVo receive(List<Long>  itemIds, Long importId, Integer isBatch, String[] stocks) {
+        ReceiveVo rvo = new ReceiveVo();
+        rvo.setStatus(ReceiveConstant.RECEIVE_OTHER_ERROR);
+        if (null != itemIds && itemIds.size() > 0 ) {
+            boolean success = false;
+            JCoFunction function = null;
+            JCoDestination destination = sapConService.connect();
+            JCoTable table = null;
+            String emp = null;
+            String userName = null;
+            try {
+                Subject subject = SecurityUtils.getSubject();
+                Object principal = subject.getPrincipal();
+                if (principal != null) {
+                    User user = (User) principal;
+                    PortalUserVo userInfo = portalUserService.getUserInfoByEmployeeNo(user.getUserName());
+                    emp = user.getUserName();
+                    userName = userInfo.getUsername();
+                }
+            
+                boolean hasData = false;
+                function = destination.getRepository().getFunction("ZMM_IAETOSAP_005");
+                JCoParameterList input = function.getTableParameterList();
+                JCoTable t = input.getTable("T_DATA");
+                
+                Set<Long> itemIdSet = new HashSet<Long>();
+                for (int i = 0; i < itemIds.size(); i++) {
+                    if (itemIdSet.contains(itemIds.get(i))) {
+                        continue;
+                    }
+                    itemIdSet.add(itemIds.get(i));
+                    
+                    ImportItemSearchVo itemSearch = new ImportItemSearchVo();
+                    ImportItem imporItem = new ImportItem();
+                    imporItem.setId(itemIds.get(i));
+                    imporItem.setImportId(importId);
+                    itemSearch.setImportItem(imporItem);
+                    List<ImportItemVo> importItems = importItemDao.selectList(itemSearch);
+                    ImportItemVo ItemVo = importItems.get(0);
+                    
+                    if (importItems.size() == 1) {
+                        String stock = stocks.length > 0 ? stocks[i] : "";
+                        if (isBatch == 1) {
+                            List<ImportBatchVo> importBatchs = importBatchService.getBatchList(importId, ItemVo.getPoNo(),
+                                    ItemVo.getPoItem(), ItemVo.getMaterialNo());
+                            
+                            if (null != importBatchs) {
+                                for (ImportBatchVo importBatch : importBatchs) {
+                                    hasData = true;
+                                    t.appendRow();
+                                    t.setValue("BKTXT", importBatch.getIrNo());
+                                    t.setValue("EBELN", importBatch.getPoNo());
+                                    t.setValue("EBELP", importBatch.getPoItem());
+                                    t.setValue("MATNR", importBatch.getMaterialNo());
+                                    t.setValue("ATWRT", importBatch.getBatchNo());
+                                    t.setValue("ERFMG", importBatch.getQty());
+                                    t.setValue("MEINS", importBatch.getUnit());
+                                    t.setValue("HSDAT", importBatch.getProduceTime());
+                                    t.setValue("WERKS", importBatch.getFactory());
+                                    t.setValue("LIFNR", ItemVo.getVendor());
+                                    t.setValue("LGORT", stock);
+                                    t.setValue("ANLN1", ItemVo.getAssetNo());
+                                    t.setValue("BKTXT", ItemVo.getIrNo());
+                                    t.setValue("ZDENO", ItemVo.getDeclarationNo());
+                                    
+                                    t.setValue("BLDAT", "");
+                                    t.setValue("BUDAT", "");
+                                    t.setValue("NAME1", "");
+                                    t.setValue("MAKTX", "");
+                                    t.setValue("CHARG", "");
+                                    t.setValue("BWART", "");
+                                    t.setValue("SAKTO", "");
+                                    
+                                    //向SAP传入操作人工号和姓名
+                                    t.setValue("USNAM", emp);
+                                    t.setValue("NAME_TEXT", userName);
+                                }
+                            }
+                        } else {
+                            hasData = true;
+                            t.appendRow();
+                            t.setValue("BKTXT", ItemVo.getIrNo());
+                            t.setValue("EBELN", ItemVo.getPoNo());
+                            t.setValue("EBELP", ItemVo.getPoItem());
+                            t.setValue("MATNR", ItemVo.getMaterialNo());
+                            t.setValue("ERFMG", ItemVo.getQty());
+                            t.setValue("MEINS", ItemVo.getUnit());
+                            t.setValue("LGORT", stock);
+                            t.setValue("ANLN1", ItemVo.getAssetNo());
+                            t.setValue("BKTXT", ItemVo.getIrNo());
+                            t.setValue("ZDENO", ItemVo.getDeclarationNo());
+                            
+                            t.setValue("ATWRT", "");
+                            t.setValue("HSDAT", "");
+                            t.setValue("LIFNR", "");
+                            
+                            t.setValue("BLDAT", "");
+                            t.setValue("BUDAT", "");
+                            t.setValue("WERKS", "");
+                            t.setValue("NAME1", "");
+                            t.setValue("MAKTX", "");
+                            t.setValue("CHARG", "");
+                            t.setValue("BWART", "");
+                            t.setValue("SAKTO", "");
+                            
+                            //向SAP传入操作人工号和姓名
+                            t.setValue("USNAM", emp);
+                            t.setValue("NAME_TEXT", userName);
+                        }
+                    } else {
+                        log.error("Fail to receive.importId不唯一:" + importId + "itemId:" + itemIds.get(i));
+                    }
+                }
+                
+                if (hasData) {
+                    log.info("begin to call SAP to receive. " + t.toXML());
+                    function.execute(destination);
+                    table = function.getTableParameterList().getTable("T_MESSAGE");
+                    log.info("finish to call SAP to receive. T_MESSAGE: " + table.toXML());
+                    table.firstRow();
+                    String sapError = "";
+                    for (int i = 0; i < table.getNumRows(); i++, table.nextRow()) {
+                        String ok = table.getString("ZIS_OK");
+                        if (SapConstant.ZIS_OK_S.equals(ok)) {
+                            success = true;
+                            rvo.setStatus(ReceiveConstant.RECEIVE_OK);
+                        } else {
+                            String message = table.getString("MSG");
+                            sapError = sapError + "[" + message + "] ";
+                            log.error("Fail to receive. ok:" + ok + ", message:" + message);
+                        }
+                    }
+                    
+                    if (sapError.length() > 0) {
+                        rvo.setStatus(ReceiveConstant.RECEIVE_SAP_ERROR);
+                        rvo.setSapError(sapError);
+                    }
+                        
+                    if (success) {
+                        List<ImportItem> items = new ArrayList<ImportItem>();
+                        
+                        //从SAP获取每条batch记录
+                        table = function.getTableParameterList().getTable("T_MSEG");
+                        log.info("Success to call SAP to receive. " + table.toXML());
+                        table.firstRow();
+                        HashMap<String, Long> poItemIdMap = new HashMap<String, Long>();
+                        HashMap<Long, List<ImportBatchVo>> map = new HashMap<Long, List<ImportBatchVo>>();
+                        for (int i = 0; i < table.getNumRows(); i++, table.nextRow()) {
+                            String grNo = table.getString("MBLNR");
+                            grNo = grNo != null ? grNo.trim() : grNo;
+                            int grYear = table.getInt("MJAHR");
+                            int grItem = table.getInt("ZEILE");
+                            String poNo = table.getString("EBELN");
+                            poNo = poNo != null ? poNo.trim() : poNo;
+                            int poItem = table.getInt("EBELP");
+                            
+                            String sapBatchNo = table.getString("CHARG");
+                            String moveType = table.getString("BWART");
+                            String batchNo = table.getString("ATWRT");
+                            if (!StringUtils.isEmpty(poNo) && poItem > 0) {
+                                String poNoItem = poNo + poItem;
+                                if (!poItemIdMap.containsKey(poNoItem)) {    //根据SAP返回的PoNo、PoItem、importId确定一条item记录
+                                    ImportItem item = new ImportItem();
+                                    item.setImportId(importId);
+                                    item.setPoNo(poNo);
+                                    item.setPoItem(String.valueOf(poItem));
+                                    ImportItemSearchVo itemSearchVo = new ImportItemSearchVo();
+                                    itemSearchVo.setImportItem(item);
+                                    List<ImportItemVo> itemList = importItemDao.selectList(itemSearchVo);
+                                    item.setId(itemList.get(0).getId());
+                                    item.setMoveType(moveType);
+                                    item.setGrNo(grNo);
+                                    item.setGrItem(grItem);
+                                    item.setGrYear(String.valueOf(grYear));
+                                    item.setRelatedGrNo("");
+                                    if (stocks!= null && stocks.length > 0) {
+                                        int index = itemIds.indexOf(item.getId());
+                                        item.setStock(stocks[index]);
+                                    }
+                                    item.setStatus(ReceiveConstant.STATUS_RECEIVED);
+                                    items.add(item);
+                                    poItemIdMap.put(poNoItem, item.getId());
+                                }
+                                
+                                Long itemId = poItemIdMap.get(poNoItem);
+                                if (isBatch == 1) {//将sap返回的数据设置到对应的batch记录中
+                                    ImportBatch importBatch = new ImportBatch();
+                                    importBatch.setImportId(importId);
+                                    importBatch.setPoNo(poNo);
+                                    importBatch.setPoItem(String.valueOf(poItem));
+                                    importBatch.setBatchNo(batchNo);
+                                    ImportBatchSearchVo batchSearchVo = new ImportBatchSearchVo();
+                                    batchSearchVo.setImportBatch(importBatch);
+                                    List<ImportBatchVo> batchList = importBatchService.selectList(batchSearchVo);
+                                    if (batchList.size()== 1) {
+                                        ImportBatchVo importBatchVo = batchList.get(0); 
+                                        importBatchVo.setSapBatchNo(sapBatchNo);
+                                        //以itemid为key，item对应的batchlist为value存放进map，更新数据的时候能够方便获取itemHis的id
+                                        if (map.containsKey(itemId)) {
+                                            map.get(itemId).add(importBatchVo);
+                                        } else {
+                                            List<ImportBatchVo> imBatchList = new ArrayList<ImportBatchVo>();
+                                            imBatchList.add(importBatchVo);
+                                            map.put(itemId, imBatchList);
+                                        }
+                                    } else {
+                                        //根据importId PoNo PoItem BatchNo查到多条batch记录
+                                        log.error("fail update importBatch, BatchNo:" + batchNo + "PoNo" + 
+                                                poNo + "importId" + importId + "PoItem" + poItem);
+                                    }
+                                }
+                            } else {
+                                log.error("Failed to receive, invalid grInfo. grNo:" + grNo + ", grYear:" + grYear 
+                                    + ", grItem:" + grItem + ", poNo:" + poNo + ", poItem:" + poItem);
+                                items.clear();
+                                break;
+                            }
+                            
+                        }
+                        updateGrInfo(items, importId, map);
+                    } else {
+                        log.error("Fail to receive.");
+                    }
+                } else {
+                    log.error("Fail to receive, no data. importId:" + importId + ", itemIds:" + Arrays.asList(itemIds));
+                }
+            } catch (Exception e) {
+                log.error("Failed to receive. success: " + success, e);
+            }
+        }
+        return rvo;
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public void updateGrInfo(List<ImportItem> items, Long importId, HashMap<Long, List<ImportBatchVo>> map) {
+        if (items.size() > 0) {
+            for (ImportItem item : items) {
+                importItemDao.updateById(item);
+                
+                ImportItemHis itemHis = new ImportItemHis();
+                Subject subject = SecurityUtils.getSubject();
+                Object principal = subject.getPrincipal();
+                if (principal != null) {
+                    User user = (User) principal;
+                    itemHis.setAddUser(user.getUserName());
+                }
+                itemHis.setGrNo(item.getGrNo());
+                itemHis.setGrYear(item.getGrYear());
+                itemHis.setImportItemId(item.getId());
+                itemHis.setMoveType(item.getMoveType());
+                itemHis.setStatus(ReceiveConstant.STATUS_RECEIVED);
+                itemHisService.insert(itemHis);
+                
+                if (map.size() > 0) {
+                    List<ImportBatchVo> list = map.get(item.getId());
+                    for (ImportBatchVo batch : list) {
+                        importBatchService.updateById(batch);
+                        
+                        ImportBatchHis batchHis = new ImportBatchHis();
+                        batchHis.setItemHisId(itemHis.getId());
+                        batchHis.setBatchNo(batch.getBatchNo());
+                        batchHis.setPoNo(batch.getPoNo());
+                        batchHis.setPoItem(batch.getPoItem());
+                        batchHis.setSapBatchNo(batch.getSapBatchNo());
+                        batchHis.setUnit(batch.getUnit());
+                        batchHis.setQty(batch.getQty());
+                        batchHis.setProduceTime(batch.getProduceTime());
+                        if (principal != null) {
+                            User user = (User) principal;
+                            batchHis.setAddUser(user.getUserName());
+                        }
+                        batchHisService.insert(batchHis);
+                    }
+                }
+            }
+        }
+        
+        ImportItem importItem = new ImportItem();
+        importItem.setImportId(importId);
+        ImportItemSearchVo vo = new ImportItemSearchVo();
+        vo.setImportItem(importItem);
+        int count = importItemDao.countUnReceived(vo);
+        ImportInfo importInfo = new ImportInfo();
+        importInfo.setId(importId);
+        if (count == 0) {
+            importInfo.setStatus(ImportInfoConstant.STATUSS_COMPLETE_RECEIVED);
+        } else {
+            importInfo.setStatus(ImportInfoConstant.STATUS_PARTLY_RECEIVED);
+        }
+        importInfoDao.updateById(importInfo);
+    }
+    
+    /**
+     * 调用sap接口取消收货
+     */
+    @Override
+    public String unReceive(List<ImportItemVo> itemList) {
+        String errorMessage = "";
+        
+        JCoFunction function = null;
+        JCoDestination destination = sapConService.connect();
+        JCoTable table = null;
+        String emp = null;
+        String userName = null;
+        try {
+            function = destination.getRepository().getFunction("ZMM_IAETOSAP_006");
+            JCoParameterList input = function.getImportParameterList();
+            JCoParameterList tableInput = function.getTableParameterList();    
+            JCoTable t = tableInput.getTable("T_DATA");
+            Subject subject = SecurityUtils.getSubject();
+            Object principal = subject.getPrincipal();
+            if (principal != null) {
+                User user = (User) principal;
+                PortalUserVo userInfo = portalUserService.getUserInfoByEmployeeNo(user.getUserName());
+                emp = user.getUserName();
+                userName = userInfo.getUsername();
+            }
+            
+            for (ImportItemVo item : itemList) {
+                t.appendRow();
+                t.setValue("EBELP", item.getPoItem());
+            }
+            String grYearIn = itemList.get(0).getGrYear();
+            String grNoIn = itemList.get(0).getGrNo();
+            input.setValue("LV_EBELN", itemList.get(0).getPoNo());
+            input.setValue("LV_MBLNR", grNoIn);
+            input.setValue("LV_MJAHR", grYearIn);
+            //将工号和名字传入sap
+            input.setValue("LV_USNAM", emp);
+            input.setValue("LV_NAME_TEXT", userName);
+            log.info("Begin to call sap to unreive.input: " + input.toXML());
+            log.info("Begin to call sap to unreive.tableInput: " + tableInput.toXML());
+            
+            function.execute(destination);
+            
+            boolean success = false;
+            table = function.getTableParameterList().getTable("T_MESSAGE");
+            table.firstRow();
+            String message = "";
+            
+            String ok = table.getString("ZIS_OK");
+            if ("S".equals(ok)) {
+                success = true;
+            } else {
+                message = message + table.getString("MSG") + ";";
+                log.error("Failed to unreceive. ok:" + ok + ", message:" + message);
+            }
+            
+            if (success) {
+                table = function.getTableParameterList().getTable("T_MSEG");
+                log.info("Success to call sap to unreive. " + table.toXML());
+                
+                table.firstRow();
+                String grNo = table.getString("MBLNR");//物料凭证号
+                grNo = grNo != null ? grNo.trim() : grNo;
+                int grYear = table.getInt("MJAHR");//物料凭证年份
+                int grItem = table.getInt("ZEILE");//凭证项目
+                String poNo = table.getString("EBELN");//采购单号
+                int poItem = table.getInt("EBELP");//采购凭证项目编号
+                String moveType = table.getString("BWART");
+                
+                updateUnreceiveInfo(grYear, grNo, moveType, itemList);
+            } else {
+                errorMessage = message;
+            }
+        } catch (Exception e) {
+            log.error("Failed to getDecription.", e);
+        }
+        
+        return errorMessage;
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public String updateUnreceiveInfo(int grYear, String grNo, String moveType, List<ImportItemVo> itemList) {
+        String errorMessage = "";
+        if (!StringUtils.isEmpty(grNo)) {
+            for (ImportItemVo item :itemList) {
+                //更新item历史记录
+                ImportItemHis itemHis = new ImportItemHis();
+                Subject subject = SecurityUtils.getSubject();
+                Object principal = subject.getPrincipal();
+                if (principal != null) {
+                    User user = (User) principal;
+                    itemHis.setAddUser(user.getUserName());
+                }
+                itemHis.setRelatedGrNo(item.getGrNo());
+                itemHis.setGrNo(grNo);
+                itemHis.setGrYear(String.valueOf(grYear));
+                itemHis.setRelatedGrYear(item.getGrYear());
+                itemHis.setImportItemId(item.getId());
+                itemHis.setMoveType(moveType);
+                itemHis.setRelatedMoveType(item.getMoveType());
+                itemHis.setStatus(ReceiveConstant.STATUS_UNRECEIVED);
+                itemHisService.insert(itemHis);
+                
+                //更新item的grno和movetype
+                ImportItem importItem = new ImportItem();
+                importItem.setId(item.getId());
+                importItem.setStatus(ReceiveConstant.STATUS_UNRECEIVED);
+                importItem.setGrNo(grNo);
+                importItem.setGrYear(String.valueOf(grYear));
+                importItem.setMoveType(moveType);
+                importItem.setRelatedGrYear(item.getGrYear());
+                importItem.setRelatedGrNo(item.getGrNo());
+                importItemService.updateById(importItem);
+                
+                //删除batch关联的数据信息
+                List<ImportBatchVo> batchList = importBatchService.getBatchList(item.getImportId(), item.getPoNo(), item.getPoItem(), item.getMaterialNo());
+                Long[] batchIds = new Long[batchList.size()];
+                for (int i = 0; i < batchList.size(); i++) {
+                    batchIds[i] = batchList.get(i).getId();
+                }
+                importBatchService.deleteByIds(batchIds);
+            }
+            
+            //判断importinfo更新状态为部分收货或者release
+            ImportInfo importInfo = new ImportInfo();
+            importInfo.setId(itemList.get(0).getImportId());
+            ImportItemSearchVo vo = new ImportItemSearchVo();
+            ImportItem importItem = new ImportItem();
+            importItem.setImportId(itemList.get(0).getImportId());
+            vo.setImportItem(importItem);
+            int receiveCount = importItemService.countReceived(vo);
+            if (receiveCount > 0) {
+                importInfo.setStatus(ImportInfoConstant.STATUS_PARTLY_RECEIVED);
+            } else {
+                importInfo.setStatus(ImportInfoConstant.STATUS_RELEASED);
+            }
+            
+            importInfoService.updateById(importInfo);
+            
+        } else {
+            errorMessage = "No GR NO.s";
+        }
+        return errorMessage;
+    }
+
+    @Override
+    public void insertImports(List<ImportInfo> imports) {
+        if (!CollectionUtils.isEmpty(imports)) {
+            importInfoDao.insertImports(imports);
+        }
+    }
+
+    @Override
+    public List<ImportInfoVo> selectAll() {
+        return importInfoDao.selectAll();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public void releaseUpdate(ImportInfo importInfo, String empNo) {
+        updateById(importInfo);
+        ReleaseHis releaseHis = new ReleaseHis();
+        releaseHis.setAddUser(empNo);
+        releaseHis.setImportId(String.valueOf(importInfo.getId()));
+        releaseHis.setIrNo(importInfo.getIrNo());
+        releaseHis.setAction(ImportInfoConstant.ACTION_RELEASE);
+        releaseHis.setAddUser(empNo);
+        releaseHisDao.insert(releaseHis);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public void unreleaseUpdate(ImportInfo importInfo, String empNo) {
+        updateById(importInfo);
+        ReleaseHis releaseHis = new ReleaseHis();
+        releaseHis.setAddUser(empNo);
+        releaseHis.setImportId(String.valueOf(importInfo.getId()));
+        releaseHis.setIrNo(importInfo.getIrNo());
+        releaseHis.setAction(ImportInfoConstant.ACTION_UNRELEASE);
+        releaseHis.setAddUser(empNo);
+        releaseHisDao.insert(releaseHis);
+    }
+
+    @Override
+    public List<ImportInfoVo> selectImportInfoByIds(Long[] ids) {
+        return importInfoDao.selectImportInfoByIds(ids);
+    }
+
+	@Override
+	public String checkVendor(ImportInfo importInfo) {
+		List<ImportItem> list = importItemDao.checkVendor(importInfo);
+		String msg = null;
+		if (list.size() > 1) {
+			for (int i=1; i<list.size(); i++) {
+				if (!list.get(0).getVendor().equals(list.get(i).getVendor())) {
+					ImportItem importItem = list.get(i);
+					msg = "当前item的供应商与其他item不一致。具体信息为： poNo:" + importItem.getPoNo() + "  poItem:" + importItem.getPoItem() + "  materialNo:" + importItem.getMaterialNo() + "  assetNo:" + importItem.getAssetNo();
+					break;
+				}
+			}
+		}
+		return msg;
+	}
+}

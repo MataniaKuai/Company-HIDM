@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.InOutDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.InOutVo">
+        <id property="id" column="id" />
+        <result property="materialNo" column="material_no" />
+        <result property="assetNo" column="asset_no" />
+        <result property="goodsCode" column="goods_code" />
+        <result property="goodsDesc" column="goods_desc" />
+        <result property="chineseName" column="chinese_name" />
+        <result property="controlStatus" column="control_status" />
+        <result property="relieveMode" column="relieve_mode" />
+        <result property="outTime" column="out_time" />
+        <result property="outReason" column="out_reason" />
+        <result property="reexportReason" column="reexport_reason" />
+        <result property="reexportNo" column="reexport_no" />
+        <result property="outReleaseNo" column="out_release_no" />
+        <result property="isReturn" column="is_return" />
+        <result property="returnTime" column="return_time" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+        <result property="goodsCodeName" column="goodsCodeName" />
+        <result property="controlStatusName" column="controlStatusName" />
+        <result property="relieveModeName" column="relieveModeName" />
+        <result property="outReasonName" column="outReasonName" />
+        <result property="reexportReasonName" column="reexportReasonName" />
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_INOUT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_inout(
+        <trim suffixOverrides=",">
+        id,
+        <if test="assetNo != null">
+            asset_no,
+        </if>
+        <if test="materialNo != null">
+            material_no,
+        </if>
+        <if test="goodsCode != null">
+            goods_code,
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc,
+        </if>
+        <if test="chineseName != null">
+            chinese_name,
+        </if>
+        <if test="controlStatus != null">
+            control_status,
+        </if>
+        <if test="relieveMode != null">
+            relieve_mode,
+        </if>
+        <if test="outTime != null">
+            out_time,
+        </if>
+        <if test="outReason != null">
+            out_reason,
+        </if>
+        <if test="reexportReason != null">
+            reexport_reason,
+        </if>
+        <if test="reexportNo != null">
+            reexport_no,
+        </if>
+        <if test="outReleaseNo != null">
+            out_release_no,
+        </if>
+        <if test="isReturn != null">
+            is_return,
+        </if>
+        <if test="returnTime != null">
+            return_time,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="assetNo != null">
+            #{assetNo},
+        </if>
+        <if test="materialNo != null">
+            #{materialNo},
+        </if>
+        <if test="goodsCode != null">
+            #{goodsCode},
+        </if>
+        <if test="goodsDesc != null">
+            #{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            #{chineseName},
+        </if>
+        <if test="controlStatus != null">
+            #{controlStatus},
+        </if>
+        <if test="relieveMode != null">
+            #{relieveMode},
+        </if>
+        <if test="outTime != null">
+            #{outTime},
+        </if>
+        <if test="outReason != null">
+            #{outReason},
+        </if>
+        <if test="reexportReason != null">
+            #{reexportReason},
+        </if>
+        <if test="reexportNo != null">
+            #{reexportNo},
+        </if>
+        <if test="outReleaseNo != null">
+            #{outReleaseNo},
+        </if>
+        <if test="isReturn != null">
+            #{isReturn},
+        </if>
+        <if test="returnTime != null">
+            #{returnTime},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        </trim>
+        )
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_inout
+        <set>
+        <if test="materialNo != null">
+            material_no=#{materialNo},
+        </if>
+        <if test="assetNo != null">
+            asset_no=#{assetNo},
+        </if>
+        <if test="goodsCode != null">
+            goods_code=#{goodsCode},
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc=#{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            chinese_name=#{chineseName},
+        </if>
+        <if test="controlStatus != null">
+            control_status=#{controlStatus},
+        </if>
+        <if test="relieveMode != null">
+            relieve_mode=#{relieveMode},
+        </if>
+        <if test="outTime != null">
+            out_time=#{outTime},
+        </if>
+        <if test="outReason != null">
+            out_reason=#{outReason},
+        </if>
+        <if test="reexportReason != null">
+            reexport_reason=#{reexportReason},
+        </if>
+        <if test="reexportNo != null">
+            reexport_no=#{reexportNo},
+        </if>
+        <if test="outReleaseNo != null">
+            out_release_no=#{outReleaseNo},
+        </if>
+        <if test="isReturn != null">
+            is_return=#{isReturn},
+        </if>
+        <if test="returnTime != null">
+            return_time=#{returnTime},
+        </if>
+        <if test="updateUser != null">
+            update_user=#{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME=#{updateTime},
+        </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+    select * from
+    (
+	select m.*, ROWNUM RN from t_inout m
+	<where>
+	    <if test="inout != null">
+		  <if test="inout.id != null and inout.id != 0">
+			AND m.id = #{inout.id}
+		  </if>
+		  <if test="inout.materialNo != null and inout.materialNo != ''">
+			AND m.material_no = #{inout.materialNo}
+		  </if>
+		  <if test="inout.assetNo != null and inout.assetNo != ''">
+			AND m.asset_no = #{inout.assetNo}
+		  </if>
+		  <if test="inout.goodsCode != null and inout.goodsCode != ''">
+			AND m.goods_code = #{inout.goodsCode}
+		  </if>
+		  <if test="inout.outReason != null and inout.outReason != ''">
+			AND m.out_reason = #{inout.outReason}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.update_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.update_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		<if test="page != null">
+	    AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+	</where>
+	order by m.id
+	)
+	
+	<if test="page != null">
+	where RN &gt; #{page.rowStart}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_inout m
+	<where>
+	    <if test="inout != null">
+		  <if test="inout.id != null and inout.id != 0">
+			AND m.id = #{inout.id}
+		  </if>
+		  <if test="inout.materialNo != null and inout.materialNo != ''">
+			AND m.material_no = #{inout.materialNo}
+		  </if>
+		  <if test="inout.assetNo != null and inout.assetNo != ''">
+			AND m.asset_no = #{inout.assetNo}
+		  </if>
+		  <if test="inout.goodsCode != null and inout.goodsCode != ''">
+			AND m.goods_code = #{inout.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.update_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.update_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="selectExport" resultMap="BaseResultMap">
+	select i.*, g.name as goodsCodeName, c.name as controlStatusName, r.name as relieveModeName , o.name as outReasonName,
+	    rr.name as reexportReasonName
+	from t_inout i
+	left join T_goods_code g on i.goods_code = g.code
+	left join t_control_status c on i.control_status = c.code
+	left join t_relieve_mode r on i.relieve_mode = r.code
+	left join t_out_reason o on i.out_reason = o.code
+	left join t_reexport_reason rr on i.reexport_reason = rr.code
+	<where>
+	    <if test="inout != null">
+		  <if test="inout.id != null and inout.id != 0">
+			AND i.id = #{inout.id}
+		  </if>
+		  <if test="inout.materialNo != null and inout.materialNo != ''">
+			AND i.material_no = #{inout.materialNo}
+		  </if>
+		  <if test="inout.assetNo != null and inout.assetNo != ''">
+			AND i.asset_no = #{inout.assetNo}
+		  </if>
+		  <if test="inout.goodsCode != null and inout.goodsCode != ''">
+			AND i.goods_code = #{inout.goodsCode}
+		  </if>
+		  <if test="inout.outReason != null and inout.outReason != ''">
+			AND i.out_reason = #{inout.outReason}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.update_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.update_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+	order by i.id
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_inout
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

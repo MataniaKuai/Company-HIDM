@@ -1,0 +1,118 @@
+package com.hidm.importexport.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hidm.importexport.dao.BaseDataDao;
+import com.hidm.importexport.dao.GoodsCodeDao;
+import com.hidm.importexport.entity.BaseData;
+import com.hidm.importexport.entity.GoodsCode;
+import com.hidm.importexport.service.BaseDataService;
+
+@Service(value = "baseDataService")
+public class BaseDataServiceImpl implements BaseDataService {
+    @Autowired
+    private GoodsCodeDao goodsCodeDao;
+    
+    @Autowired
+    private BaseDataDao baseDataDao;
+    
+    public List<GoodsCode> allGoodsCodes() {
+        return goodsCodeDao.allGoodsCodes();
+    }
+    
+    public List<BaseData> allCustomOffices() {
+        return baseDataDao.allCustomOffices();
+    }
+    
+    public List<BaseData> allCurrencys() {
+        return baseDataDao.allCurrencys();
+    }
+    
+    public List<BaseData> allTaxPrepertys() {
+        return baseDataDao.allTaxPrepertys();
+    }
+    
+    public List<BaseData> allBondCla1s() {
+        return baseDataDao.allBondCla1s();
+    }
+    
+    public List<BaseData> allBondCla2s() {
+        return baseDataDao.allBondCla2s();
+    }
+    
+    public List<BaseData> allFreeNos() {
+        return baseDataDao.allFreeNos();
+    }
+    
+    public List<BaseData> allControlStatus() {
+        return baseDataDao.allControlStatus();
+    }
+    
+    public List<BaseData> allRelieveModes() {
+        return baseDataDao.allRelieveModes();
+    }
+    
+    public List<BaseData> allOutReasons() {
+        return baseDataDao.allOutReasons();
+    }
+    
+    public List<BaseData> allReexportReasons() {
+        return baseDataDao.allReexportReasons();
+    }
+    
+    public List<BaseData> allOrgs() {
+        return baseDataDao.allOrgs();
+    }
+    
+    public List<BaseData> allFreightTypes() {
+        return baseDataDao.allFreightTypes();
+    }
+    
+    public List<BaseData> allPackingTypes() {
+        return baseDataDao.allPackingTypes();
+    }
+    
+    public List<BaseData> allRecordNos() {
+        return baseDataDao.allRecordNos();
+    }
+    
+    public List<BaseData> allAppTypes() {
+        return baseDataDao.allAppTypes();
+    }
+    
+    public List<BaseData> allFreightTerms() {
+        return baseDataDao.allFreightTerms();
+    }
+    
+    public List<BaseData> allShipFromCountrys() {
+        return baseDataDao.allShipFromCountrys();
+    }
+    
+    public List<BaseData> allLoadingPorts() {
+        return baseDataDao.allLoadingPorts();
+    }
+    
+    public List<BaseData> allImportCustoms() {
+        return baseDataDao.allImportCustoms();
+    }
+    
+    public List<BaseData> allImportPorts() {
+        return baseDataDao.allImportPorts();
+    }
+    
+    public List<BaseData> allCarTypes() {
+        return baseDataDao.allCarTypes();
+    }
+    
+    public List<BaseData> allTradingTypes() {
+        return baseDataDao.allTradingTypes();
+    }
+
+    @Override
+    public List<BaseData> getPackingByName(String name) {
+        return baseDataDao.getPackingByName(name);
+    }
+}

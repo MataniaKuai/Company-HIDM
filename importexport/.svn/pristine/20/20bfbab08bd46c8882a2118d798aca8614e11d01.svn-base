@@ -1,0 +1,131 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLabel">
+					原材料信息
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goods Code</label>
+                    <div class="col-sm-4">
+                    <select name="goodsCode" class="form-control selectpicker goodsCode" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Hi-Tech</label>
+                    <div class="radio col-sm-4">
+                    <label><input type="radio" name="hiTech" id="hiTech1" value="1">是</label>
+                    <label><input type="radio" name="hiTech" id="hiTech0" value="0">否</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Custom Office</label>
+                    <div class="col-sm-4">
+                    <select name="customOffice" class="form-control selectpicker customOffice" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Material No</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialNo" onblur="getDescription()" class="form-control"
+                            required data-bv-notempty-message="Material no不能为空"
+                            data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="30" data-bv-stringlength-message="Material no长度范围[6-30]"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Unit</label>
+                    <div class="col-sm-4"><input type="text" name="unit" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">Bond CLa</label>
+                    <div class="radio col-sm-2">
+                        <select name="bondCla1" class="form-control selectpicker bondCla1">
+                        <option value="">请选择</option>
+                        </select>
+                    </div>
+                    <div class="radio col-sm-2">
+                        <select name="bondCla2" class="form-control selectpicker bondCla2">
+                        <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Hs Code</label>
+                    <div class="col-sm-4"><input type="text" name="hsCode" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">Currency</label>
+                    <div class="col-sm-4">
+                    <select name="currency" class="form-control selectpicker currency">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goods Description</label>
+                    <div class="col-sm-4"><input type="text" name="goodsDesc" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">中文品名</label>
+                    <div class="col-sm-4"><input type="text" name="chineseName" class="form-control"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Tax Preperty</label>
+                    <div class="col-sm-4">
+                    <select name="taxPreperty" class="form-control selectpicker taxPreperty" data-live-search="true"> 
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">免税文号</label>
+                    <div class="col-sm-4">
+                    <select name="freeNo" class="form-control selectpicker freeNo">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">免表号</label>
+                    <div class="col-sm-4"><input type="text" name="text1" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">Text_2</label>
+                    <div class="col-sm-4"><input type="text" name="text2" class="form-control"></div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Text_3</label>
+                    <div class="col-sm-4"><input type="text" name="text3" class="form-control"></div>
+                    <label class="col-sm-2 control-label">item</label>
+                    <div class="col-sm-4"><input type="text" name="iterm" class="form-control"></div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Employee NO</label>
+                    <div class="col-sm-4"><input type="text" name="employeeNo" class="form-control" value="${(user.userName)!''}"></div>
+                </div>
+                
+                <div class="form-group" id="myImage">
+	                <label class="col-sm-2 control-label">Photo</label>
+					<div class="col-sm-10" >
+		                    <image id="fileName" class="img-responsive" src="" width="50%"></image>
+		            </div>
+                </div>
+                    <input type="hidden" name="id" />
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+			</div>
+		</div>
+	</div>
+    </div>

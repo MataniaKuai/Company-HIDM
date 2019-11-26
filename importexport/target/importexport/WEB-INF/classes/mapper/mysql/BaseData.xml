@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.BaseDataDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.entity.BaseData">
+        <id property="id" column="id" />
+        <result property="code" column="code" />
+        <result property="name" column="name" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <select id="allCustomOffices" resultMap="BaseResultMap">
+	    select * from t_custom_office
+    </select>
+    
+    <select id="allCurrencys" resultMap="BaseResultMap">
+	    select * from t_currency
+    </select>
+    
+    <select id="allTaxPrepertys" resultMap="BaseResultMap">
+	    select * from t_tax_preperty
+    </select>
+    
+    <select id="allBondCla1s" resultMap="BaseResultMap">
+	    select * from t_bond_cla1
+    </select>
+    
+    <select id="allBondCla2s" resultMap="BaseResultMap">
+	    select * from t_bond_cla2
+    </select>
+    
+    <select id="allFreeNos" resultMap="BaseResultMap">
+	    select * from t_free_no
+    </select>
+</mapper>

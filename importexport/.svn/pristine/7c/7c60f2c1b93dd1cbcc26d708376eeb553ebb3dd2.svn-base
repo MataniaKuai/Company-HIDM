@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.importexport.dao.ImportItemDao">
+	<resultMap id="BaseResultMap" type="com.hidm.importexport.vo.ImportItemVo">
+		<id property="id" column="id" />
+		<result property="poNo" column="po_no" />
+		<result property="poItem" column="po_item" />
+		<result property="vendor" column="vendor" />
+		<result property="materialNo" column="material_no" />
+		<result property="importId" column="import_id" />
+		<result property="goodsDesc" column="goods_desc" />
+		<result property="chineseName" column="chinese_name" />
+		<result property="unit" column="unit" />
+		<result property="qty" column="qty" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="totalAmount" column="total_amount" />
+		<result property="currency" column="currency" />
+		<result property="assetNo" column="asset_no" />
+		<result property="tradeTerm" column="trade_term" />
+		<result property="hsCode" column="hs_code" />
+		<result property="grNo" column="gr_no" />
+		<result property="relatedGrNo" column="related_grno" />
+		<result property="irNo" column="ir_no" />
+		<result property="declarationNo" column="declaration_no" />
+		<result property="dept" column="dept" />
+		<result property="employeeNo" column="employee_no" />
+		<result property="stock" column="stock" />
+		<result property="delFlag" column="del_flag" />
+		<result property="updateTime" column="update_time" />
+		<result property="addTime" column="add_time" />
+		<result property="updateUser" column="update_user" />
+		<result property="addUser" column="add_user" />
+		<result property="moveType" column="move_Type" />
+		<result property="status" column="status" />
+		<result property="relatedGrNo" column="related_grno" />
+		<result property="grYear" column="gr_Year" />
+		<result property="grItem" column="gr_Item" />
+		<result property="relatedGrYear" column="related_gr_Year" />
+		<result property="relatedGrItem" column="related_gr_Item" />
+		<result property="isBatch" column="isbatch" />
+		<result property="tariffRate" column="tariff_rate" />
+		<result property="tradingUnit" column="trading_unit" />
+		<result property="transactionVolume" column="transaction_volume" />
+		<result property="legalQuantity" column="legal_quantity" />
+		<result property="legalUnit" column="legal_unit" />
+        <result property="childAssetNo" column="child_asset_no" />
+		
+	</resultMap>
+
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_IMPORT_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_import_item(
+		<trim suffixOverrides=",">
+			id,
+			<if test="poNo != null">
+				po_no,
+			</if>
+			<if test="poItem != null">
+				po_item,
+			</if>
+			<if test="vendor != null">
+				vendor,
+			</if>
+			<if test="materialNo != null">
+				material_no,
+			</if>
+			<if test="importId != null">
+				import_id,
+			</if>
+			<if test="goodsDesc != null">
+				goods_desc,
+			</if>
+			<if test="chineseName != null">
+				chinese_name,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="qty != null">
+				qty,
+			</if>
+			<if test="unitPrice != null">
+				unit_price,
+			</if>
+			<if test="totalAmount != null">
+				total_amount,
+			</if>
+			<if test="currency != null">
+				currency,
+			</if>
+			<if test="assetNo != null">
+				asset_no,
+			</if>
+			<if test="tradeTerm != null">
+				trade_term,
+			</if>
+			<if test="hsCode != null">
+				hs_code,
+			</if>
+			<if test="grNo != null">
+				gr_no,
+			</if>
+			<if test="relatedGrNo != null">
+				related_grno,
+			</if>
+			<if test="dept != null">
+				dept,
+			</if>
+			<if test="employeeNo != null">
+				employee_no,
+			</if>
+			<if test="stock != null">
+				stock,
+			</if>
+			<if test="addUser != null">
+				add_user,
+			</if>
+			<if test="grYear != null">
+				gr_Year,
+			</if>
+			<if test="grItem != null">
+				gr_Item,
+			</if>
+			<if test="relatedGrYear != null">
+				related_gr_Year,
+			</if>
+			<if test="relatedGrItem != null">
+				related_gr_Item,
+			</if>
+			<if test="isBatch != null">
+				isbatch,
+			</if>
+			<if test="isEdit != null">
+				isedit,
+			</if>
+			<if test="tariffRate != null">
+				tariff_rate,
+			</if>
+			<if test="tradingUnit != null">
+				trading_unit,
+			</if>
+			<if test="transactionVolume != null">
+				transaction_volume,
+			</if>
+			<if test="legalQuantity != null">
+				legal_quantity,
+			</if>
+			<if test="legalUnit != null">
+				legal_unit,
+			</if>
+            <if test="childAssetNo != null">
+                child_asset_no,
+            </if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="poNo != null">
+				#{poNo},
+			</if>
+			<if test="poItem != null">
+				#{poItem},
+			</if>
+			<if test="vendor != null">
+				#{vendor},
+			</if>
+			<if test="materialNo != null">
+				#{materialNo},
+			</if>
+			<if test="importId != null">
+				#{importId},
+			</if>
+			<if test="goodsDesc != null">
+				#{goodsDesc},
+			</if>
+			<if test="chineseName != null">
+				#{chineseName},
+			</if>
+			<if test="unit != null">
+				#{unit},
+			</if>
+			<if test="qty != null">
+				#{qty},
+			</if>
+			<if test="unitPrice != null">
+				#{unitPrice},
+			</if>
+			<if test="totalAmount != null">
+				#{totalAmount},
+			</if>
+			<if test="currency != null">
+				#{currency},
+			</if>
+			<if test="assetNo != null">
+				#{assetNo},
+			</if>
+			<if test="tradeTerm != null">
+				#{tradeTerm},
+			</if>
+			<if test="hsCode != null">
+				#{hsCode},
+			</if>
+			<if test="grNo != null">
+				#{grNo},
+			</if>
+			<if test="relatedGrNo != null">
+				#{relatedGrNo},
+			</if>
+			<if test="dept != null">
+				#{dept},
+			</if>
+			<if test="employeeNo != null">
+				#{employeeNo},
+			</if>
+			<if test="stock != null">
+				#{stock},
+			</if>
+			<if test="addUser != null">
+				#{addUser},
+			</if>
+			<if test="grYear != null">
+				#{grYear},
+			</if>
+			<if test="grItem != null">
+				#{grItem},
+			</if>
+			<if test="relatedGrYear != null">
+				#{relatedGrYear},
+			</if>
+			<if test="relatedGrItem != null">
+				#{relatedGrItem},
+			</if>
+			<if test="isBatch != null">
+				#{isBatch},
+			</if>
+			<if test="isEdit != null">
+				#{isEdit},
+			</if>
+			<if test="tariffRate != null">
+				#{tariffRate},
+			</if>
+			<if test="tradingUnit != null">
+				#{tradingUnit},
+			</if>
+			<if test="transactionVolume != null">
+				#{transactionVolume},
+			</if>
+			<if test="declaredQuantity != null">
+				#{declaredQuantity},
+			</if>
+			<if test="legalUnit != null">
+				#{legalUnit},
+			</if>
+            <if test="childAssetNo != null">
+                #{childAssetNo},
+            </if>
+		</trim>
+		)
+	</insert>
+
+	<insert id="insertBatch">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_IMPORT_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into t_import_item
+		(id, po_no, po_item, vendor, material_no, import_id, goods_desc,
+		chinese_name, unit, qty, unit_price, total_amount,
+		currency, asset_no, trade_term, hs_code, gr_no,
+		dept, employee_no, stock, add_user, isbatch, child_asset_no)
+		select T_IMPORT_ITEM_SEQ.nextval, A.* FROM (
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			select
+			#{item.poNo, jdbcType=VARCHAR},
+			#{item.poItem, jdbcType=VARCHAR},
+			#{item.vendor, jdbcType=VARCHAR},
+			#{item.materialNo, jdbcType=VARCHAR},
+			#{item.importId, jdbcType=BIGINT},
+			#{item.goodsDesc, jdbcType=VARCHAR},
+			#{item.chineseName, jdbcType=VARCHAR},
+			#{item.unit, jdbcType=VARCHAR},
+			#{item.qty, jdbcType=NUMERIC},
+			#{item.unitPrice, jdbcType=DOUBLE},
+			#{item.totalAmount, jdbcType=DOUBLE},
+			#{item.currency, jdbcType=VARCHAR},
+			#{item.assetNo, jdbcType=VARCHAR},
+			#{item.tradeTerm, jdbcType=VARCHAR},
+			#{item.hsCode, jdbcType=VARCHAR},
+			#{item.grNo, jdbcType=VARCHAR},
+			#{item.dept, jdbcType=VARCHAR},
+			#{item.employeeNo, jdbcType=VARCHAR},
+			#{item.stock, jdbcType=VARCHAR},
+			#{item.addUser, jdbcType=VARCHAR},
+			#{item.isBatch, jdbcType=INTEGER},
+            #{item.childAssetNo, jdbcType=VARCHAR}
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_import_item
+		<set>
+			<if test="poNo != null">
+				po_no = #{poNo},
+			</if>
+			<if test="poItem != null">
+				po_item = #{poItem},
+			</if>
+			<if test="vendor != null">
+				vendor = #{vendor},
+			</if>
+			<if test="materialNo != null">
+				material_no = #{materialNo},
+			</if>
+			<if test="importId != null">
+				import_id = #{importId},
+			</if>
+			<if test="goodsDesc != null">
+				goods_desc = #{goodsDesc},
+			</if>
+			<if test="chineseName != null">
+				chinese_name = #{chineseName},
+			</if>
+			<if test="unit != null">
+				unit = #{unit},
+			</if>
+			<if test="qty != null">
+				qty = #{qty},
+			</if>
+			<if test="unitPrice != null">
+				unit_price = #{unitPrice},
+			</if>
+			<if test="totalAmount != null">
+				total_amount = #{totalAmount},
+			</if>
+			<if test="currency != null">
+				currency = #{currency},
+			</if>
+			<if test="assetNo != null">
+				asset_no = #{assetNo},
+			</if>
+			<if test="tradeTerm != null">
+				trade_term = #{tradeTerm},
+			</if>
+			<if test="hsCode != null">
+				hs_code = #{hsCode},
+			</if>
+			<if test="grNo != null">
+				gr_no = #{grNo},
+			</if>
+			<if test="dept != null">
+				dept = #{dept},
+			</if>
+			<if test="employeeNo != null">
+				employee_no = #{employeeNo},
+			</if>
+			<if test="stock != null">
+				stock = #{stock},
+			</if>
+			<if test="moveType != null">
+				move_type = #{moveType},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUser != null">
+				update_user=#{updateUser},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME=#{updateTime},
+			</if>
+			<if test="relatedGrNo != null">
+				related_grno=#{relatedGrNo},
+			</if>
+			<if test="grYear != null">
+				gr_Year=#{grYear},
+			</if>
+			<if test="grItem != null">
+				gr_Item=#{grItem},
+			</if>
+			<if test="relatedGrYear != null">
+				related_gr_Year=#{relatedGrYear},
+			</if>
+			<if test="relatedGrItem != null">
+				related_gr_Item=#{relatedGrItem},
+			</if>
+			<if test="isBatch != null">
+				isbatch=#{isBatch},
+			</if>
+			<if test="isEdit != null">
+				isedit=#{isEdit},
+			</if>
+			<if test="tariffRate != null">
+				tariff_rate=#{tariffRate},
+			</if>
+			<if test="tradingUnit != null">
+				trading_unit=#{tradingUnit},
+			</if>
+			<if test="transactionVolume != null">
+				transaction_volume=#{transactionVolume},
+			</if>
+			<if test="legalQuantity != null">
+				legal_quantity=#{legalQuantity},
+			</if>
+			<if test="legalUnit != null">
+				legal_unit=#{legalUnit},
+			</if>
+            <if test="childAssetNo != null">
+                child_asset_no=#{childAssetNo},
+            </if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectList" resultMap="BaseResultMap">
+	select * from 
+	(
+		select s.*, ROWNUM RN from
+		(
+		select m.*,i.ir_no, i.declaration_no from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			<if test="irNo != null and irNo != ''">
+				AND i.ir_no = #{irNo}
+			</if>
+			<if test="importItem != null">
+				<if test="importItem.id != null and importItem.id != 0">
+					AND m.id = #{importItem.id}
+				</if>
+				<if test="importItem.importId != null and importItem.importId != 0">
+					AND m.import_id = #{importItem.importId}
+				</if>
+				<if test="importItem.poNo != null and importItem.poNo != ''">
+					AND m.po_no = #{importItem.poNo}
+				</if>
+				<if test="importItem.poItem != null and importItem.poItem != ''">
+					AND m.po_item = #{importItem.poItem}
+				</if>
+				<if test="importItem.materialNo != null and importItem.materialNo != ''">
+					AND m.material_no = #{importItem.materialNo}
+				</if>
+				<if test="importItem.status != null">
+					AND m.status = #{importItem.status}
+				</if>
+			</if>
+			<if test="timeRange != null">
+				<if test="timeRange.startTime != null">
+					AND m.update_time &gt;= #{timeRange.startTime}
+				</if>
+				<if test="timeRange.endTime != null">
+					AND m.update_time &lt; #{timeRange.endTime}
+				</if>
+			</if>
+		</where>
+		order by m.update_time desc
+		)s
+
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+
+	<select id="selectListByGrNo" resultMap="BaseResultMap">
+		select * from (
+		select t.*, ROWNUM RN from
+		(
+		select m.*, i.ir_no from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			<if test="importItem != null">
+				<if test="importItem.grNo != null and importItem.grNo != ''">
+					AND (m.gr_no = #{importItem.grNo} or m.related_grno =
+					#{importItem.grNo})
+				</if>
+			</if>
+		</where>
+		order by m.id
+		) t
+		<where>
+			<if test="page != null">
+				ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+			</if>
+		</where>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+
+	<select id="selectCountByGrNo" resultType="int">
+		select count(*) from
+		(
+		select m.* from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			<if test="importItem != null">
+				<if test="importItem.grNo != null and importItem.grNo != ''">
+					AND (m.gr_no = #{importItem.grNo} or m.related_grno =
+					#{importItem.grNo})
+				</if>
+			</if>
+		</where>
+		)
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			<if test="irNo != null and irNo != ''">
+				AND i.ir_no = #{irNo}
+			</if>
+			<if test="importItem != null">
+				<if test="importItem.id != null and importItem.id != 0">
+					AND m.id = #{importItem.id}
+				</if>
+				<if test="importItem.importId != null and importItem.importId != 0">
+					AND m.import_id = #{importItem.importId}
+				</if>
+				<if test="importItem.poNo != null and importItem.poNo != ''">
+					AND m.po_no = #{importItem.poNo}
+				</if>
+				<if test="importItem.poItem != null and importItem.poItem != ''">
+					AND m.po_item = #{importItem.poItem}
+				</if>
+				<if test="importItem.materialNo != null and importItem.materialNo != ''">
+					AND m.material_no = #{importItem.materialNo}
+				</if>
+				<if test="importItem.status != null">
+					AND m.status = #{importItem.status}
+				</if>
+			</if>
+			<if test="timeRange != null">
+				<if test="timeRange.startTime != null">
+					AND m.update_time &gt;= #{timeRange.startTime}
+				</if>
+				<if test="timeRange.endTime != null">
+					AND m.update_time &lt; #{timeRange.endTime}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="countByImportIds" resultType="int">
+		select count(1) from t_import_item
+		WHERE import_id in
+		<foreach collection="array" open=" (" close=")" item="importId"
+			separator=",">
+			#{importId}
+		</foreach>
+	</select>
+
+	<delete id="deleteByIds">
+		delete from t_import_item
+		WHERE id in
+		<foreach collection="array" open=" (" close=")" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<delete id="unReceiveByIds">
+		update t_import_item
+		set gr_no = null
+		WHERE id in
+		<foreach collection="array" open=" (" close=")" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="countUnReceived" resultType="int">
+		select count(*) from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			(m.status = 0)
+			<if test="irNo != null and irNo != ''">
+				AND i.ir_no = #{irNo}
+			</if>
+			<if test="importItem != null">
+				<if test="importItem.importId != null and importItem.importId != 0">
+					AND m.import_id = #{importItem.importId}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="countReceived" resultType="int">
+		select count(*) from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			(m.status = 1)
+			<if test="irNo != null and irNo != ''">
+				AND i.ir_no = #{irNo}
+			</if>
+			<if test="importItem != null">
+				<if test="importItem.importId != null and importItem.importId != 0">
+					AND m.import_id = #{importItem.importId}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select m.*, i.ir_no from t_import_item m
+		inner join t_import i on m.import_id = i.id
+		<where>
+			m.id in
+			<foreach collection="array" open=" (" close=")" item="id"
+				separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+
+	<insert id="insertItems" parameterType="java.lang.Long">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_IMPORT_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into t_import_item
+		(id, po_no, po_item, vendor, material_no, import_id, goods_desc,
+		chinese_name, unit, qty, unit_price, total_amount, currency, asset_no,
+		trade_term, hs_code, gr_no, related_grno, dept, employee_no, stock,
+		add_user, gr_Year, gr_Item, related_gr_Year, related_gr_Item,
+		move_type, tariff_rate, trading_unit, transaction_volume, legal_quantity, legal_unit, child_asset_no)
+		select T_IMPORT_SEQ.nextval, A.* FROM (
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			select
+			#{item.poNo, jdbcType=VARCHAR}, #{item.poItem, jdbcType=VARCHAR}, #{item.vendor,
+			jdbcType=VARCHAR}, #{item.materialNo, jdbcType=VARCHAR},
+			#{item.importId, jdbcType=NUMERIC}, #{item.goodsDesc,
+			jdbcType=VARCHAR}, #{item.chineseName, jdbcType=VARCHAR},
+			#{item.unit, jdbcType=VARCHAR},
+			#{item.qty, jdbcType=NUMERIC}, #{item.unitPrice, jdbcType=NUMERIC},
+			#{item.totalAmount, jdbcType=NUMERIC}, #{item.currency,
+			jdbcType=VARCHAR},
+			#{item.assetNo, jdbcType=VARCHAR}, #{item.tradeTerm, jdbcType=VARCHAR},
+			#{item.hsCode, jdbcType=VARCHAR}, #{item.grNo, jdbcType=VARCHAR},
+			#{item.relatedGrNo, jdbcType=VARCHAR}, #{item.dept,
+			jdbcType=VARCHAR}, #{item.employeeNo, jdbcType=VARCHAR},
+			#{item.stock, jdbcType=VARCHAR},
+			#{item.addUser, jdbcType=VARCHAR}, #{item.grYear, jdbcType=VARCHAR}, #{item.grItem,
+			jdbcType=INTEGER}, #{item.relatedGrYear, jdbcType=VARCHAR},
+			#{item.relatedGrItem, jdbcType=INTEGER}, #{item.moveType,
+			jdbcType=VARCHAR}, #{item.tariffRate, jdbcType=REAL},#{item.tradingUnit, jdbcType=VARCHAR}, 
+			#{item.transactionVolume, jdbcType=NUMERIC},#{item.legalUnit, jdbcType=VARCHAR},
+			#{item.legalQuantity, jdbcType=NUMERIC},#{item.childAssetNo, jdbcType=VARCHAR},
+			from
+			dual
+		</foreach>
+		) A
+	</insert>
+	
+	<select id="checkVendor" resultMap="BaseResultMap">
+		select * from T_IMPORT_ITEM t where t.import_id = (select i.id from t_import i where i.ir_no = #{irNo})
+	</select>
+	
+</mapper>

@@ -1,0 +1,609 @@
+package com.hidm.importexport.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.hidm.importexport.constant.BusinessConstant;
+import com.hidm.importexport.entity.BaseData;
+import com.hidm.importexport.entity.GoodsCode;
+import com.hidm.importexport.entity.ImportInfo;
+import com.hidm.importexport.entity.ImportItem;
+import com.hidm.importexport.entity.IrNo;
+import com.hidm.importexport.entity.User;
+import com.hidm.importexport.service.BaseDataService;
+import com.hidm.importexport.service.BusinessHisService;
+import com.hidm.importexport.service.ImportInfoService;
+import com.hidm.importexport.service.ImportItemService;
+import com.hidm.importexport.service.IrNoService;
+import com.hidm.importexport.util.DateUtil;
+import com.hidm.importexport.util.ExcelUtil;
+import com.hidm.importexport.util.FileUtil;
+import com.hidm.importexport.util.LoginUtil;
+import com.hidm.importexport.util.NameConvertCodeUtil;
+import com.hidm.importexport.vo.ImportInfoSearchVo;
+import com.hidm.importexport.vo.ImportInfoVo;
+import com.hidm.importexport.vo.PaginationVo;
+  
+@Controller
+public class ImportInfoController {
+    private static final Logger log = LoggerFactory.getLogger(ImportInfoController.class);
+
+    @Value("${file.root.path}")
+    private String rootPath;
+    
+    @Value("${file.import.batch.path}")
+    private String importBatchPath;
+    
+    @Autowired
+    private ImportInfoService importInfoService;
+    
+    @Autowired
+    private ImportItemService importItemService;
+    
+    @Autowired
+    private IrNoService irNoService;
+
+    @Autowired
+    private BaseDataService baseDataService;
+    
+    @Autowired
+    private BusinessHisService businessHisService;
+    
+    
+    /**
+     * 
+    *Description: 查询进口信息记录中的常量信息，将常量信息放入到model域中
+    *@param model 模型域 存放用户对象信息
+    *@return String 目标页面路径
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importInfo/manage")
+    public String manageSystem(Model model, HttpSession session) {
+        model.addAttribute("user", LoginUtil.getUserInfo());
+
+        //获取常量数据，初始化数据
+        List<GoodsCode> goodList = baseDataService.allGoodsCodes();
+        List<BaseData> orgList = baseDataService.allOrgs();
+        List<BaseData> freighttypeList = baseDataService.allFreightTypes();
+        List<BaseData> packingList = baseDataService.allPackingTypes();
+        List<BaseData> appList = baseDataService.allAppTypes();
+        List<BaseData> freightList = baseDataService.allFreightTerms();
+        List<BaseData> carList = baseDataService.allCarTypes();
+        List<BaseData> shipfromList = baseDataService.allShipFromCountrys();
+        List<BaseData> loadingList = baseDataService.allLoadingPorts();
+        List<BaseData> customList = baseDataService.allImportCustoms();
+        List<BaseData> taxPrepertys = baseDataService.allTaxPrepertys();
+        List<BaseData> tradingTypes = baseDataService.allTradingTypes();
+        
+        model.addAttribute("goodList", goodList);
+        model.addAttribute("orgList", orgList);
+        model.addAttribute("freighttypeList", freighttypeList);
+        model.addAttribute("packingList", packingList);
+        model.addAttribute("appList", appList);
+        model.addAttribute("freightList", freightList);
+        model.addAttribute("carList", carList);
+        model.addAttribute("shipfromList", shipfromList);
+        model.addAttribute("loadingList", loadingList);
+        model.addAttribute("customList", customList);
+        model.addAttribute("taxPrepertys", taxPrepertys);
+        model.addAttribute("tradingTypes", tradingTypes);
+        
+        return "/importinfo/manage";
+    }
+    
+    /**
+     * 
+    *Description:查询进口记录信息
+    *@param importInfo
+    *@param page
+    *@return Map<String, Object> "total"为记录的总数量，"rows"为行记录对象的list集合
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importInfo/search")
+    @ResponseBody
+    public Map<String, Object> search(ImportInfo importInfo, PaginationVo page, Model model, HttpSession session) {
+        ImportInfoSearchVo vo = new ImportInfoSearchVo();
+        vo.setImportInfo(importInfo);
+        vo.setPage(page);
+        page.setRowStart((page.getPage() - 1) * page.getRows());
+        
+        int total = importInfoService.count(vo);
+        List<ImportInfoVo> list = importInfoService.selectList(vo);
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("rows", list);
+        return result;
+    }
+    
+    /**
+     * 
+    *Description: 保存或更新进口数据同时保存操作记录
+    *@param importInfo
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importinfo/save")
+    @ResponseBody
+    public String save(ImportInfo importInfo, Model model, HttpSession session) {
+        User user = LoginUtil.getUserInfo();
+        if (user != null) {
+            importInfo.setFinalReviser(user.getUserName());
+        }
+        importInfo.setLastModifiedTime(new Date());
+        
+        int action;
+        if (null == importInfo.getId() || 0 == importInfo.getId()) {
+            importInfoService.insert(importInfo);
+            action = BusinessConstant.BUSINESS_INSERT;
+        } else {
+            importInfoService.updateById(importInfo);
+            action = BusinessConstant.BUSINESS_UPDATE;
+        }
+        
+        businessHisService.insert(String.valueOf(importInfo.getId()), importInfo.getIrNo(), 
+                BusinessConstant.BUSINESS_TYPE_IMPORT, action, importInfo);
+        return "true";
+    }
+    
+    /**
+     * 
+    *Description: 删除进口信息同时保存操作记录
+    *@param ids
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importInfo/delete")
+    @ResponseBody
+    public int deleteSystem(@RequestParam(value="ids[]") Long[] ids, Model model, HttpSession session) {
+        deleteBusiness(ids);
+        int result = importInfoService.deleteByIds(ids);
+        return result;
+    }
+
+    public void deleteBusiness(Long[] ids) {
+        try {
+            List<ImportInfoVo> list = importInfoService.selectImportInfoByIds(ids);
+            for (ImportInfoVo importInfo : list) {
+                businessHisService.insert(String.valueOf(importInfo.getId()), importInfo.getIrNo(), 
+                        BusinessConstant.BUSINESS_TYPE_IMPORT, BusinessConstant.BUSINESS_DELETE, null);
+            }
+        } catch (Exception e) {
+            log.error("Failed to insertBusinessHis. importIds：" + ids, e);
+        }
+    }
+
+    /**
+     * 
+    *Description: 生成irNo，并将irNo保存
+    *@param importInfo
+    *@return String 目标页面
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importInfo/generateSeqNo")
+    @ResponseBody
+    public String generateSeqNo(ImportInfo importInfo, Model model, HttpSession session) {
+        String org = importInfo.getOrg();
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int seqNo = irNoService.generateSeqNo(year, org);
+        
+        String yearStr = String.valueOf(year - 2000);
+        String monthStr = String.valueOf(month + 1);
+        if (monthStr.length() < 2) {
+            monthStr = "0" + monthStr;
+        }
+        
+        String result = null;
+        result = org + importInfo.getFreightType() + importInfo.getGoodsCode() + yearStr + monthStr + String.format("%05d", seqNo);
+        log.info("IR NO: " + result);
+        return result;
+    }
+    
+    /**
+     * 
+    *Description: 转发页面
+    *@return String 目标页面
+    *@author GuoRong
+    *@date 2018年12月3日
+    *@version 1.0
+     */
+    @RequestMapping("importInfo/import")
+    public String importSystem(Model model, HttpSession session) {
+        return "/importinfo/import";
+    }
+
+    /**
+     *Description:  导入时，保存数据库之前先判断进口信息是否在数据库存在，如果存在则提示
+     * 更新irno最大值到irno表
+     * @param file
+     * @return Map<String, String> "status"为操作结果状态
+     */
+    @RequestMapping("importInfo/upload")
+    @ResponseBody
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public Map<String, String> fileUpload(@RequestParam("file") MultipartFile file) {
+        //返回map信息；0：上传失败；1：上传成功
+        HashMap<String, String> errorMap = new HashMap<String, String>();
+        if (file.isEmpty()) {
+            errorMap.put("status", "0");
+            errorMap.put("msg", "上传失败");
+            return errorMap;
+        }
+        log.info("importupload start----------------");
+        long startTime=System.currentTimeMillis();//获取程序执行时间
+        FileUtil.createDir(rootPath);
+        FileUtil.createDir(rootPath + importBatchPath);
+        
+        String fileName = file.getOriginalFilename();
+        long timeInMillis = Calendar.getInstance().getTimeInMillis();
+        String filePath = rootPath + importBatchPath + "/" + timeInMillis + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+        
+        File dest = new File(filePath);
+        Workbook workbook = null;
+        try {
+            file.transferTo(dest);
+            
+            workbook = WorkbookFactory.create(dest);
+            List<ImportItem> items = new ArrayList<ImportItem>();
+            Sheet sheet = workbook.getSheetAt(0);
+            if (sheet == null) {
+                log.error("未读取到内容,请检查文件是否正确！");
+                errorMap.put("status", "0");
+                errorMap.put("msg", "未读取到内容,请检查文件是否正确！");
+                return errorMap;
+            }
+            
+            Set<String> irNoSet = new HashSet<String>();
+            // 对于每个sheet，读取其中的每一行
+            for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                Row row = sheet.getRow(rowNum);
+                if (row.getCell(0)!= null && !row.getCell(0).getStringCellValue().isEmpty()) {
+                    ImportInfo importInfo = new ImportInfo();
+                    ImportItem item = new ImportItem();
+                    
+                    Cell cell = row.getCell(7);
+                    String vendor = ExcelUtil.getCellValue(cell);
+                    item.setVendor(vendor);
+                    cell = row.getCell(11);
+                    String tradeTerm = ExcelUtil.getCellValue(cell);
+                    item.setTradeTerm(tradeTerm);
+                    cell = row.getCell(12);
+                    String unitPrice = ExcelUtil.getCellValue(cell);
+                    item.setUnitPrice(ExcelUtil.doubleFormat(unitPrice));
+                    cell = row.getCell(13);
+                    String qty = ExcelUtil.getCellValue(cell);
+                    item.setQty(ExcelUtil.bigDecimalFormat(qty));
+                    cell = row.getCell(14);
+                    String unit = ExcelUtil.getCellValue(cell);
+                    item.setUnit(unit);
+                    cell = row.getCell(15);
+                    String totalAmount = ExcelUtil.getCellValue(cell);
+                    item.setTotalAmount(ExcelUtil.doubleFormat(totalAmount));
+                    cell = row.getCell(19);
+                    String currency = ExcelUtil.getCellValue(cell);
+                    item.setCurrency(currency);
+                    cell = row.getCell(20);
+                    String goodsDesc = ExcelUtil.getCellValue(cell);
+                    item.setGoodsDesc(goodsDesc);
+                    cell = row.getCell(21);
+                    String chineseName = ExcelUtil.getCellValue(cell);
+                    item.setChineseName(chineseName);
+                    cell = row.getCell(29);
+                    String dept = ExcelUtil.getCellValue(cell);
+                    item.setDept(dept);
+                    cell = row.getCell(39);
+                    String assetNo = ExcelUtil.getCellValue(cell);
+                    item.setAssetNo(assetNo);
+                    cell = row.getCell(43);
+                    String hsCode = ExcelUtil.getCellValue(cell);
+                    item.setHsCode(hsCode);
+                    cell = row.getCell(50);
+                    String poNo = ExcelUtil.getCellValue(cell);
+                    item.setPoNo(poNo);
+                    cell = row.getCell(53);
+                    String materialNo = ExcelUtil.getCellValue(cell);
+                    item.setMaterialNo(materialNo);
+                    cell = row.getCell(66);
+                    String grNo = ExcelUtil.getCellValue(cell);
+                    item.setGrNo(grNo);
+                    cell = row.getCell(67);
+                    String stock = ExcelUtil.getCellValue(cell);
+                    item.setStock(stock);
+                    cell = row.getCell(68);
+                    String employee = ExcelUtil.getCellValue(cell);
+                    item.setEmployeeNo(employee);
+                    item.setPoItem("item");
+                    
+                    cell = row.getCell(0);
+                    String org = ExcelUtil.getCellValue(cell);
+                    importInfo.setOrg(org);
+                    cell = row.getCell(1);
+                    String goodsCodeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setGoodsCode(NameConvertCodeUtil.getGoodsCode(goodsCodeName));
+                    cell = row.getCell(2);
+                    String irNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setIrNo(irNo);
+                    cell = row.getCell(3);
+                    String freightTypeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setFreightType(NameConvertCodeUtil.getFreightType(freightTypeName));
+                    cell = row.getCell(4);
+                    String declarationNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setDeclarationNo(declarationNo);
+                    cell = row.getCell(5);
+                    String declarationTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setDeclarationTime(DateUtil.parseDate(declarationTime));
+                    cell = row.getCell(6);
+                    String releaseTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setReleaseTime(DateUtil.parseDate(releaseTime));
+                    
+                    cell = row.getCell(8);
+                    String broker = ExcelUtil.getCellValue(cell);
+                    importInfo.setBroker(broker);
+                    cell = row.getCell(9);
+                    String forwarder = ExcelUtil.getCellValue(cell);
+                    importInfo.setForwarder(forwarder);
+                    cell = row.getCell(10);
+                    String freightTerm = ExcelUtil.getCellValue(cell);
+                    importInfo.setFreightTerm(NameConvertCodeUtil.getFreightTermCode(freightTerm));
+                    
+                    cell = row.getCell(16);
+                    String gw = ExcelUtil.getCellValue(cell);
+                    importInfo.setGw(ExcelUtil.doubleFormat(gw));
+                    cell = row.getCell(17);
+                    String nw = ExcelUtil.getCellValue(cell);
+                    importInfo.setNw(ExcelUtil.doubleFormat(nw));
+                    cell = row.getCell(18);
+                    String chw = ExcelUtil.getCellValue(cell);
+                    importInfo.setChw(ExcelUtil.doubleFormat(chw));
+                    cell = row.getCell(22);
+                    String bl = ExcelUtil.getCellValue(cell);
+                    importInfo.setBl(bl);
+                    
+                    cell = row.getCell(23);
+                    String mawb = ExcelUtil.getCellValue(cell);
+                    importInfo.setMawb(mawb);
+                    cell = row.getCell(24);
+                    String hawb = ExcelUtil.getCellValue(cell);
+                    importInfo.setHawb(hawb);
+                    cell = row.getCell(25);
+                    String arriveTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setArriveTime(DateUtil.parseDate(arriveTime));
+                    cell = row.getCell(26);
+                    String receiveTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setReceiveTime(DateUtil.parseDate(receiveTime));
+                    cell = row.getCell(27);
+                    String sailingTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setSailingTime(DateUtil.parseDate(sailingTime));
+                    cell = row.getCell(28);
+                    String flightVesselVoy = ExcelUtil.getCellValue(cell);
+                    importInfo.setFlightVesselVoy(flightVesselVoy);
+                    
+                    cell = row.getCell(30);
+                    String shipFromCountryName = ExcelUtil.getCellValue(cell);
+                    importInfo.setShipFromCountry(NameConvertCodeUtil.getShipFromCountry(shipFromCountryName));
+                    cell = row.getCell(31);
+                    String shipFromPortName = ExcelUtil.getCellValue(cell);
+                    importInfo.setShipFromPort(NameConvertCodeUtil.getLoadingPort(shipFromPortName));
+                    cell = row.getCell(32);
+                    String lcNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setLcNo(lcNo);
+                    cell = row.getCell(33);
+                    String totalPackage = ExcelUtil.getCellValue(cell);
+                    importInfo.setTotalPackage(ExcelUtil.integerFormat(totalPackage));
+                    cell = row.getCell(34);
+                    String packingTypeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setPackingType(NameConvertCodeUtil.getPackingType(packingTypeName));
+                    cell = row.getCell(35);
+                    String loadingPortName = ExcelUtil.getCellValue(cell);
+                    importInfo.setLoadingPort(NameConvertCodeUtil.getLoadingPort(loadingPortName));
+                    cell = row.getCell(36);
+                    String dischargePortName = ExcelUtil.getCellValue(cell);
+                    importInfo.setDischargePort(NameConvertCodeUtil.getImportPort(dischargePortName));
+                    
+                    cell = row.getCell(37);
+                    String inhouseDate = ExcelUtil.getCellValue(cell);
+                    importInfo.setInhouseDate(DateUtil.parseDate(inhouseDate));
+                    cell = row.getCell(38);
+                    String outhouseDate = ExcelUtil.getCellValue(cell);
+                    importInfo.setOuthouseDate(DateUtil.parseDate(outhouseDate));
+                    cell = row.getCell(40);
+                    String recordNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setRecordNo(recordNo);
+                    cell = row.getCell(41);
+                    String tradingTypeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setTradingType(NameConvertCodeUtil.getTradingType(tradingTypeName));
+                    cell = row.getCell(42);
+                    String appTypeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setAppType(NameConvertCodeUtil.getAppType(appTypeName));
+                    cell = row.getCell(44);
+                    String tariffTax = ExcelUtil.getCellValue(cell);
+                    importInfo.setTariffTax(tariffTax);
+                    cell = row.getCell(45);
+                    String tariff = ExcelUtil.getCellValue(cell);
+                    importInfo.setTariff(tariff);
+                    cell = row.getCell(46);
+                    String valueAddedTax = ExcelUtil.getCellValue(cell);
+                    importInfo.setValueAddedTax(valueAddedTax);
+                    cell = row.getCell(47);
+                    String importCustomName = ExcelUtil.getCellValue(cell);
+                    importInfo.setImportCustom(NameConvertCodeUtil.getImportCustom(importCustomName));
+                    cell = row.getCell(48);
+                    String declaringCustom = ExcelUtil.getCellValue(cell);
+                    importInfo.setDeclaringCustom(NameConvertCodeUtil.getImportCustom(declaringCustom));
+                    cell = row.getCell(49);
+                    String taxPrepertyName = ExcelUtil.getCellValue(cell);
+                    importInfo.setTaxPreperty(NameConvertCodeUtil.getTaxPreperty(taxPrepertyName));
+                    cell = row.getCell(51);
+                    String invoiceNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setInvoiceNo(invoiceNo);
+                    cell = row.getCell(52);
+                    String originalCountryName = ExcelUtil.getCellValue(cell);
+                    importInfo.setOriginalCountry(NameConvertCodeUtil.getShipFromCountry(originalCountryName));
+                    
+                    cell = row.getCell(54);
+                    String containerNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setContainerNo(containerNo);
+                    cell = row.getCell(55);
+                    String carTypeName = ExcelUtil.getCellValue(cell);
+                    importInfo.setCarType(NameConvertCodeUtil.getCarType(carTypeName));
+                    cell = row.getCell(56);
+                    String carNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setCarNo(carNo);
+                    cell = row.getCell(57);
+                    String unusual = ExcelUtil.getCellValue(cell);
+                    importInfo.setUnusual(NameConvertCodeUtil.nameForNumber(unusual));
+                    cell = row.getCell(58);
+                    String remarks = ExcelUtil.getCellValue(cell);
+                    importInfo.setRemarks(remarks);
+                    cell = row.getCell(59);
+                    String rmaNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setRmaNo(rmaNo);
+                    cell = row.getCell(60);
+                    String rmaQty = ExcelUtil.getCellValue(cell);
+                    importInfo.setRmaQty(ExcelUtil.integerFormat(rmaQty));
+                    cell = row.getCell(61);
+                    String originalDeclarationNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setOriginalDeclarationNo(originalDeclarationNo);
+                    cell = row.getCell(62);
+                    String originalIrNo = ExcelUtil.getCellValue(cell);
+                    importInfo.setOriginalIrNo(originalIrNo);
+                    cell = row.getCell(63);
+                    String importPerson = ExcelUtil.getCellValue(cell);
+                    importInfo.setImportPerson(importPerson);
+                    cell = row.getCell(64);
+                    String finalReviser = ExcelUtil.getCellValue(cell);
+                    importInfo.setFinalReviser(finalReviser);
+                    cell = row.getCell(65);
+                    String lastModifiedTime = ExcelUtil.getCellValue(cell);
+                    importInfo.setLastModifiedTime(DateUtil.parseDate(lastModifiedTime));
+                    
+                    //校验数据是否在数据库中存在，如果irNoSet中没有irno并且数据库中存在，则说明是异常数据
+                    ImportInfoSearchVo infoSearchVo = new ImportInfoSearchVo();
+                    infoSearchVo.setImportInfo(importInfo);
+                    ImportInfoVo importInfoVo = importInfoService.selectByIrNo(irNo);
+                    if (importInfoVo == null) {
+                        log.info("第"+rowNum+"条，Ir No:"+importInfo.getIrNo());
+                        importInfoService.insert(importInfo);
+                        item.setImportId(importInfo.getId());
+                        irNoSet.add(irNo);
+                    } else if (!irNoSet.contains(irNo)) {
+                        errorMap.put("status", "0");
+                        errorMap.put("msg", "进口信息已存在该数据：Ir NO:"+irNo);
+                        throw new Exception("进口信息已存在该数据：Ir NO:"+irNo);
+                    } else {
+                        item.setImportId(importInfoVo.getId());
+                    }
+                    items.add(item);
+                }
+            }
+            //批量插入items
+            importItemService.insertItems(items);
+
+            //将数据库已存在的irno也放入set一起判断最大的irno编号
+            List<ImportInfoVo> allList = importInfoService.selectAll();
+            for (ImportInfoVo vo : allList) {
+                irNoSet.add(vo.getIrNo());
+            }
+            //获取所有irno并且根据org分组得到编号最大的数字，更新t_ir_no表
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            String yearStr = String.valueOf(year - 2000);
+            Map<String, Integer> irNoMap = new HashMap<String, Integer>();
+            for (String irNo : irNoSet) {
+                irNo = irNo.trim();
+                String org = irNo.substring(0, 4);
+                String irYear = irNo.substring(6, 8);
+                Integer seqNo = Integer.parseInt(irNo.substring(irNo.length()-5));
+                if (yearStr.equals(irYear)) {
+                    if (irNoMap.containsKey(org)) {
+                        if (seqNo > irNoMap.get(org)) {
+                            irNoMap.put(org, seqNo);
+                        }
+                    } else {
+                        irNoMap.put(org, seqNo);
+                    }
+                }
+            }          
+             for (String org : irNoMap.keySet()) {
+                 IrNo irNo = new IrNo();
+                irNo.setYearNo(year);
+                irNo.setOrg(org);
+                List<IrNo> list = irNoService.selectForUpate(irNo);
+                if (CollectionUtils.isEmpty(list)) {
+                    irNo.setSeqNo(irNoMap.get(org));
+                    irNoService.insert(irNo);
+                } else {
+                    irNo = list.get(0);
+                    int seqNo = irNoMap.get(org);
+                    irNo.setSeqNo(seqNo);
+                    irNoService.updateById(irNo);
+                }
+             }
+            
+            dest.delete();
+            errorMap.put("status", "1");
+            
+            long endTime=System.currentTimeMillis(); //获取结束时间
+            log.info("importupload程序运行时间： "+(endTime-startTime)+"ms");
+            
+            return errorMap;
+
+        } catch (Exception e) {
+            log.error("Failed to upload file.", e);
+            //事务回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return errorMap;
+        } finally {
+            try {
+                if (null != workbook) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("Failed to close workbook.", e);
+            }
+        }
+    }
+}

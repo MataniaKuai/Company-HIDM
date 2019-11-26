@@ -1,0 +1,133 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<link rel="stylesheet" href="vendors/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css"/>
+	
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="vendors/bootstrapvalidator-0.4.5/dist/js/bootstrapValidator.min.js"></script>
+    <script type="text/javascript" src="js/business/releaseHis.js"></script>
+	
+	<script type="text/javascript">
+	    
+	    function updateSelectWithCache(className, key, url) {
+	    	if (sessionStorage[key] && sessionStorage[key].length > 0) {
+				var list = JSON.parse(sessionStorage[key]);
+				updateSelect(list, className);
+			} else {
+			    $.get(url, {}, function(result){
+				    if (result){
+					    var list = result.rows;
+					    sessionStorage[key] = JSON.stringify(list);
+					    updateSelect(list, className);
+				    } else {
+					    alert('系统错误');
+				    }
+			    },'json');
+			}
+	    }
+		
+	    function doExport(){
+			var irNoV = $('input[id="irNo"]').val().trim();
+
+			var selects = $('#importInfoTable').bootstrapTable('getSelections');
+			var ids = new Array();
+			if (selects.length > 0) {
+				for(var i = 0; i < selects.length; i ++){
+					if(selects[i].id != null){
+						ids[i] = selects[i].id;
+					}
+				}
+			}
+			
+			var url = "/importexport/report/release/export?irNo=" + irNoV + "&ids=" + ids;
+			
+			window.open(url,"newWindow","menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+		}
+	    
+		$(function(){
+			$('#importInfoTable').bootstrapTable({
+				pagination: true,
+				pageNumber:1,
+				pageSize:10,
+				pageList: [1, 10, 25, 50],
+				cache:false,
+				sidePagination: "server",
+				height:530,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'org',
+			        title: 'ORG'
+			    }, {
+			        field: 'irNo',
+			        title: 'IR NO'
+			    }, {
+			        field: 'addUser',
+			        title: '操作员工号'
+			    }, {
+			        field: 'addTime',
+			        title: '操作日期'
+			    },  {
+			        field: 'action',
+			        title: 'Status',
+			        formatter: actionFormatter
+			    }, {
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }],
+			    url : '/importexport/release/search',
+			    queryParams : function (params) {
+			    	var irNoV = $('input[id="irNo"]').val();
+                    var temp = {   
+                        rows: params.limit,                         //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名  
+                        sortOrder: params.order, //排位命令（desc，asc） 
+                        irNo: irNoV
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+	
+	<h4>Release/UnRelease报表</h4>
+	
+	<div id="listDiv">
+	<div id="searchDiv">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="input-group">
+            <span class="input-group-addon">IR No:</span>
+            <input id="irNo" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button id="search-file-btn" class="btn btn-primary" type="button" onclick="doSearch()">搜索</button>
+            <button id="search-file-btn" class="btn btn-primary" type="button" onclick="doExport()">导出</button>
+          </div>
+        </div>
+	</div>
+	
+	<table id="importInfoTable"></table>
+	</div>
+	

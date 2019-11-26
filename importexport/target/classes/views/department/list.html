@@ -1,0 +1,141 @@
+	<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			color:#666;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+	</style>
+	<script type="text/javascript">
+		var url;
+		function add(){
+			$('#dlg').dialog('open').dialog('setTitle','新增部门');
+			$('#fm').form('clear');
+			url = '/usualsys/department/save';
+		}
+		function edit(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','编辑部门');
+				$('#fm').form('load',row);
+				url = '/usualsys/department/save';
+			}
+		}
+		function save(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					if (result){
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					} else {
+						$.messager.show({
+							title: '错误',
+							msg: '系统错误'
+						});
+					}
+				}
+			});
+		}
+		function remove(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('确认','确认删除该部门吗?',function(r){
+					if (r){
+						var ids = new Array();
+						ids.push(row.id);
+						$.post('/usualsys/department/delete',{ids: ids},function(result){
+							if (result){
+								$('#dg').datagrid('reload');
+							} else {
+								$.messager.show({
+									title: '错误',
+									msg: '系统错误'
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+		
+		function doSearch(){
+			$('#dg').datagrid('load',{
+				id: $('#id').val(),
+	            name: $('#name').val(),
+	            ename: $('#ename').val()
+	        });
+		}
+	</script>
+
+
+	<h2>部门管理</h2>
+	
+	<div id="searchDiv">
+		<label>标识:</label>
+		<input id="id" style="line-height:26px;border:1px solid #ccc">
+		<label>名称:</label>
+		<input id="name" style="line-height:26px;border:1px solid #ccc">
+		<label>英文名称:</label>
+		<input id="ename" style="line-height:26px;border:1px solid #ccc">
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">搜索</a>
+	</div>
+	
+	<table id="dg" title="部门列表" class="easyui-datagrid" style="width:700px;height:500px"
+			url="/usualsys/department/search" toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="id" width="50">标识</th>
+				<th field="name" width="50">名称</th>
+				<th field="ename" width="50">英文名称</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">新增</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="edit()">编辑</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="remove()">删除</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">部门信息</div>
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>标识:</label>
+				<input name="id" class="easyui-validatebox" required="true">
+			</div>
+			<div class="fitem">
+				<label>名称:</label>
+				<input name="name" class="easyui-validatebox" required="true">
+			</div>
+			<div class="fitem">
+				<label>英文名称:</label>
+				<input name="ename" class="easyui-validatebox" required="true">
+			</div>
+			
+			<input name="id" type="hidden">
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+

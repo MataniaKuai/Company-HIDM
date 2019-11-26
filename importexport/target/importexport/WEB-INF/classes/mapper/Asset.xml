@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.AssetDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.AssetVo">
+        <id property="id" column="id" />
+        <result property="assetNo" column="asset_no" />
+        <result property="goodsCode" column="goods_code" />
+        <result property="hiTech" column="hi_tech" />
+        <result property="customOffice" column="custom_office" />
+        <result property="unit" column="unit" />
+        <result property="bondCla1" column="bond_cla1" />
+        <result property="bondCla2" column="bond_cla2" />
+        <result property="hsCode" column="hs_code" />
+        <result property="currency" column="currency" />
+        <result property="goodsDesc" column="goods_desc" />
+        <result property="chineseName" column="chinese_name" />
+        <result property="taxPreperty" column="tax_preperty" />
+        <result property="freeNo" column="free_no" />
+        <result property="iterm" column="iterm" />
+        <result property="text1" column="text_1" />
+        <result property="text2" column="text_2" />
+        <result property="text3" column="text_3" />
+        <result property="fileName" column="file_name" />
+        <result property="filePath" column="file_path" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+        <result property="goodsCodeName" column="goodsCodeName" />
+        <result property="customOfficeName" column="customOfficeName" />
+        <result property="bondCla1Name" column="bondCla1Name" />
+        <result property="bondCla2Name" column="bondCla2Name" />
+        <result property="currencyName" column="currencyName" />
+        <result property="taxPrepertyName" column="taxPrepertyName" />
+        <result property="freeNoName" column="freeNoName" />
+        <result property="employeeNo" column="employee_no" />
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_ASSET_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_asset(
+        <trim suffixOverrides=",">
+        id,
+        <if test="assetNo != null">
+            asset_no,
+        </if>
+        <if test="goodsCode != null">
+            goods_code,
+        </if>
+        <if test="hiTech != null">
+            hi_tech,
+        </if>
+        <if test="customOffice != null">
+            custom_office,
+        </if>
+        <if test="unit != null">
+            unit,
+        </if>
+        <if test="bondCla1 != null">
+            bond_cla1,
+        </if>
+        <if test="bondCla2 != null">
+            bond_cla2,
+        </if>
+        <if test="hsCode != null">
+            hs_code,
+        </if>
+        <if test="currency != null">
+            currency,
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc,
+        </if>
+        <if test="chineseName != null">
+            chinese_name,
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty,
+        </if>
+        <if test="freeNo != null">
+            free_no,
+        </if>
+        <if test="iterm != null">
+            iterm,
+        </if>
+        <if test="text1 != null">
+            text_1,
+        </if>
+        <if test="text2 != null">
+            text_2,
+        </if>
+        <if test="text3 != null">
+            text_3,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        <if test="employeeNo != null">
+            employee_no,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="assetNo != null">
+            #{assetNo},
+        </if>
+        <if test="goodsCode != null">
+            #{goodsCode},
+        </if>
+        <if test="hiTech != null">
+            #{hiTech},
+        </if>
+        <if test="customOffice != null">
+            #{customOffice},
+        </if>
+        <if test="unit != null">
+            #{unit},
+        </if>
+        <if test="bondCla1 != null">
+            #{bondCla1},
+        </if>
+        <if test="bondCla2 != null">
+            #{bondCla2},
+        </if>
+        <if test="hsCode != null">
+            #{hsCode},
+        </if>
+        <if test="currency != null">
+            #{currency},
+        </if>
+        <if test="goodsDesc != null">
+            #{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            #{chineseName},
+        </if>
+        <if test="taxPreperty != null">
+            #{taxPreperty},
+        </if>
+        <if test="freeNo != null">
+            #{freeNo},
+        </if>
+        <if test="iterm != null">
+            #{iterm},
+        </if>
+        <if test="text1 != null">
+            #{text1},
+        </if>
+        <if test="text2 != null">
+            #{text2},
+        </if>
+        <if test="text3 != null">
+            #{text3},
+        </if>
+        <if test="fileId != null">
+            #{fileId},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        <if test="employeeNo != null">
+            #{employeeNo},
+        </if>
+        </trim>
+        )
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_asset
+        <set>
+        <if test="assetNo != null">
+            asset_no=#{assetNo},
+        </if>
+        <if test="goodsCode != null">
+            goods_code=#{goodsCode},
+        </if>
+        <if test="hiTech != null">
+            hi_tech=#{hiTech},
+        </if>
+        <if test="customOffice != null">
+            custom_office=#{customOffice},
+        </if>
+        <if test="unit != null">
+            unit=#{unit},
+        </if>
+        <if test="bondCla1 != null">
+            bond_cla1=#{bondCla1},
+        </if>
+        <if test="bondCla2 != null">
+            bond_cla2=#{bondCla2},
+        </if>
+        <if test="hsCode != null">
+            hs_code=#{hsCode},
+        </if>
+        <if test="currency != null">
+            currency=#{currency},
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc=#{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            chinese_name=#{chineseName},
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty=#{taxPreperty},
+        </if>
+        <if test="freeNo != null">
+            free_no=#{freeNo},
+        </if>
+        <if test="iterm != null">
+            iterm=#{iterm},
+        </if>
+        <if test="text1 != null">
+            text_1=#{text1},
+        </if>
+        <if test="text2 != null">
+            text_2=#{text2},
+        </if>
+        <if test="text3 != null">
+            text_3=#{text3},
+        </if>
+        <if test="fileId != null">
+            file_id=#{fileId},
+        </if>
+        <if test="updateUser != null">
+            update_user=#{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME=#{updateTime},
+        </if>
+        <if test="employeeNo != null">
+            employee_no=#{employeeNo},
+        </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+    select * from
+    (
+    select t.*, ROWNUM RN from 
+    (
+    select m.*, f.file_name, f.file_path, tg.name || '(' || tg.code || ')' as goodsCodeName, 
+    c1.name as bondCla1Name, c2.name as bondCla2Name, tp.name || '(' || tp.code || ')' as taxPrepertyName, 
+    tc.name || '(' || tc.code || ')' as customOfficeName
+    from t_asset m
+      left join t_file f on m.file_id = f.id
+      left join t_goods_code tg on m.goods_code = tg.code
+      left join t_bond_cla1 c1 on m.bond_cla1 = c1.code
+      left join t_bond_cla2 c2 on m.bond_cla2 = c2.code
+      left join t_tax_preperty tp on m.tax_preperty = tp.code
+      left join t_custom_office tc on m.custom_office = tc.code
+	<where>
+	    <if test="asset != null">
+		  <if test="asset.id != null and asset.id != 0">
+			AND m.id = #{asset.id}
+		  </if>
+		  <if test="asset.assetNo != null and asset.assetNo != ''">
+			AND m.asset_no = #{asset.assetNo}
+		  </if>
+		  <if test="asset.goodsCode != null and asset.goodsCode != ''">
+			AND m.goods_code = #{asset.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRangeVo != null">
+		  <if test="timeRangeVo.startTime != null">
+			AND m.update_time &gt;= #{timeRangeVo.startTime}
+		  </if>
+		  <if test="timeRangeVo.endTime != null">
+			AND m.update_time &lt; #{timeRangeVo.endTime}
+		  </if>
+		</if>
+	</where>
+	order by m.id desc
+	)t
+	<if test="page != null">
+	    where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+	    )
+	<if test="page != null">
+	where RN &gt; #{page.rowStart}
+	</if>
+	
+    </select>
+    
+    <select id="selectExport" resultMap="BaseResultMap">
+        select a.*, f.file_name, f.file_path, g.name || '(' || g.code || ')' as goodsCodeName, 
+        c.name || '(' || c.code || ')' as customOfficeName, b1.name as bondCla1Name,
+        b2.name as bondCla2Name, cu.name as currencyName, tp.name || '(' || tp.code || ')' as taxPrepertyName, 
+        fn.name as freeNoName from t_asset a
+      left join t_file f on a.file_id = f.id
+      left join t_goods_code g on a.goods_code = g.code
+      left join t_custom_office c on a.custom_office = c.code
+      left join t_bond_cla1 b1 on a.bond_cla1 = b1.code
+      left join t_bond_cla2 b2 on a.bond_cla2 = b2.code
+      left join t_currency cu on a.currency = cu.code
+      left join t_tax_preperty tp on a.tax_preperty = tp.code
+      left join t_free_no fn on a.free_no = fn.code
+		  <where>
+		  		<if test="asset != null">
+		  			<if test="asset.id != null and asset.id != 0">
+			  			AND a.id = #{material.id}
+		  			</if>
+			  		<if test="asset.assetNo != null and asset.assetNo != ''">
+			  			AND a.asset_No = #{asset.assetNo}
+			  		</if>
+			  		<if test="asset.goodsCode != null and asset.goodsCode != ''">
+			  			AND a.goods_Code = #{asset.goodsCode}
+			  		</if>
+		  		</if>
+		  		<if test="timeRangeVo != null">
+		  			<if test="timeRangeVo.startTime != null">
+		  				AND a.update_time &gt;= #{timeRangeVo.startTime}
+		  			</if>
+		  			<if test="timeRangeVo.endTime != null">
+		  				AND a.update_time &lt;#{timeRangeVo.endTime}
+		  			</if>
+		  		</if>
+		  </where>
+		  order by a.id
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_asset m
+	<where>
+	    <if test="asset != null">
+		  <if test="asset.id != null and asset.id != 0">
+			AND m.id = #{asset.id}
+		  </if>
+		  <if test="asset.assetNo != null and asset.assetNo != ''">
+			AND m.asset_no = #{asset.assetNo}
+		  </if>
+		  <if test="asset.goodsCode != null and asset.goodsCode != ''">
+			AND m.goods_code = #{asset.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRangeVo != null">
+			<if test="timeRangeVo.startTime != null">
+				AND m.update_time &gt;=#{timeRangeVo.startTime}
+			</if>
+			<if test="timeRangeVo.endTime != null">
+				AND m.update_time &lt; #{timeRangeVo.endTime}
+			</if>
+		</if>
+	</where>
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_asset
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="selectAssetByIds" resultMap="BaseResultMap">
+        select * from t_asset t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    
+</mapper>

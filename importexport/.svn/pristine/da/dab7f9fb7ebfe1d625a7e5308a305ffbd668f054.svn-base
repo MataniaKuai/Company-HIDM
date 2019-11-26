@@ -1,0 +1,448 @@
+package com.hidm.importexport.vo;
+
+import java.math.BigDecimal;
+
+import com.hidm.importexport.entity.ImportInfo;
+
+public class ImportReportVo extends ImportInfo {
+    private String itemId;
+    
+    private String goodsCodeName;
+    
+    private String tradeTerm;
+    
+    private Double unitPrice;
+    
+    private BigDecimal qty;
+    
+    private Double totalAmount;
+    
+    private String currency;
+    
+    private String goodsDesc;
+    
+    private String chineseName;
+    
+    private String dept;
+    
+    private String assetNo;
+    
+    private String tradingType;
+    
+    private String hsCode;
+    
+    private String tariffTax;
+    
+    private String tariff;
+    
+    private String valueAddedTax;
+    
+    private String taxPreperty;
+    
+    private String poNo;
+    
+    private String materialNo;
+    
+    private String unit;
+    
+    private String freightTypeName;
+    
+    private String shipFromCountryName;
+    
+    private String shipFromPortName;
+    
+    private String loadingPortName;
+    
+    private String importCustomName;
+    
+    private String importPortName;
+    
+    private String dischargePortName;
+    
+    private String taxPrepertyCodeName;
+    
+    private String carTypeName;
+    
+    private String originalCountryName;
+    
+    private String exporter;
+    
+    private String tradingTypeName;
+    
+    private String taxPrepertyName;
+    
+    private String packingTypeName;
+    
+    private String appTypeName;
+    
+    private String grNo;
+    
+    private String employeeNo;
+    
+    private String stock;
+    
+    private String declaringCustomName;
+    
+    private float tariffRate;   //关税税率
+    
+    private String tradingUnit;   //交易单位
+    
+    private int transactionVolume;   //交易量
+    
+    private String legalUnit;   //法律单位
+    
+    private int legalQuantity;   //法定数量
+    
+    public String getTradingUnit() {
+		return tradingUnit;
+	}
+
+	public void setTradingUnit(String tradingUnit) {
+		this.tradingUnit = tradingUnit;
+	}
+
+	public int getTransactionVolume() {
+		return transactionVolume;
+	}
+
+	public void setTransactionVolume(int transactionVolume) {
+		this.transactionVolume = transactionVolume;
+	}
+
+	public String getLegalUnit() {
+		return legalUnit;
+	}
+
+	public void setLegalUnit(String legalUnit) {
+		this.legalUnit = legalUnit;
+	}
+
+	public int getLegalQuantity() {
+		return legalQuantity;
+	}
+
+	public void setLegalQuantity(int legalQuantity) {
+		this.legalQuantity = legalQuantity;
+	}
+
+    public float getTariffRate() {
+		return tariffRate;
+	}
+
+	public void setTariffRate(float tariffRate) {
+		this.tariffRate = tariffRate;
+	}
+
+    public String getGoodsCodeName() {
+        return goodsCodeName;
+    }
+
+    public void setGoodsCodeName(String goodsCodeName) {
+        this.goodsCodeName = goodsCodeName;
+    }
+
+    public String getTradeTerm() {
+        return tradeTerm;
+    }
+
+    public void setTradeTerm(String tradeTerm) {
+        this.tradeTerm = tradeTerm;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getQty() {
+        return qty;
+    }
+
+    public void setQty(BigDecimal qty) {
+        this.qty = qty;
+    }
+
+    public String getOriginalCountryName() {
+        return originalCountryName;
+    }
+
+    public void setOriginalCountryName(String originalCountryName) {
+        this.originalCountryName = originalCountryName;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getGoodsDesc() {
+        return goodsDesc;
+    }
+
+    public void setGoodsDesc(String goodsDesc) {
+        this.goodsDesc = goodsDesc;
+    }
+
+    public String getChineseName() {
+        return chineseName;
+    }
+
+    public void setChineseName(String chineseName) {
+        this.chineseName = chineseName;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public String getAssetNo() {
+        return assetNo;
+    }
+
+    public void setAssetNo(String assetNo) {
+        this.assetNo = assetNo;
+    }
+
+    public String getTradingType() {
+        return tradingType;
+    }
+
+    public void setTradingType(String tradingType) {
+        this.tradingType = tradingType;
+    }
+
+    public String getHsCode() {
+        return hsCode;
+    }
+
+    public void setHsCode(String hsCode) {
+        this.hsCode = hsCode;
+    }
+
+    public String getTariffTax() {
+        return tariffTax;
+    }
+
+    public void setTariffTax(String tariffTax) {
+        this.tariffTax = tariffTax;
+    }
+
+    public String getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(String tariff) {
+        this.tariff = tariff;
+    }
+
+    public String getValueAddedTax() {
+        return valueAddedTax;
+    }
+
+    public void setValueAddedTax(String valueAddedTax) {
+        this.valueAddedTax = valueAddedTax;
+    }
+
+    public String getTaxPreperty() {
+        return taxPreperty;
+    }
+
+    public void setTaxPreperty(String taxPreperty) {
+        this.taxPreperty = taxPreperty;
+    }
+
+    public String getPoNo() {
+        return poNo;
+    }
+
+    public void setPoNo(String poNo) {
+        this.poNo = poNo;
+    }
+
+    public String getMaterialNo() {
+        return materialNo;
+    }
+
+    public void setMaterialNo(String materialNo) {
+        this.materialNo = materialNo;
+    }
+
+    public String getFreightTypeName() {
+        return freightTypeName;
+    }
+
+    public void setFreightTypeName(String freightTypeName) {
+        this.freightTypeName = freightTypeName;
+    }
+
+    public String getShipFromCountryName() {
+        return shipFromCountryName;
+    }
+
+    public void setShipFromCountryName(String shipFromCountryName) {
+        this.shipFromCountryName = shipFromCountryName;
+    }
+
+    public String getShipFromPortName() {
+        return shipFromPortName;
+    }
+
+    public void setShipFromPortName(String shipFromPortName) {
+        this.shipFromPortName = shipFromPortName;
+    }
+
+    public String getLoadingPortName() {
+        return loadingPortName;
+    }
+
+    public void setLoadingPortName(String loadingPortName) {
+        this.loadingPortName = loadingPortName;
+    }
+
+    public String getImportCustomName() {
+        return importCustomName;
+    }
+
+    public void setImportCustomName(String importCustomName) {
+        this.importCustomName = importCustomName;
+    }
+
+    public String getImportPortName() {
+        return importPortName;
+    }
+
+    public void setImportPortName(String importPortName) {
+        this.importPortName = importPortName;
+    }
+
+    public String getDischargePortName() {
+        return dischargePortName;
+    }
+
+    public void setDischargePortName(String dischargePortName) {
+        this.dischargePortName = dischargePortName;
+    }
+
+    public String getCarTypeName() {
+        return carTypeName;
+    }
+
+    public void setCarTypeName(String carTypeName) {
+        this.carTypeName = carTypeName;
+    }
+
+    public String getTaxPrepertyCodeName() {
+        return taxPrepertyCodeName;
+    }
+
+    public void setTaxPrepertyCodeName(String taxPrepertyCodeName) {
+        this.taxPrepertyCodeName = taxPrepertyCodeName;
+    }
+
+    public String getExporter() {
+        return exporter;
+    }
+
+    public void setExporter(String exporter) {
+        this.exporter = exporter;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getTradingTypeName() {
+        return tradingTypeName;
+    }
+
+    public void setTradingTypeName(String tradingTypeName) {
+        this.tradingTypeName = tradingTypeName;
+    }
+
+    public String getTaxPrepertyName() {
+        return taxPrepertyName;
+    }
+
+    public void setTaxPrepertyName(String taxPrepertyName) {
+        this.taxPrepertyName = taxPrepertyName;
+    }
+
+    public String getPackingTypeName() {
+        return packingTypeName;
+    }
+
+    public void setPackingTypeName(String packingTypeName) {
+        this.packingTypeName = packingTypeName;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getAppTypeName() {
+        return appTypeName;
+    }
+
+    public void setAppTypeName(String appTypeName) {
+        this.appTypeName = appTypeName;
+    }
+
+    public String getGrNo() {
+        return grNo;
+    }
+
+    public void setGrNo(String grNo) {
+        this.grNo = grNo;
+    }
+
+    public String getEmployeeNo() {
+        return employeeNo;
+    }
+
+    public void setEmployeeNo(String employeeNo) {
+        this.employeeNo = employeeNo;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public String getDeclaringCustomName() {
+        return declaringCustomName;
+    }
+
+    public void setDeclaringCustomName(String declaringCustomName) {
+        this.declaringCustomName = declaringCustomName;
+    }
+    
+}

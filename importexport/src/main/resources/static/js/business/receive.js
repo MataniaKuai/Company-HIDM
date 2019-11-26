@@ -1,0 +1,506 @@
+function putFormValueByObj(importInfo) {
+	if (!importInfo) {
+		return false;
+	}
+
+	var idV = importInfo.id;
+	var orgV = importInfo.org;
+	var freightTypeV = importInfo.freightType;
+	var goodsCodeV = importInfo.goodsCode;
+	var irNoV = importInfo.irNo;
+	var declarationNoV = importInfo.declarationNo;
+	var declarationTimeV = importInfo.declarationTime;
+	if (declarationTimeV && declarationTimeV.length >= 19) {
+		declarationTimeV = declarationTimeV.substring(0, 10);
+	}
+
+	var releaseTimeV = importInfo.releaseTime;
+	if (releaseTimeV && releaseTimeV.length >= 19) {
+		releaseTimeV = releaseTimeV.substring(0, 10);
+	}
+
+	var arriveTimeV = importInfo.arriveTime;
+	if (arriveTimeV && arriveTimeV.length >= 19) {
+		arriveTimeV = arriveTimeV.substring(0, 10);
+	}
+
+	var receiveTimeV = importInfo.receiveTime;
+	if (receiveTimeV && receiveTimeV.length >= 19) {
+		receiveTimeV = receiveTimeV.substring(0, 10);
+	}
+
+	var sailingTimeV = importInfo.sailingTime;
+	if (sailingTimeV && sailingTimeV.length >= 19) {
+		sailingTimeV = sailingTimeV.substring(0, 10);
+	}
+	
+	var inhouseDateV = importInfo.inhouseDate;
+	if(inhouseDateV && inhouseDateV.length >= 19) {
+		inhouseDateV = inhouseDateV.substring(0, 10);
+	}
+	
+	var outhouseDateV = importInfo.outhouseDate;
+	if(outhouseDateV && outhouseDateV.length >= 19) {
+		outhouseDateV = outhouseDateV.substring(0, 10);
+	}
+	
+	var lastModifiedTimeV = importInfo.lastModifiedTime;
+	if(lastModifiedTimeV && lastModifiedTimeV.length >= 19) {
+		lastModifiedTimeV = lastModifiedTimeV.substring(0, 10);
+	}
+
+	var gwV = importInfo.gw;
+	var nwV = importInfo.nw;
+	var chwV = importInfo.chw;
+	var totalPackageV = importInfo.totalPackage;
+	var packingTypeV = importInfo.packingType;
+	var recordNoV = importInfo.recordNo;
+	var unusualV = importInfo.unusual;
+	var appTypeV = importInfo.appType;
+	var brokerV = importInfo.broker;
+	var forwarderV = importInfo.forwarder;
+	var freightTermV = importInfo.freightTerm;
+	var blV = importInfo.bl;
+	var mawbV = importInfo.mawb;
+	var hawbV = importInfo.hawb;
+	var flightVesselVoyV = importInfo.hawb;
+	var shipFromCountryNameV = importInfo.shipFromCountryName;
+	var shipFromPortNameV = importInfo.shipFromPortName;
+	var loadingPortNameV = importInfo.loadingPortName;
+	var dischargePortNameV = importInfo.dischargePortName;
+	var invoiceNoV = importInfo.invoiceNo;
+	var importCustomNameV = importInfo.importCustomName;
+	var lcNoV = importInfo.lcNo;
+	var containerNoV = importInfo.containerNo;
+	var carTypeV = importInfo.carType;
+	var carNoV = importInfo.carNo;
+	var rmaNOV = importInfo.rmaNO;
+	var rmaQtyV = importInfo.rmaQty;
+	var originalDeclarationNoV = importInfo.originalDeclarationNo;
+	var originalIrNoV = importInfo.originalIrNo;
+	var importPersonV = importInfo.importPerson;
+	var finalReviserV = importInfo.finalReviser;
+	var remarksV = importInfo.remarks;
+	var statusV = importInfo.status;
+	var declaringCustomV = importInfo.declaringCustom;
+	var originalCountryNameV = importInfo.originalCountryName;
+	var tradingTypeNameV = importInfo.tradingTypeName;
+	var taxPrepertyNameV = importInfo.taxPrepertyName;
+	var tariffTaxV = importInfo.tariffTax;
+	var tariffV = importInfo.tariff;
+	var valueAddedTaxV = importInfo.valueAddedTax;
+
+	$('select[name="org"]').selectpicker('val', orgV);
+	$('select[name="freightType"]').selectpicker('val', freightTypeV);
+	$('select[name="goodsCode"]').selectpicker('val', goodsCodeV);
+	$('input[name="irNo"]').val(irNoV);
+	$('input[name="declarationNo"]').val(declarationNoV);
+	$('input[name="declarationTime"]').val(declarationTimeV);
+	$('input[name="releaseTime"]').val(releaseTimeV);
+	$('input[name="arriveTime"]').val(arriveTimeV);
+	$('input[name="receiveTime"]').val(receiveTimeV);
+	$('input[name="sailingTime"]').val(sailingTimeV);
+	$('input[name="gw"]').val(gwV);
+	$('input[name="nw"]').val(nwV);
+	$('input[name="chw"]').val(chwV);
+	$('input[name="totalPackage"]').val(totalPackageV);
+	$('select[name="packingType"]').selectpicker('val', packingTypeV);
+	$('input[name="recordNo"]').val(recordNoV);
+	$('input[name="unusual"]').prop('checked', false);
+	$('input[name="unusual"][value="' + unusualV + '"]').prop('checked', true);
+	$('select[name="appType"]').selectpicker('val', appTypeV);
+	$('input[name="broker"]').val(brokerV);
+	$('input[name="forwarder"]').val(forwarderV);
+	$('select[name="freightTerm"]').selectpicker('val', freightTermV);
+	$('input[name="bl"]').val(blV);
+	$('input[name="mawb"]').val(mawbV);
+	$('input[name="hawb"]').val(hawbV);
+	$('input[name="flightVesselVoy"]').val(flightVesselVoyV);
+	$('input[name="shipFromCountryName"]').val(shipFromCountryNameV);
+	$('input[name="shipFromPortName"]').val(shipFromPortNameV);
+	$('input[name="loadingPortName"]').val(loadingPortNameV);
+	$('input[name="dischargePortName"]').val(dischargePortNameV);
+	$('input[name="inhouseDate"]').val(inhouseDateV);
+	$('input[name="outhouseDate"]').val(outhouseDateV);
+	$('input[name="invoiceNo"]').val(invoiceNoV);
+	$('input[name="importCustomName"]').val(importCustomNameV);
+	$('input[name="lcNo"]').val(lcNoV);
+	$('input[name="containerNo"]').val(containerNoV);
+	$('select[name="carType"]').selectpicker('val', carTypeV);
+	$('input[name="carNo"]').val(carNoV);
+	$('input[name="rmaNO"]').val(rmaNOV);
+	$('input[name="rmaQty"]').val(rmaQtyV);
+	$('input[name="originalDeclarationNo"]').val(originalDeclarationNoV);
+	$('input[name="originalIrNo"]').val(originalIrNoV);
+	$('input[name="importPerson"]').val(importPersonV);
+	$('input[name="finalReviser"]').val(finalReviserV);
+	$('input[name="lastModifiedTime"]').val(lastModifiedTimeV);
+	$('input[name="remarks"]').val(remarksV);
+	$('input[name="status"]').val(statusV);
+	$('input[name="declaringCustom"]').val(declaringCustomV);
+	$('input[name="originalCountryName"]').val(originalCountryNameV);
+	$('input[name="tradingTypeName"]').val(tradingTypeNameV);
+	$('input[name="taxPrepertyName"]').val(taxPrepertyNameV);
+	$('input[name="tariffTax"]').val(tariffTaxV);
+	$('input[name="tariff"]').val(tariffV);
+	$('input[name="valueAddedTax"]').val(valueAddedTaxV);
+
+	$('input[name="id"]').val(idV);
+
+	$('#dataDiv').show();
+	$('#listDiv').hide();
+		
+	return true;
+
+}
+
+function putFormValue() {
+	var selects = $('#importInfoTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var orgV = selects[0].org;
+		var freightTypeV = selects[0].freightType;
+		var goodsCodeV = selects[0].goodsCode;
+		var irNoV = selects[0].irNo;
+		var declarationNoV = selects[0].declarationNo;
+		var declarationTimeV = selects[0].declarationTime;
+		if (declarationTimeV && declarationTimeV.length >= 19) {
+			declarationTimeV = declarationTimeV.substring(0, 10);
+		}
+
+		var releaseTimeV = selects[0].releaseTime;
+		if (releaseTimeV && releaseTimeV.length >= 19) {
+			releaseTimeV = releaseTimeV.substring(0, 10);
+		}
+		
+		var arriveTimeV = selects[0].arriveTime;
+		if (arriveTimeV && arriveTimeV.length >= 19) {
+			arriveTimeV = arriveTimeV.substring(0, 10);
+		}
+		
+		var receiveTimeV = selects[0].receiveTime;
+		if (receiveTimeV && receiveTimeV.length >= 19) {
+			receiveTimeV = receiveTimeV.substring(0, 10);
+		}
+		
+		var sailingTimeV = selects[0].sailingTime;
+		if (sailingTimeV && sailingTimeV.length >= 19) {
+			sailingTimeV = sailingTimeV.substring(0, 10);
+		}
+		
+		var inhouseDateV = selects[0].inhouseDate;
+		if(inhouseDateV && inhouseDateV.length >= 19) {
+			inhouseDateV = inhouseDateV.substring(0, 10);
+		}
+		
+		var outhouseDateV = selects[0].outhouseDate;
+		if(outhouseDateV && outhouseDateV.length >= 19) {
+			outhouseDateV = outhouseDateV.substring(0, 10);
+		}
+		
+		var lastModifiedTimeV = selects[0].lastModifiedTime;
+		if(lastModifiedTimeV && lastModifiedTimeV.length >= 19) {
+			lastModifiedTimeV = lastModifiedTimeV.substring(0, 10);
+		}
+		
+		var gwV = selects[0].gw;
+		var nwV = selects[0].nw;
+		var chwV = selects[0].chw;
+		var totalPackageV = selects[0].totalPackage;
+		var packingTypeV = selects[0].packingType;
+		var recordNoV = selects[0].recordNo;
+		var unusualV = selects[0].unusual;
+		var appTypeV = selects[0].appType;
+		var brokerV = selects[0].broker;
+		var forwarderV = selects[0].forwarder;
+		var freightTermV = selects[0].freightTerm;
+		var blV = selects[0].bl;
+		var mawbV = selects[0].mawb;
+		var hawbV = selects[0].hawb;
+		var flightVesselVoyV = selects[0].hawb;
+		var shipFromCountryNameV = selects[0].shipFromCountryName;
+		var shipFromPortNameV = selects[0].shipFromPortName;
+		var loadingPortNameV = selects[0].loadingPortName;
+		var dischargePortNameV = selects[0].dischargePortName;
+		var invoiceNoV = selects[0].invoiceNo;
+		var importCustomNameV = selects[0].importCustomName;
+		var lcNoV = selects[0].lcNo;
+		var containerNoV = selects[0].containerNo;
+		var carTypeV = selects[0].carType;
+		var carNoV = selects[0].carNo;
+		var rmaNOV = selects[0].rmaNO;
+		var rmaQtyV = selects[0].rmaQty;
+		var originalDeclarationNoV = selects[0].originalDeclarationNo;
+		var originalIrNoV = selects[0].originalIrNo;
+		var importPersonV = selects[0].importPerson;
+		var finalReviserV = selects[0].finalReviser;
+		var remarksV = selects[0].remarks;
+		var statusV = selects[0].status;
+		var declaringCustomV = selects[0].declaringCustom;
+		var originalCountryNameV = selects[0].originalCountryName;
+		var tradingTypeNameV = selects[0].tradingTypeName;
+		var taxPrepertyNameV = selects[0].taxPrepertyName;
+		var tariffTaxV = selects[0].tariffTax;
+		var tariffV = selects[0].tariff;
+		var valueAddedTaxV = selects[0].valueAddedTax;
+		
+		$('select[name="org"]').selectpicker('val', orgV);
+		$('select[name="freightType"]').selectpicker('val', freightTypeV);
+		$('select[name="goodsCode"]').selectpicker('val', goodsCodeV);
+		$('input[name="irNo"]').val(irNoV);
+		$('input[name="declarationNo"]').val(declarationNoV);
+		$('input[name="declarationTime"]').val(declarationTimeV);
+		$('input[name="releaseTime"]').val(releaseTimeV);
+		$('input[name="arriveTime"]').val(arriveTimeV);
+		$('input[name="receiveTime"]').val(receiveTimeV);
+		$('input[name="sailingTime"]').val(sailingTimeV);
+		$('input[name="gw"]').val(gwV);
+		$('input[name="nw"]').val(nwV);
+		$('input[name="chw"]').val(chwV);
+		$('input[name="totalPackage"]').val(totalPackageV);
+		$('select[name="packingType"]').selectpicker('val', packingTypeV);
+		$('input[name="recordNo"]').val(recordNoV);
+		$('input[name="unusual"]').prop('checked', false);
+		$('input[name="unusual"][value="' + unusualV + '"]').prop('checked', true);
+		$('select[name="appType"]').selectpicker('val', appTypeV);
+		$('input[name="broker"]').val(brokerV);
+		$('input[name="forwarder"]').val(forwarderV);
+		$('select[name="freightTerm"]').selectpicker('val', freightTermV);
+		$('input[name="bl"]').val(blV);
+		$('input[name="mawb"]').val(mawbV);
+		$('input[name="hawb"]').val(hawbV);
+		$('input[name="flightVesselVoy"]').val(flightVesselVoyV);
+		$('input[name="shipFromCountryName"]').val(shipFromCountryNameV);
+		$('input[name="shipFromPortName"]').val(shipFromPortNameV);
+		$('input[name="loadingPortName"]').val(loadingPortNameV);
+		$('input[name="dischargePortName"]').val(dischargePortNameV);
+		$('input[name="inhouseDate"]').val(inhouseDateV);
+		$('input[name="outhouseDate"]').val(outhouseDateV);
+		$('input[name="invoiceNo"]').val(invoiceNoV);
+		$('input[name="importCustomName"]').val(importCustomNameV);
+		$('input[name="lcNo"]').val(lcNoV);
+		$('input[name="containerNo"]').val(containerNoV);
+		$('select[name="carType"]').selectpicker('val', carTypeV);
+		$('input[name="carNo"]').val(carNoV);
+		$('input[name="rmaNO"]').val(rmaNOV);
+		$('input[name="rmaQty"]').val(rmaQtyV);
+		$('input[name="originalDeclarationNo"]').val(originalDeclarationNoV);
+		$('input[name="originalIrNo"]').val(originalIrNoV);
+		$('input[name="importPerson"]').val(importPersonV);
+		$('input[name="finalReviser"]').val(finalReviserV);
+		$('input[name="lastModifiedTime"]').val(lastModifiedTimeV);
+		$('input[name="remarks"]').val(remarksV);
+		$('input[name="status"]').val(statusV);
+		$('input[name="declaringCustom"]').val(declaringCustomV);
+		$('input[name="originalCountryName"]').val(originalCountryNameV);
+		$('input[name="tradingTypeName"]').val(tradingTypeNameV);
+		$('input[name="taxPrepertyName"]').val(taxPrepertyNameV);
+		$('input[name="tariffTax"]').val(tariffTaxV);
+		$('input[name="tariff"]').val(tariffV);
+		$('input[name="valueAddedTax"]').val(valueAddedTaxV);
+		
+		$('input[name="id"]').val(idV);
+
+		$('#dataDiv').show();
+		$('#listDiv').hide();
+		
+		return true;
+	}
+	
+	return false;
+}
+
+function view() {
+	if (!putFormValue()) {
+		alert('只能选择一条记录查看');
+		
+		return;
+	}
+	
+	$('#myTab a[href="#home"]').tab('show');
+}
+
+function receive() {
+	var selects = $('#importInfoTable').bootstrapTable('getSelections');
+	
+	if (selects.length != 1) {
+		alert('只能选择一条记录进行收货/取消收货操作。');
+		return;
+	}
+	
+	var statusV = selects[0].status;
+	if (statusV != 1 && statusV !=2) {
+		alert('只有状态为已Release或者部分收货的记录，才能执行收货操作。');
+		return;
+	}
+	
+	var url = "receive/receive_manage?irNo=" + selects[0].irNo;
+	showcontent(url);
+}
+
+function closeDataDiv() {
+	var url = "receive/receive/manage";
+	showcontent(url);
+}
+
+function release(){
+	var selects = $('#importInfoTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var statusV = selects[0].status;
+		var irNoV = selects[0].irNo;
+		
+		if (statusV != 0) {
+			alert('只有状态为已保存的记录，才能执行Release操作。');
+			return;
+		}
+		
+		$.post('/importexport/receive/release',
+			{
+				id: idV, status: 1, irNo: irNoV
+			},
+			function(result) {
+				var status = result.status;
+	        	if ("1" == status) {
+	        		alert("已成功Release");
+	        		doSearch();
+	        	} else {
+	        		alert(result.msg);
+	        	}
+			},'json');
+	} else {
+		alert("只能选择一条记录Release");
+	}
+}
+
+function unRelease() {
+	var selects = $('#importInfoTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var statusV = selects[0].status;
+		var irNoV = selects[0].irNo;
+		
+		if (statusV != 1) {
+			alert('只有状态为已Release的记录，才能执行unRelease操作。');
+			return;
+		}
+		
+		$.post('/importexport/receive/unRelease',
+			{
+				id: idV, status: 0, irNo: irNoV
+			},
+			function(result) {
+				if (result == '0') {
+					alert("已成功执行unrelease操作！");
+					doSearch();
+				} else if(result == '1') {
+					alert('id为空');
+				} else if(result == '2') {
+					alert('该进口单中有部分item已收货');
+				} else {
+					alert('系统错误');
+				}
+			},
+			'html'
+		);
+	} else {
+		alert("只能选择一条记录Release");
+	}
+}
+
+function uploadBatchInfo() {
+	var selects = $('#importInfoTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var statusV = selects[0].status;
+		
+		if (statusV != 1) {
+			alert('只有状态为已Release的记录，才能执行上传批次信息操作。');
+			return;
+		}
+		
+		putFormValue();
+		
+		$('#batchEditBtn').show();
+		$('#batchRemoveBtn').show();
+		$('#uploadBatchDiv').show();
+		
+		$('#myTab a[href="#batchs"]').tab('show');
+	} else {
+		alert("只能选择一条记录Release");
+	}
+}
+
+function doSearch(){
+	var irNoV = $('input[id="irNo"]').val();
+    
+    $('#importInfoTable').bootstrapTable('selectPage', 1);
+	$('#importInfoTable').bootstrapTable('refresh', {query:{irNo: irNoV, page:1}});
+}
+
+function declarationTimeFormatter(value, row, index) {
+	if (value && value.length >= 19) {
+		return value.substring(0, 10);
+	}
+	
+	return value;
+}
+
+function releaseTimeFormatter(value, row, index) {
+	if (value && value.length >= 19) {
+		return value.substring(0, 10);
+	}
+	
+	return value;
+}
+
+function updateSelect(list, className) {
+	var html = "";
+	for (var i=0; i < list.length; i++)
+	{
+        var item = list[i];
+        html += "<option value='" + item.code + "'>" + item.name + "</option>";
+	}
+	$("." + className).html(html);
+	$("." + className).selectpicker('refresh');
+}
+
+function updateSelectWithCache(className, key, url) {
+	if (sessionStorage[key] && sessionStorage[key].length > 0) {
+		var list = JSON.parse(sessionStorage[key]);
+		updateSelect(list, className);
+	} else {
+	    $.post(url, {}, function(result){
+		    if (result){
+			    var list = result.rows;
+			    sessionStorage[key] = JSON.stringify(list);
+			    updateSelect(list, className);
+		    } else {
+			    alert('系统错误');
+		    }
+	    },'json');
+	}
+}
+
+function updateSelectByUrl(className, url) {
+	$.get(url, {}, function(result){
+	    if (result){
+		    var list = result.rows;
+		    updateSelect(list, className);
+	    } else {
+		    alert('系统错误');
+	    }
+    },'json');
+}
+
+
+function updateSelect(list, className) {
+	var html = "";
+	for (var i=0; i < list.length; i++)
+	{
+        var item = list[i];
+        html += "<option value='" + item.code + "'>" + item.name + "</option>";
+	}
+	$("." + className).html(html);
+	$("." + className).selectpicker('refresh');
+}

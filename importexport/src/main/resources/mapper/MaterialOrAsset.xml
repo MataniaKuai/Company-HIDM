@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.MaterialOrAssetSearchDao">
+	    <resultMap type="com.hidm.importexport.vo.MaterialVo" id="BaseResultMap">
+	    <result property="materialNo" column="Material_No"/>
+		<result property="assetNo" column="Asset_No"/>
+	    <result property="goodsCode" column="Goods_Code"/>
+	    <result property="hiTech" column="Hi_Tech"/>
+	    <result property="customOffice" column="Custom_Office"/>
+	    <result property="unit" column="Unit"/>
+	    <result property="bondCla1" column="Bond_CLa1"/>
+	    <result property="bondCla2" column="Bond_CLa2"/>
+	    <result property="hsCode" column="Hs_Code"/>
+	    <result property="currency" column="Currency"/>
+	    <result property="goodsDesc" column="Goods_DESC"/>
+	    <result property="chineseName" column="CHINESE_NAME"/>
+	    <result property="taxPreperty" column="Tax_Preperty"/>
+	    <result property="freeNo" column="FREE_NO"/>
+	    <result property="iterm" column="ITERM"/>
+	    <result property="text1" column="Text_1"/>
+	    <result property="text2" column="Text_2"/>
+		<result property="text3" column="Text_3" />
+		<result property="addTime" column="ADD_TIME" />
+		<result property="updateTime" column="UPDATE_TIME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+		<result property="goodsCodeName" column="goodsCodeName" />
+        <result property="customOfficeName" column="customOfficeName" />
+        <result property="bondCla1Name" column="bondCla1Name" />
+        <result property="bondCla2Name" column="bondCla2Name" />
+        <result property="currencyName" column="currencyName" />
+        <result property="taxPrepertyName" column="taxPrepertyName" />
+        <result property="freeNoName" column="freeNoName" />
+        <result property="employeeNo" column="employee_no" />
+		
+	</resultMap>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+		select * from (
+	    select T.*, bc1.name as bondCla1Name, bc2.name as bondCla2Name, gc.name || '(' || gc.code || ')' as goodsCodeName, ROWNUM RN,
+	    tp.name || '(' || tp.code || ')' as taxPrepertyName from (
+	    
+	        (select A.Goods_Code, A.Custom_Office, A.Unit, A.Hs_Code, '' as Material_No, A.Asset_No, 
+	            A.Bond_CLa1, A.Bond_CLa2, A.Goods_DESC, A.CHINESE_NAME, A.Currency, A.Hi_Tech, 
+	            A.Text_1, A.Text_2, A.Text_3, A.Tax_Preperty, A.FREE_NO, A.Iterm, A.UPDATE_TIME, A.ADD_TIME,
+	            F.File_Name, F.File_Path
+	            from T_ASSET A LEFT  JOIN T_FILE F ON A.FILE_ID = F.ID)
+	        union
+	           (select M.Goods_Code, M.Custom_Office, M.Unit, M.Hs_Code, M.Material_No, '' as Asset_No, 
+	               M.Bond_CLa1, M.Bond_CLa2, M.Goods_DESC, M.CHINESE_NAME, M.Currency, M.Hi_Tech, 
+	               '' as Text_1, '' as Text_2, '' as Text_3, M.Tax_Preperty, M.FREE_NO, M.ITERM, M.UPDATE_TIME, M.ADD_TIME,
+	               L.File_Name, L.File_Path
+	           from T_MATERIAL M LEFT JOIN T_FILE L ON M.FILE_ID = L.ID) 
+	    ) T
+	      left join t_bond_cla1 bc1 on T.Bond_Cla1 = bc1.code
+	      left join t_bond_cla2 bc2 on T.Bond_Cla2 = bc2.code
+	      left join t_goods_code gc on T.goods_code = gc.code
+	      left join t_tax_preperty tp on T.tax_preperty = tp.code
+		<where>
+			<if test="timeRange != null">
+			  <if test="timeRange.startTime != null">
+				AND T.update_time &gt;= #{timeRange.startTime}
+			  </if>
+			  <if test="timeRange.endTime != null">
+				AND T.update_time &lt; #{timeRange.endTime}
+			  </if>
+			</if>
+			<if test="goodsCode != null and goodsCode != ''">
+			AND T.Goods_Code = #{goodsCode}
+		    </if>
+			<if test="page != null">
+		     AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		    </if>
+		</where>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+    </select>
+    
+    
+    <select id="selectExport" resultMap="BaseResultMap">
+    	select T.*,g.name || '(' || g. code || ')' as goodsCodeName, c.name || '(' || c.code || ')' as customOfficeName, 
+    	b1.name as bondCla1Name, b2.name as bondCla2Name, ROWNUM,
+    	cu.name as currencyName, tp.name || '(' || tp.code || ')' as taxPrepertyName, fn.name freeNoName from (
+    
+        (select A.Goods_Code, A.Custom_Office, A.Unit, A.Hs_Code, '' as Material_No, A.Asset_No, 
+            A.Bond_CLa1, A.Bond_CLa2, A.Goods_DESC, A.CHINESE_NAME, A.Currency, A.Hi_Tech, 
+            A.Text_1, A.Text_2, A.Text_3, A.Tax_Preperty, A.FREE_NO, A.Iterm, A.UPDATE_TIME, A.ADD_TIME,
+            F.File_Name, F.File_Path, A.employee_no
+            from T_ASSET A LEFT  JOIN T_FILE F ON A.FILE_ID = F.ID)
+        union
+           (select M.Goods_Code, M.Custom_Office, M.Unit, M.Hs_Code, M.Material_No, '' as Asset_No, 
+               M.Bond_CLa1, M.Bond_CLa2, M.Goods_DESC, M.CHINESE_NAME, M.Currency, M.Hi_Tech, 
+               M.Text_1, M.Text_2, M.Text_3, M.Tax_Preperty, M.FREE_NO, M.ITERM, M.UPDATE_TIME, M.ADD_TIME,
+               L.File_Name, L.File_Path, M.employee_no
+           from T_MATERIAL M LEFT JOIN T_FILE L ON M.FILE_ID = L.ID) 
+	    ) T 
+	      left join t_goods_code g on T.goods_code = g.code
+	      left join t_custom_office c on T.custom_office = c.code
+	      left join t_bond_cla1 b1 on T.bond_cla1 = b1.code
+	      left join t_bond_cla2 b2 on T.bond_cla2 = b2.code
+	      left join t_currency cu on T.currency = cu.code
+	      left join t_tax_preperty tp on T.tax_preperty = tp.code
+	      left join t_free_no fn on T.free_no = fn.code
+	        <where>
+			    <if test="materialNos != null and assetNos != null">
+	        		(
+				</if>
+			    <if test="materialNos != null and materialNos.length > 0">
+					T.Material_No in 
+			        <foreach collection="materialNos" open=" (" close=")" item="materialNo" separator=",">
+			            #{materialNo}
+			        </foreach>
+				</if>
+			    <if test="assetNos != null and assetNos.length > 0">
+					OR T.Asset_No in 
+			        <foreach collection="assetNos" open=" (" close=")" item="assetNo" separator=",">
+			            #{assetNo}
+			        </foreach>
+				</if>
+			    <if test="materialNos != null and assetNos != null">
+					)
+				</if>
+				<if test="timeRange != null">
+				  <if test="timeRange.startTime != null">
+					AND T.update_time &gt;= #{timeRange.startTime}
+				  </if>
+				  <if test="timeRange.endTime != null">
+					AND T.update_time &lt; #{timeRange.endTime}
+				  </if>
+				</if>
+				  <if test="goodsCode != null and goodsCode != ''">
+				    AND T.Goods_Code = #{goodsCode}
+			      </if>
+			</where>
+    </select>
+    
+    
+    
+    <select id="count" resultType="int">
+		select count(1) from ( 
+			(select A.Goods_Code, A.Custom_Office, A.Unit, A.Hs_Code, '' as Material_No, A.Asset_No, 
+			        A.Bond_CLa1, A.Bond_CLa2, A.Goods_DESC, A.CHINESE_NAME, A.Currency, A.Hi_Tech, 
+			        A.Text_1, A.Text_2, A.Text_3, A.Tax_Preperty, A.FREE_NO, A.Iterm, A.UPDATE_TIME, A.ADD_TIME,
+			        F.File_Name, F.File_Path from T_ASSET A LEFT  JOIN T_FILE F ON A.FILE_ID = F.ID)
+			union
+			(select M.Goods_Code, M.Custom_Office, M.Unit, M.Hs_Code, M.Material_No, '' as Asset_No, 
+            M.Bond_CLa1, M.Bond_CLa2, M.Goods_DESC, M.CHINESE_NAME, M.Currency, M.Hi_Tech, 
+            '' as Text_1, '' as Text_2, '' as Text_3, M.Tax_Preperty, M.FREE_NO, M.ITERM, M.UPDATE_TIME, M.ADD_TIME, L.File_Name, L.File_Path
+			from T_MATERIAL M LEFT JOIN T_FILE L ON M.FILE_ID = L.ID) 
+		) T
+   		<where>
+			<if test="timeRange != null">
+			  <if test="timeRange.startTime != null">
+				AND T.update_time &gt;= #{timeRange.startTime}
+			  </if>
+			  <if test="timeRange.endTime != null">
+				AND T.update_time &lt; #{timeRange.endTime}
+			  </if>
+			</if>
+			  <if test="goodsCode != null and goodsCode != ''">
+			    AND T.Goods_Code = #{goodsCode}
+		      </if>
+		</where>
+    </select>
+</mapper>

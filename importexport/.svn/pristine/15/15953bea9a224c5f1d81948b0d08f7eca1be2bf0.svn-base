@@ -1,0 +1,112 @@
+    
+    <script type="text/javascript">
+        $(function(){
+            $('#importItemTable').bootstrapTable({
+                pagination: true,
+                pageNumber:1,
+                pageSize:10,
+                cache:false,
+                pageList: [1, 10, 25, 50],
+                sidePagination: "server",
+                height:240,
+                columns: [{
+                    checkbox: true,
+                    select: false,
+                }, {
+                    field: 'poNo',
+                    title: 'PO NO'
+                }, {
+                    field: 'poItem',
+                    title: 'PO Item'
+                }, {
+                    field: 'qty',
+                    title: 'QTY'
+                }, {
+                    field: 'unit',
+                    title: 'UNIT'
+                }, {
+                    field: 'grNo',
+                    title: 'GR No'
+                }, {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                }],
+                url : '/importexport/controlDetail/getItemInfo',
+                queryParams : function (params) {
+                    var assetNo = $('input[name="assetNo"]').val();
+                    var materialNo = $('input[name="materialNo"]').val();
+                    var irNo = $('input[name="irNo"]').val();
+                    var temp = {   
+                        rows: params.limit,                         //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名  
+                        sortOrder: params.order, //排位命令（desc，asc） 
+                        materialNo: materialNo, 
+                        assetNo: assetNo, 
+                        irNo: irNo,
+                        importItemId: ""
+                    };
+                    return temp;
+                },
+                clickToSelect: true
+            });
+        });
+    </script>
+    
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLabel">
+					监管明细信息
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goods Code</label>
+                    <div class="col-sm-4">
+                    <select name="goodsCode" class="form-control selectpicker goodsCode" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Material No</label>
+                    <div class="radio col-sm-4">
+                        <input type="text" name="materialNo" onBlur="getDescriptionByMate()" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Asset No</label>
+                    <div class="col-sm-4"><input type="text" name="assetNo" onBlur="getDescriptionByAsset()" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">IR No</label>
+                    <div class="col-sm-4"><input type="text" name="irNo" onBlur="getOtherInfo()" class="form-control"></div>
+                </div>
+                
+                <div class="form-group"> 
+                    <label class="col-sm-2 control-label">Goods Description</label>
+                    <div class="col-sm-4"><input type="text" name="goodsDesc" class="form-control"></div>
+                                       
+                    <label class="col-sm-2 control-label">中文品名</label>
+                    <div class="col-sm-4"><input type="text" name="chineseName" class="form-control"></div>
+                </div>
+                
+                <input type="hidden" name="id">
+                </form>
+			</div>
+		    <div class="btn-group" style="margin-top:2px;margin-bottom:2px">
+		        <button type="button" class="btn btn-default" onclick="importItemView()">查看</button>
+		        <button id="itemEditBtn" type="button" class="btn btn-default" onclick="importItemEdit()">编辑</button>
+		    </div>
+		    <table id="importItemTable"></table>
+		    
+		    <#include "item_edit.html">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+		</div>
+	</div>
+    </div>

@@ -1,0 +1,262 @@
+
+<link rel="stylesheet"
+	href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+<link rel="stylesheet"
+	href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+<script type="text/javascript"
+	src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+<script type="text/javascript"
+	src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript"
+	src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript"
+	src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+<link rel="stylesheet"
+	href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+	media="screen">
+<script type="text/javascript"
+	src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"
+	charset="UTF-8"></script>
+
+<script type="text/javascript">
+	    var goodsCodeMap = new Map();
+	    var taxPrepertyMap = new Map();
+	    
+	    function releaseTimeFormatter(value, row, index) {
+	    	if (value && value.length >= 19) {
+				return value.substring(0, 10);
+			}
+	    	
+	    	return value;
+		}
+	    
+	    function declarationTimeFormatter(value, row, index) {
+	    	if(value && value.length >= 19) {
+	    		return value.substring(0, 10);
+	    	}
+	    	
+	    	return value;
+	    }
+	    
+	    
+	    function goodsCodeFormatter(value, row, index) {
+			return goodsCodeMap.get(value);
+		}
+		
+		function taxPrepertyFormatter(value, row, index) {
+			return taxPrepertyMap.get(value);
+		}
+		
+		function doSearch(){
+			var irNoV = $('input[id="irNo"]').val().trim();
+			var materialNoV = $('input[id="materialNo"]').val();
+			var assetNoV = $('input[id="assetNo"]').val();
+			var goodsCodeV = $('select[id="goodsCode"]').val();
+			var startTimeV = $('input[id="startTime"]').val();
+			var endTimeV = $('input[id="endTime"]').val();
+		    
+		    $('#reportImportTable').bootstrapTable('selectPage', 1);
+			$('#reportImportTable').bootstrapTable('refresh', 
+				{query:
+				    {irNo: irNoV, materialNo: materialNoV, assetNo: assetNoV, goodsCode: goodsCodeV,
+					    startTime: startTimeV, endTime: endTimeV, page:1
+					}
+			    }
+			);
+		}
+		
+		function doExport(){
+			var irNoV = $('input[id="irNo"]').val().trim();
+			var materialNoV = $('input[id="materialNo"]').val();
+			var assetNoV = $('input[id="assetNo"]').val();
+			var goodsCodeV = $('select[id="goodsCode"]').val();
+			var startTimeV = $('input[id="startTime"]').val();
+			var endTimeV = $('input[id="endTime"]').val();
+
+			var selects = $('#reportImportTable').bootstrapTable('getSelections');
+			var itemIds = new Array()
+			if (selects.length > 0) {
+				for(var i = 0; i < selects.length; i ++){
+					itemIds[i] = selects[i].itemId;
+				}
+			}
+			var url = "/importexport/report/reportImportInfo/export?assetNo=" + assetNoV + "&irNo=" + irNoV + "&materialNo=" + materialNoV  + "&goodsCode=" + goodsCodeV 
+					+ "&startTime=" + startTimeV + "&endTime=" + endTimeV + "&itemIds=" + itemIds;
+			
+			window.open(url, "newWindow","menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");			
+		}
+		
+		$(function(){
+			$('#reportImportTable').bootstrapTable({
+				pagination: true,
+				cache:false,
+				pageNumber:1,
+				pageSize:10,
+				pageList: [1, 10, 25, 50],
+				sidePagination: "server",
+				height:530,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'org',
+			        title: 'ORG'
+			    }, {
+			        field: 'irNo',
+			        title: 'IR NO'
+			    }, {
+			        field: 'declarationNo',
+			        title: 'Declaration No'
+			    }, {
+			        field: 'declarationTime',
+			        title: 'Declaration Date',
+			        formatter: declarationTimeFormatter
+			    }, {
+			        field: 'releaseTime',
+			        title: 'Release Date',
+			        formatter: releaseTimeFormatter
+			    }, {
+			        field: 'exporter',
+			        title: 'Exporter'
+			    }, {
+			        field: 'qty',
+			        title: 'Qty'
+			    }, {
+			    	field: 'chineseName',
+			        title: '中文品名'
+			    }, {
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }, {
+			        field: 'itemId',
+			        title: 'itemId',
+			        visible: false
+			    }],
+			    url : '/importexport/report/reportImportInfo/search',
+			    queryParams : function (params) {
+			    	var irNoV = $('input[id="irNo"]').val().trim();
+					var materialNoV = $('input[id="materialNo"]').val();
+					var assetNoV = $('input[id="assetNo"]').val();
+					var goodsCodeV = $('select[id="goodsCode"]').val();
+					var startTimeV = $('input[id="startTime"]').val();
+					var endTimeV = $('input[id="endTime"]').val();
+                    var temp = {   
+                        rows: params.limit,                         //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名  
+                        sortOrder: params.order, //排位命令（desc，asc） 
+                        irNo: irNoV,
+                        materialNo: materialNoV, 
+                        assetNo: assetNoV, 
+                        goodsCode: goodsCodeV,
+					    startTime: startTimeV, 
+					    endTime: endTimeV
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+			$.post('/importexport/allgoodscodes', {}, function(result){
+				if (result){
+					var list = result.rows;
+					for (var i=0; i < list.length; i++)
+					{
+		    	        var item = list[i];
+		    	        var html = "<option value='" + item.code + "'>" + item.name + "</option>";
+		    	        $(".goodsCode").append(html);
+		    	        goodsCodeMap.set(item.code, item.name);
+					}
+					$('.goodsCode').selectpicker('refresh');
+				} else {
+					alert('系统错误');
+				}
+			},'json');
+			
+			$.post('/importexport/alltaxprepertys', {}, function(result){
+				if (result){
+					var list = result.rows;
+					for (var i=0; i < list.length; i++)
+					{
+		    	        var item = list[i];
+		    	        var html = "<option value='" + item.code + "'>" + item.name + "</option>";
+		    	        $(".taxPreperty").append(html);
+		    	        taxPrepertyMap.set(item.code, item.name);
+					}
+					$('.taxPreperty').selectpicker('refresh');
+				} else {
+					alert('系统错误');
+				}
+			},'json');
+			
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+
+<h4>进口数据报表</h4>
+
+<div id="searchDiv">
+	<div class="row" style="margin-top: 1px; margin-bottom: 1px">
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Ir No:</span> <input id="irNo"
+					class="form-control">
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Material No:</span> <input
+					id="materialNo" class="form-control">
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Asset No:</span> <input id="assetNo"
+					class="form-control">
+			</div>
+		</div>
+		
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Goods Code:</span> <select
+					id="goodsCode" class="form-control selectpicker goodsCode">
+					<option value="">请选择</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" style="margin-top: 1px; margin-bottom: 1px">
+
+		<div class="col-sm-5">
+			<div class="input-group">
+				<span class="input-group-addon">Time Trame:</span> <input
+					class="form-control form_date" id="startTime" type="text" value="">
+				<span class="input-group-addon">至</span> <input
+					class="form-control form_date" id="endTime" type="text" value="">
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<button id="search-file-btn" class="btn btn-primary" type="button"
+				onclick="doSearch()">搜索</button>
+			<button id="search-file-btn" class="btn btn-primary" type="button"
+				onclick="doExport()">导出</button>
+		</div>
+	</div>
+</div>
+
+<table id="reportImportTable"></table>

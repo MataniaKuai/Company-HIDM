@@ -1,0 +1,50 @@
+    <div class="modal fade" id="receiveErrorModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="receiveErrorLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="receiveErrorLabel">
+					<font color="red">收货错误</font>
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <div class="table-responsive">
+                <table class="table">
+                    <caption>数量错误信息</caption>
+                    <thead>
+                    <tr>
+                        <th>PO No</th>
+                        <th>PO Item</th>
+                        <th>Material No</th>
+                        <th>数量</th>
+                        <th>批次数量</th>
+                    </tr>
+                    </thead>
+                    <tbody id="receiveQtyErrorTbody">
+      
+                    </tbody>
+                </table>
+                
+                <table class="table">
+                    <caption>有效期错误信息</caption>
+                    <thead>
+                    <tr>
+                        <th>PO No</th>
+                        <th>PO Item</th>
+                        <th>Material No</th>
+                        <th>批次</th>
+                        <th>生产时间</th>
+                        <th>过期时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="receiveOverdueErrorTbody">
+      
+                    </tbody>
+                </table>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+    </div>

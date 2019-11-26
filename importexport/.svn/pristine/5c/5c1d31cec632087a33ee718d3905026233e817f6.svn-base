@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.IrNoDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.entity.IrNo">
+        <id property="id" column="id" />
+        <result property="yearNo" column="year_no" />
+        <result property="org" column="org" />
+        <result property="seqNo" column="seq_no" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            SELECT T_IR_NO_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_ir_no(id, year_no, org, seq_no)
+        VALUES(#{id}, #{yearNo}, #{org}, #{seqNo})
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_ir_no
+        <set>
+            seq_no = #{seqNo},
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+	select i.*from t_ir_no i
+	<where>
+	    i.year_no = #{yearNo}
+	    i.org = #{org}
+	</where>
+    </select>
+    
+    <select id="selectForUpate" resultMap="BaseResultMap">
+	select i.* from t_ir_no i
+	<where>
+	    i.year_no = #{yearNo}
+	    and i.org = #{org}
+	</where>
+	for update
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_ir_no
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteByYears">
+        delete from t_ir_no
+        WHERE year_no in
+        <foreach collection="array" open=" (" close=")" item="yearNo" separator=",">
+            #{yearNo}
+        </foreach>
+    </delete>
+</mapper>

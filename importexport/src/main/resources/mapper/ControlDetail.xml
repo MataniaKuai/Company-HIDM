@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.ControlDetailDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.ControlDetailVo">
+        <id property="id" column="id" />
+        <result property="materialNo" column="material_no" />
+        <result property="assetNo" column="asset_no" />
+        <result property="irNo" column="ir_no" />
+        <result property="goodsCode" column="goods_code" />
+        <result property="goodsDesc" column="goods_desc" />
+        <result property="chineseName" column="chinese_name" />
+        <result property="releaseTime" column="release_time" />
+        <result property="expireTime" column="expire_time" />
+        <result property="controlStatus" column="control_status" />
+        <result property="relieveMode" column="relieve_mode" />
+        <result property="taxPreperty" column="tax_preperty" />
+		<result property="poNo" column="po_no" />
+		<result property="poItem" column="po_item" />
+		<result property="grNo" column="gr_no" />
+		<result property="employeeNo" column="employee_no" />
+        
+        <result property="outTime" column="out_time" />
+        <result property="outReason" column="out_reason" />
+        <result property="reexportReason" column="reexport_reason" />
+        <result property="reexportNo" column="reexport_no" />
+        <result property="outReleaseNo" column="out_release_no" />
+        <result property="isReturn" column="is_return" />
+        <result property="returnTime" column="return_time" />
+        <result property="relieveTime" column="relieve_time" />
+        <result property="outQty" column="out_qty" />
+        
+        <result property="goodsCodeName" column="goodsCodeName" />
+        <result property="controlStatusName" column="controlStatusName" />
+        <result property="relieveModeName" column="relieveModeName" />
+        <result property="taxPrepertyName" column="taxPrepertyName" />
+        <result property="outReasonName" column="outReasonName" />
+        <result property="reexportReasonName" column="reexportReasonName" />
+        <result property="iterm" column="iterm" />
+        <result property="freeNo" column="free_no" />
+        <result property="hsCode" column="hs_code" />
+        <result property="unit" column="unit" />
+        <result property="currency" column="currency" />
+        <result property="unitPrice" column="unit_price" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="declarationNo" column="declaration_no" />
+        <result property="importItemId" column="import_itemid" />
+        <result property="poNo" column="po_no" />
+        <result property="poItem" column="po_item" />
+        <result property="grNo" column="gr_no" />
+        
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_CONTROL_DETAIL_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_control_detail(
+        <trim suffixOverrides=",">
+        id,
+        <if test="assetNo != null">
+            asset_no,
+        </if>
+        <if test="materialNo != null">
+            material_no,
+        </if>
+        <if test="irNo != null">
+            ir_no,
+        </if>
+        <if test="goodsCode != null">
+            goods_code,
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc,
+        </if>
+        <if test="chineseName != null">
+            chinese_name,
+        </if>
+        <if test="releaseTime != null">
+            release_Time,
+        </if>
+        <if test="expireTime != null">
+            expire_time,
+        </if>
+        <if test="controlStatus != null">
+            control_status,
+        </if>
+        <if test="relieveMode != null">
+            relieve_mode,
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty,
+        </if>
+        <if test="outTime != null">
+            out_time,
+        </if>
+        <if test="relieveTime != null">
+            relieve_time,
+        </if>
+        <if test="outReason != null">
+            out_reason,
+        </if>
+        <if test="reexportReason != null">
+            reexport_reason,
+        </if>
+        <if test="reexportNo != null">
+            reexport_no,
+        </if>
+        <if test="outReleaseNo != null">
+            out_release_no,
+        </if>
+        <if test="isReturn != null">
+            is_return,
+        </if>
+        <if test="returnTime != null">
+            return_time,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        <if test="importItemId != null">
+            import_itemid,
+        </if>
+        <if test="outQty != null">
+            out_qty,
+        </if>
+         <if test="employeeNo != null">
+            employee_no,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="assetNo != null">
+            #{assetNo},
+        </if>
+        <if test="materialNo != null">
+            #{materialNo},
+        </if>
+        <if test="irNo != null">
+            #{irNo},
+        </if>
+        <if test="goodsCode != null">
+            #{goodsCode},
+        </if>
+        <if test="goodsDesc != null">
+            #{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            #{chineseName},
+        </if>
+        <if test="releaseTime != null">
+            #{releaseTime},
+        </if>
+        <if test="expireTime != null">
+            #{expireTime},
+        </if>
+        <if test="controlStatus != null">
+            #{controlStatus},
+        </if>
+        <if test="relieveMode != null">
+            #{relieveMode},
+        </if>
+        <if test="taxPreperty != null">
+            #{taxPreperty},
+        </if>
+        <if test="outTime != null">
+            #{outTime},
+        </if>
+        <if test="relieveTime != null">
+            #{relieveTime},
+        </if>
+        <if test="outReason != null">
+            #{outReason},
+        </if>
+        <if test="reexportReason != null">
+            #{reexportReason},
+        </if>
+        <if test="reexportNo != null">
+            #{reexportNo},
+        </if>
+        <if test="outReleaseNo != null">
+            #{outReleaseNo},
+        </if>
+        <if test="isReturn != null">
+            #{isReturn},
+        </if>
+        <if test="returnTime != null">
+            #{returnTime},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        <if test="importItemId != null">
+            #{importItemId},
+        </if>
+        <if test="outQty != null">
+            #{outQty},
+        </if>
+         <if test="employeeNo != null">
+            #{employeeNo},
+        </if>
+        </trim>
+        )
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_control_detail
+        <set>
+        <if test="materialNo != null">
+            material_no=#{materialNo},
+        </if>
+        <if test="assetNo != null">
+            asset_no=#{assetNo},
+        </if>
+        <if test="irNo != null">
+            ir_no=#{irNo},
+        </if>
+        <if test="goodsCode != null">
+            goods_code=#{goodsCode},
+        </if>
+        <if test="goodsDesc != null">
+            goods_desc=#{goodsDesc},
+        </if>
+        <if test="chineseName != null">
+            chinese_name=#{chineseName},
+        </if>
+        <if test="releaseTime != null">
+            release_time=#{releaseTime},
+        </if>
+        <if test="expireTime != null">
+            expire_time=#{expireTime},
+        </if>
+        <if test="relieveTime != null">
+            relieve_time=#{relieveTime},
+        </if>
+        <if test="controlStatus != null">
+            control_status=#{controlStatus},
+        </if>
+        <if test="relieveMode != null">
+            relieve_mode=#{relieveMode},
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty = #{taxPreperty},
+        </if>
+        <if test="outTime != null">
+            out_time=#{outTime},
+        </if>
+        <if test="outReason != null">
+            out_reason=#{outReason},
+        </if>
+        <if test="reexportReason != null">
+            reexport_reason=#{reexportReason},
+        </if>
+        <if test="reexportNo != null">
+            reexport_no=#{reexportNo},
+        </if>
+        <if test="outReleaseNo != null">
+            out_release_no=#{outReleaseNo},
+        </if>
+        <if test="isReturn != null">
+            is_return=#{isReturn},
+        </if>
+        <if test="returnTime != null">
+            return_time=#{returnTime},
+        </if>
+        <if test="updateUser != null">
+            update_user=#{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME=#{updateTime},
+        </if>
+        <if test="outQty != null">
+            out_qty=#{outQty},
+        </if>
+          <if test="employeeNo != null">
+            employee_no=#{employeeNo},
+        </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+    select * from
+    (
+    select t.*,ROWNUM RN from
+    (
+	select m.*, tc.name as controlStatusName, 
+	  tr.name as relieveModeName, 
+	  tg.name || '(' || tg.code || ')' as goodsCodeName, 
+      ii.po_no, ii.po_item, ii.gr_no, ii.qty
+	from t_control_detail m
+	left join t_control_status tc on m.control_status = tc.code
+	left join t_relieve_mode tr on m.relieve_mode = tr.code
+	left join t_goods_code tg on m.goods_code = tg.code
+    left join t_import_item ii on m.import_itemid = ii.id 
+	
+	<where>
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.id != null and controlDetail.id != 0">
+			AND m.id = #{controlDetail.id}
+		  </if>
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND m.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND m.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.irNo != null and controlDetail.irNo != ''">
+			AND m.ir_no = #{controlDetail.irNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND m.goods_code = #{controlDetail.goodsCode}
+		  </if>
+          <if test="controlDetail.importItemId != null and controlDetail.importItemId != ''">
+            AND m.import_itemid = #{controlDetail.importItemId}
+          </if>
+		</if>
+		<if test="onlyAsset == 1">
+		    AND m.asset_no is not null
+		</if>
+		<if test="onlyMaterial == 1">
+		    AND m.material_no is not null
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		
+	</where>
+	order by m.id desc
+	)t
+	<if test="page != null">
+	    where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+	    )
+	<if test="page != null">
+		where RN &gt; #{page.rowStart}
+	</if>
+    </select>
+    
+    
+    <select id="selectReportList" resultMap="BaseResultMap">
+    select * from
+    (
+	select m.*, tc.name as controlStatusName, 
+	  tg.name || '(' || tg.code || ')' as goodsCodeName, 
+	  case　when m.material_no is not null then tm.iterm else ta.iterm end as iterm,
+	  ii.po_no, ii.po_item, ii.gr_no, ii.qty, 
+	  ROWNUM RN 
+	  from t_control_detail m
+    left join t_import_item ii on m.import_itemid = ii.id 
+	left join t_control_status tc on m.control_status = tc.code
+	left join t_goods_code tg on m.goods_code = tg.code
+	left join t_asset ta on m.asset_no = ta.asset_no
+	left join t_material tm on m.material_no = tm.material_no
+	<where>
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND m.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND m.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND m.goods_code = #{controlDetail.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		<if test="page != null">
+	    AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+	</where>
+	order by m.id desc
+	)
+	<if test="page != null">
+		where RN &gt; #{page.rowStart}
+	</if>
+    </select>
+    
+    
+    <select id="count" resultType="int">
+	select count(*) from t_control_detail m
+	<where>
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.id != null and controlDetail.id != 0">
+			AND m.id = #{controlDetail.id}
+		  </if>
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND m.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND m.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.irNo != null and controlDetail.irNo != ''">
+			AND m.ir_no = #{controlDetail.irNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND m.goods_code = #{controlDetail.goodsCode}
+		  </if>
+		</if>
+		<if test="onlyAsset == 1">
+		    AND m.asset_no is not null
+		</if>
+		<if test="onlyMaterial == 1">
+		    AND m.material_no is not null
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="countReportList" resultType="int">
+	select count(*)
+	  from t_control_detail m
+	<where>
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND m.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND m.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND m.goods_code = #{controlDetail.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="selectExport" resultMap="BaseResultMap">
+	select i.*, g.name || '(' || g. code || ')' as goodsCodeName, 
+	c.name as controlStatusName, r.name as relieveModeName, tp.name || '(' || tp.code || ')' as taxPrepertyName,
+      o.name as outReasonName, rr.name as reexportReasonName, ti.po_no, ti.po_item, ti.gr_no, ti.qty
+  from t_control_detail i
+  left join T_goods_code g on i.goods_code = g.code
+  left join t_control_status c on i.control_status = c.code
+  left join t_relieve_mode r on i.relieve_mode = r.code
+  left join t_tax_preperty tp on i.tax_preperty = tp.code
+  left join t_out_reason o on i.out_reason = o.code
+  left join t_reexport_reason rr on i.reexport_reason = rr.code
+  left join t_import_item ti on i.import_itemid = ti.id
+	<where>
+	    <if test="materialNos != null and assetNos != null">
+       		(
+		</if>
+	    <if test="materialNos != null and materialNos.length > 0">
+			i.Material_No in 
+	        <foreach collection="materialNos" open=" (" close=")" item="materialNo" separator=",">
+	            #{materialNo}
+	        </foreach>
+		</if>
+	    <if test="assetNos != null and assetNos.length > 0">
+			OR i.Asset_No in 
+	        <foreach collection="assetNos" open=" (" close=")" item="assetNo" separator=",">
+	            #{assetNo}
+	        </foreach>
+		</if>
+	    <if test="materialNos != null and assetNos != null">
+			)
+		</if>
+				
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.id != null and controlDetail.id != 0">
+			AND i.id = #{controlDetail.id}
+		  </if>
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND i.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND i.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.irNo != null and controlDetail.irNo != ''">
+			AND i.ir_no = #{controlDetail.irNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND i.goods_code = #{controlDetail.goodsCode}
+		  </if>
+		</if>
+		<if test="onlyAsset == 1">
+		    AND i.asset_no is not null
+		</if>
+		<if test="onlyMaterial == 1">
+		    AND i.material_no is not null
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+	order by i.id
+    </select>
+    
+    <select id="selectManageExport" resultMap="BaseResultMap">
+	select i.*, g.name || '(' || g. code || ')' as goodsCodeName, 
+	item.currency, item.unit, item.unit_price,item.hs_code, item.total_amount, m.declaration_no,
+	  case　when i.material_no is not null then tm.free_no else ta.free_no end as free_no,
+	c.name as controlStatusName, r.name as relieveModeName, tp.name || '(' || tp.code || ')' as taxPrepertyName,
+      o.name as outReasonName, ii.po_no, ii.po_item, ii.gr_no, ii.qty  
+  	from t_control_detail i
+    left join t_import_item ii on i.import_itemid = ii.id 
+  	left join T_goods_code g on i.goods_code = g.code
+  	left join t_control_status c on i.control_status = c.code
+ 	left join t_relieve_mode r on i.relieve_mode = r.code
+	left join t_out_reason o on i.out_reason = o.code
+  	left join t_tax_preperty tp on i.tax_preperty = tp.code
+  	left join (
+    select im.material_no, im.asset_no, im.currency, im.unit, im.unit_price,im.hs_code, im.total_amount
+    from t_import_item im group by im.material_no, im.asset_no, im.currency, im.unit, im.unit_price,im.hs_code, im.total_amount
+   	) item on (item.material_no = i.material_no or item.asset_no = i.asset_no) 
+  	left join t_import m on m.ir_no = i.ir_no
+	left join t_asset ta on i.asset_no = ta.asset_no
+	left join t_material tm on i.material_no = tm.material_no
+	<where>
+				
+	    <if test="detailIds != null and detailIds.length > 0">
+			AND i.id in 
+	        <foreach collection="detailIds" open=" (" close=")" item="id" separator=",">
+	            #{id}
+	        </foreach>
+		</if>
+	    <if test="controlDetail != null">
+		  <if test="controlDetail.materialNo != null and controlDetail.materialNo != ''">
+			AND i.material_no = #{controlDetail.materialNo}
+		  </if>
+		  <if test="controlDetail.assetNo != null and controlDetail.assetNo != ''">
+			AND i.asset_no = #{controlDetail.assetNo}
+		  </if>
+		  <if test="controlDetail.goodsCode != null and controlDetail.goodsCode != ''">
+			AND i.goods_code = #{controlDetail.goodsCode}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.release_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.release_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+	order by i.id
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_control_detail
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="selectDetailByIds" resultMap="BaseResultMap">
+        select m.* from t_control_detail m 
+        <where>
+            and m.id in
+            <foreach collection="array" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>

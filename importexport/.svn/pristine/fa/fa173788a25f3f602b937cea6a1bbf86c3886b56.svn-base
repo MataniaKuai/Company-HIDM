@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.BaseDataDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.entity.BaseData">
+        <id property="id" column="id" />
+        <result property="code" column="code" />
+        <result property="name" column="name" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <select id="allCustomOffices" resultMap="BaseResultMap">
+	    select * from t_custom_office order by id asc
+    </select>
+    
+    <select id="allCurrencys" resultMap="BaseResultMap">
+	    select * from t_currency order by id asc
+    </select>
+    
+    <select id="allTaxPrepertys" resultMap="BaseResultMap">
+	    select * from t_tax_preperty order by id asc
+    </select>
+    
+    <select id="allBondCla1s" resultMap="BaseResultMap">
+	    select * from t_bond_cla1 order by id asc
+    </select>
+    
+    <select id="allBondCla2s" resultMap="BaseResultMap">
+	    select * from t_bond_cla2 order by id asc
+    </select>
+    
+    <select id="allFreeNos" resultMap="BaseResultMap">
+	    select * from t_free_no order by id asc
+    </select>
+    
+    <select id="allControlStatus" resultMap="BaseResultMap">
+	    select * from T_CONTROL_STATUS order by id asc
+    </select>
+    
+    <select id="allRelieveModes" resultMap="BaseResultMap">
+	    select * from t_relieve_mode order by id asc
+    </select>
+    
+    <select id="allOutReasons" resultMap="BaseResultMap">
+	    select * from T_OUT_REASON order by id asc
+    </select>
+    
+    <select id="allReexportReasons" resultMap="BaseResultMap">
+	    select * from T_REEXPORT_REASON order by id asc
+    </select>
+    
+    <select id="allOrgs" resultMap="BaseResultMap">
+	    select * from T_ORG order by id asc
+    </select>
+    
+    <select id="allFreightTypes" resultMap="BaseResultMap">
+	    select * from t_freight_type order by id asc
+    </select>
+    
+    <select id="allPackingTypes" resultMap="BaseResultMap">
+	    select * from t_packing_type order by id asc
+    </select>
+    
+    <select id="allRecordNos" resultMap="BaseResultMap">
+	    select * from t_record_no order by id asc
+    </select>
+    
+    <select id="allAppTypes" resultMap="BaseResultMap">
+	    select * from t_app_type order by id asc
+    </select>
+    
+    <select id="allFreightTerms" resultMap="BaseResultMap">
+	    select * from t_freight_term order by id asc
+    </select>
+    
+    <select id="allShipFromCountrys" resultMap="BaseResultMap">
+	    select * from t_ship_from_country order by id asc
+    </select>
+    
+    <select id="allLoadingPorts" resultMap="BaseResultMap">
+	    select * from t_loading_port order by id asc
+    </select>
+    
+    <select id="allImportCustoms" resultMap="BaseResultMap">
+	    select * from t_import_custom order by id asc
+    </select>
+    
+    <select id="allImportPorts" resultMap="BaseResultMap">
+	    select * from t_import_port order by id asc
+    </select>
+    
+    <select id="allCarTypes" resultMap="BaseResultMap">
+	    select * from t_car_type order by id asc
+    </select>
+    
+    <select id="allTradingTypes" resultMap="BaseResultMap">
+	    select * from t_trading_type order by id asc
+    </select>
+</mapper>

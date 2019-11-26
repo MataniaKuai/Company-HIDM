@@ -1,0 +1,62 @@
+package com.hidm.importexport.service;
+
+import java.util.List;
+
+import com.hidm.importexport.entity.BaseData;
+import com.hidm.importexport.entity.GoodsCode;
+
+/**
+ * 
+*Description: 处理页面中的常量数据
+*@author GuoRong
+*@date 2018年11月29日
+*@version 1.0
+*
+ */
+public interface BaseDataService {
+    public List<GoodsCode> allGoodsCodes();
+    
+    public List<BaseData> allCustomOffices();
+    
+    public List<BaseData> allCurrencys();
+    
+    public List<BaseData> allTaxPrepertys();
+    
+    public List<BaseData> allBondCla1s();
+    
+    public List<BaseData> allBondCla2s();
+    
+    public List<BaseData> allFreeNos();
+    
+    public List<BaseData> allControlStatus();
+    
+    public List<BaseData> allRelieveModes();
+    
+    public List<BaseData> allOutReasons();
+    
+    public List<BaseData> allReexportReasons();
+    
+    public List<BaseData> allOrgs();
+    
+    public List<BaseData> allFreightTypes();
+    
+    public List<BaseData> allPackingTypes();
+    
+    public List<BaseData> allRecordNos();
+    
+    public List<BaseData> allAppTypes();
+    
+    public List<BaseData> allFreightTerms();
+    
+    public List<BaseData> allShipFromCountrys();
+    
+    public List<BaseData> allLoadingPorts();
+    
+    public List<BaseData> allImportCustoms();
+    
+    public List<BaseData> allImportPorts();
+    
+    public List<BaseData> allCarTypes();
+    
+    public List<BaseData> allTradingTypes();
+}

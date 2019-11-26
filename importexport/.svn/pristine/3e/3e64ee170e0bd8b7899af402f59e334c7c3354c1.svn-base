@@ -1,0 +1,324 @@
+package com.hidm.importexport.controller;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.hidm.importexport.entity.ImportBatch;
+import com.hidm.importexport.entity.ImportItem;
+import com.hidm.importexport.service.ImportBatchService;
+import com.hidm.importexport.service.ImportItemService;
+import com.hidm.importexport.service.MaterialService;
+import com.hidm.importexport.util.DateUtil;
+import com.hidm.importexport.util.ExcelUtil;
+import com.hidm.importexport.util.FileUtil;
+import com.hidm.importexport.vo.ImportBatchSearchVo;
+import com.hidm.importexport.vo.ImportBatchVo;
+import com.hidm.importexport.vo.ImportItemSearchVo;
+import com.hidm.importexport.vo.ImportItemVo;
+import com.hidm.importexport.vo.PaginationVo;
+  
+@Controller
+public class ImportBatchController {
+    private static final Logger log = LoggerFactory.getLogger(ImportBatchController.class);
+    
+    private final static String BATCG_DATE_FORMATE = "yyyyMMdd";
+    
+    @Value("${file.root.path}")
+    private String rootPath;
+    
+    @Value("${file.import.batch.path}")
+    private String importBatchPath;
+    
+    @Autowired
+    private ImportBatchService importBatchService;
+    
+    @Autowired
+    private ImportItemService importItemService;
+    
+    @Autowired
+    private MaterialService materialService;
+    
+    @RequestMapping("importBatch/manage")
+    public String manageSystem(Model model, HttpSession session) {
+        return "/importbatch/manage";
+    }
+    
+    /**
+     * 
+    *Description: 查询批次记录信息
+    *@param importBatch
+    *@param stat 状态
+    *@param page
+    *@return Map<String, Object> "total"为记录的总数量，"rows"为行记录对象的list集合
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importBatch/search")
+    @ResponseBody
+    public Map<String, Object> search(ImportBatchVo importBatch, @RequestParam(value="stat", required=false) Integer stat, PaginationVo page, Model model, HttpSession session) {
+        ImportBatchSearchVo vo = new ImportBatchSearchVo();
+        vo.setIrNo(importBatch.getIrNo());
+        vo.setPage(page);
+        vo.setStat(stat);
+        page.setRowStart((page.getPage() - 1) * page.getRows());
+        
+        int total = importBatchService.count(vo);
+        List<ImportBatchVo> list = importBatchService.selectList(vo);
+        Date now = new Date();
+        now = DateUtil.parseDate(DateUtil.formatDate(now));
+        for (ImportBatchVo batch : list) {
+            Date overdueTime = batch.getOverdueTime();
+            if (null == overdueTime || now.compareTo(overdueTime) >= 0) {
+                batch.setIsOverdue(1);
+            }
+        }
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("total", total);
+        result.put("rows", list);
+        return result;
+    }
+    
+    /**
+     * 
+    *Description: 保存或更新批次记录信息
+    *@param importBatch
+    *@return String "true"为操作成功
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importBatch/save")
+    @ResponseBody
+    public String save(ImportBatch importBatch, Model model, HttpSession session) {
+        if (null == importBatch.getId() || 0 == importBatch.getId()) {
+            importBatchService.insert(importBatch);
+        } else {
+            importBatchService.updateById(importBatch);
+        }
+        
+        return "true";
+    }
+    
+    /**
+     * 
+    *Description: 解析上传的批次信息并进行信息校验，无误后存到数据库
+    *@param file MultipartFile对象
+    *@param importId
+    *@return HashMap<String, String> key为错误信息及执行状态，value为对应值
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importBatch/upload")
+    @ResponseBody
+    public HashMap<String, String> fileUpload(@RequestParam("file") MultipartFile file, @RequestParam("importId") Long importId) {
+        //返回map信息；0：上传失败；1：上传成功
+        HashMap<String, String> errorMap = new HashMap<String, String>();
+        if (file.isEmpty()) {
+            errorMap.put("status", "0");
+            errorMap.put("msg", "上传失败");
+            return errorMap;
+        }
+        
+        FileUtil.createDir(rootPath);
+        FileUtil.createDir(rootPath + importBatchPath);
+        
+        String fileName = file.getOriginalFilename();
+        long timeInMillis = Calendar.getInstance().getTimeInMillis();
+        String filePath = rootPath + importBatchPath + "/" + timeInMillis + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+        
+        File dest = new File(filePath);
+        Workbook workbook = null;
+        try {
+            file.transferTo(dest);
+            
+            InputStream is = new FileInputStream(dest);
+            workbook = WorkbookFactory.create(is);
+            List<ImportBatch> batchs = new ArrayList<ImportBatch>();
+            Sheet sheet = workbook.getSheetAt(0);
+            if (sheet == null) {
+                log.error("未读取到内容,请检查文件是否正确！");
+                errorMap.put("status", "0");
+                errorMap.put("msg", "未读取到内容,请检查文件是否正确！");
+                return errorMap;
+            }
+            
+            // 对于每个sheet，读取其中的每一行
+            for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                Row xssfRow = sheet.getRow(rowNum);
+                ImportBatch batch = new ImportBatch();
+                
+                Cell cell = xssfRow.getCell(0);  
+                String factory = ExcelUtil.getCellValue(cell);
+                batch.setFactory(factory);
+                if (StringUtils.isEmpty(factory)) {
+                    break;
+                }
+                
+                cell = xssfRow.getCell(1);  
+                String poNo = ExcelUtil.getCellValue(cell);
+                batch.setPoNo(poNo);
+                
+                cell = xssfRow.getCell(2);  
+                String poItem = ExcelUtil.getCellValue(cell);
+                //将poItem进行格式化
+                if (!StringUtils.isEmpty(poItem)) {
+                    poItem = new Integer(poItem).toString();
+                }
+                batch.setPoItem(poItem);
+                
+                cell = xssfRow.getCell(3);  
+                String materialNo = ExcelUtil.getCellValue(cell);
+                batch.setMaterialNo(materialNo);
+                
+                cell = xssfRow.getCell(4);  
+                String batchNo = ExcelUtil.getCellValue(cell);
+                batch.setBatchNo(batchNo);
+                
+                cell = xssfRow.getCell(5);  
+                String qty = ExcelUtil.getCellValue(cell);
+                if (!StringUtils.isEmpty(qty)) {
+                    batch.setQty(ExcelUtil.bigDecimalFormat(qty));
+                }
+                
+                cell = xssfRow.getCell(6);  
+                String unit = ExcelUtil.getCellValue(cell).trim();
+                batch.setUnit(unit);
+                
+                cell = xssfRow.getCell(7);  
+                String produceTimeStr = ExcelUtil.getCellValue(cell);
+                Date produceTime = null;
+                if (!StringUtils.isEmpty(produceTimeStr)) {
+                    produceTime = DateUtil.parseDate(produceTimeStr, BATCG_DATE_FORMATE);
+                    batch.setProduceTime(produceTime);
+                }
+                
+                Date overdueTime = materialService.getOverdueDate(materialNo, produceTime);
+                batch.setOverdueTime(overdueTime);
+                
+                batch.setImportId(importId);
+                batchs.add(batch);
+            }
+            //存放“pono-poitem-料号-批号”判断是否有重复数据
+            Set<Object> set = new HashSet<>();
+            for (ImportBatch batch : batchs) {
+                set.add(batch.getPoNo() + "-" + batch.getPoItem() + "-" + batch.getMaterialNo() + "-" + batch.getBatchNo());
+            }
+            if (batchs.size() != set.size()) {
+                errorMap.put("status", "0");
+                errorMap.put("msg", "导入数据中有重复数据");
+                return errorMap;
+            }
+            for (ImportBatch batch : batchs) {
+                //判断上传批次信息是否正确
+                ImportItemSearchVo itemSearchVo = new ImportItemSearchVo();
+                ImportItem importItem = new ImportItem();
+                importItem.setImportId(importId);
+                importItem.setPoNo(batch.getPoNo().trim());
+                importItem.setPoItem(batch.getPoItem().trim());
+                importItem.setMaterialNo(batch.getMaterialNo().trim());
+                itemSearchVo.setImportItem(importItem);
+                int count = importItemService.count(itemSearchVo);
+                if (count == 0) {
+                    String errorMsg = "该记录不存在，PoNo:"+batch.getPoNo() + ";PoItem:" + batch.getPoItem() + ";料号:" + batch.getMaterialNo();
+                    log.error("Failed to upload file. importId:" + errorMsg);
+                    errorMap.put("status", "0");
+                    errorMap.put("msg", errorMsg);
+                    break;
+                }
+                List<ImportItemVo> list = importItemService.selectList(itemSearchVo);
+                if (list !=null && list.size() > 0) {
+                    ImportItemVo itemVo = list.get(0);
+                    if (!batch.getUnit().equalsIgnoreCase(itemVo.getUnit())) {
+                        String errorMsg = "该记录单位不正确，PoNo:"+batch.getPoNo() + ";PoItem:" + batch.getPoItem() + ";料号:" + batch.getMaterialNo() + 
+                                ";单位:" + batch.getUnit();
+                        log.error("Failed to upload file. importId:" + errorMsg);
+                        errorMap.put("status", "0");
+                        errorMap.put("msg", errorMsg);
+                        break;
+                    }
+                }
+                //判断上传批次是否重复
+                ImportBatchSearchVo searchVo = new ImportBatchSearchVo();
+                searchVo.setImportBatch(batch);
+                int count2 = importBatchService.count(searchVo);
+                if (count2 > 0) {
+                    String errorMsg = "该批次已存在，PoNo:"+batch.getPoNo() + ";PoItem:" + batch.getPoItem() + ";批号:" + batch.getBatchNo();
+                    log.error("Failed to upload file. importId:" + errorMsg);
+                    errorMap.put("status", "0");
+                    errorMap.put("msg", errorMsg);
+                    break;
+                }
+            }
+            if (!errorMap.isEmpty()) {
+                return errorMap;
+            } else {
+                importBatchService.insertBatch(batchs);
+                dest.delete();
+                errorMap.put("status", "1");
+                return errorMap;
+            }
+
+        } catch (Exception e) {
+            log.error("Failed to upload file. importId:" + importId, e);
+            errorMap.put("status", "0");
+            errorMap.put("msg", "上传失败");
+            return errorMap;
+        } finally {
+            try {
+                if (null != workbook) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                log.error("Failed to close workbook.", e);
+            }
+        }
+    }
+    
+    /**
+     * 
+    *Description: 删除批次记录信息
+    *@param ids
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月29日
+    *@version 1.0
+     */
+    @RequestMapping("importBatch/delete")
+    @ResponseBody
+    public boolean deleteSystem(@RequestParam(value="ids[]") Long[] ids, Model model, HttpSession session) {
+        importBatchService.deleteByIds(ids);
+        return true;
+    }
+}

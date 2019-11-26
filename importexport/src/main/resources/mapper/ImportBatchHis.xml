@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.ImportBatchHisDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.ImportBatchHisVo">
+        <id property="id" column="id" />
+        <result property="poNo" column="po_no" />
+        <result property="poItem" column="po_item" />
+        <result property="itemHisId" column="item_hisid" />
+        <result property="batchNo" column="batch_no" />
+        <result property="sapBatchNo" column="sapbatch_no" />
+        <result property="unit" column="unit" />
+        <result property="qty" column="qty" />
+        <result property="produceTime" column="produce_time" />
+        <result property="addTime" column="add_time"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_IMPORT_BATCH_HIS_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_import_batch_his(
+        <trim suffixOverrides=",">
+        id,
+        <if test="poNo != null">
+            po_no,
+        </if>
+        <if test="poItem != null">
+            po_item,
+        </if>
+        <if test="itemHisId != null">
+            item_hisid,
+        </if>
+        <if test="batchNo != null">
+            batch_no,
+        </if>
+        <if test="sapBatchNo != null">
+            sapbatch_no,
+        </if>
+        <if test="unit != null">
+            unit,
+        </if>
+        <if test="qty != null">
+            qty,
+        </if>
+        <if test="produceTime != null">
+            produce_time,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="poNo != null">
+            #{poNo},
+        </if>
+        <if test="poItem != null">
+            #{poItem},
+        </if>
+        <if test="itemHisId != null">
+            #{itemHisId},
+        </if>
+        <if test="batchNo != null">
+            #{batchNo},
+        </if>
+        <if test="sapBatchNo != null">
+            #{sapBatchNo},
+        </if>
+        <if test="unit != null">
+            #{unit},
+        </if>
+        <if test="qty != null">
+            #{qty},
+        </if>
+        <if test="produceTime != null">
+            #{produceTime},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        </trim>
+        )
+    </insert>
+    
+    
+    
+    <select id="selectByItemHisId" resultMap="BaseResultMap">
+        select * from
+  		(
+		select m.*, ROWNUM RN 
+		from t_import_batch_his m 
+		<where>
+		    <if test="itemHisId != null and itemHisId != 0">
+				AND m.item_hisid = #{itemHisId}
+			</if>
+			<if test="page != null">
+		   		AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		    </if>
+		</where>
+		order by m.id
+		)
+		<if test="page != null">
+		where RN &gt; #{page.rowStart}
+		</if>
+    </select>
+    
+</mapper>

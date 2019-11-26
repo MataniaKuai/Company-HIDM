@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: importexport
+Implementation-Version: 1.0.0
+Built-By: E101258
+Implementation-Vendor-Id: com.hidm
+Build-Jdk: 1.8.0_161
+Implementation-URL: http://projects.spring.io/spring-boot/importexport
+ /
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

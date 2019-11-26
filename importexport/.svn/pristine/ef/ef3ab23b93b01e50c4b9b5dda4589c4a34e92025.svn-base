@@ -1,0 +1,15 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  		<#include "../importitemeditinfo.html">
+				 <input type="hidden" name="itemId">
+                <input type="hidden" name="status">
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="itemSaveBtn" type="button" class="btn btn-primary" onclick="itemSave()">保存</button>
+			</div>
+		</div>
+	</div>
+    </div>

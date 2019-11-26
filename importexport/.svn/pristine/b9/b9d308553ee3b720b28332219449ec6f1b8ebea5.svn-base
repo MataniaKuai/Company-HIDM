@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.ImportInfoDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.ImportInfoVo">
+        <id property="id" column="id" />
+        <result property="org" column="org" />
+        <result property="freightType" column="freight_type" />
+        <result property="goodsCode" column="goods_code" />
+        <result property="irNo" column="ir_no" />
+        <result property="declarationNo" column="declaration_no" />
+        <result property="declarationTime" column="declaration_time" />
+        <result property="releaseTime" column="release_time" />
+        <result property="arriveTime" column="arrive_time" />
+        <result property="receiveTime" column="receive_time" />
+        <result property="sailingTime" column="sailing_time" />
+        <result property="gw" column="gw" />
+        <result property="nw" column="nw" />
+        <result property="chw" column="chw" />
+        <result property="totalPackage" column="total_package" />
+        <result property="packingType" column="packing_type" />
+        <result property="recordNo" column="record_no" />
+        <result property="unusual" column="unusual" />
+        <result property="appType" column="app_type" />
+        <result property="broker" column="broker" />
+        <result property="forwarder" column="forwarder" />
+        <result property="freightTerm" column="freight_term" />
+        <result property="bl" column="bl" />
+        <result property="mawb" column="mawb" />
+        <result property="hawb" column="hawb" />
+        <result property="flightVesselVoy" column="flight_vessel_voy" />
+        <result property="shipFromCountry" column="ship_from_country" />
+        <result property="shipFromPort" column="ship_from_port" />
+        <result property="loadingPort" column="loading_port" />
+        <result property="dischargePort" column="discharge_port" />
+        <result property="inhouseDate" column="inhouse_date" />
+        <result property="outhouseDate" column="outhouse_date" />
+        <result property="invoiceNo" column="invoice_no" />
+        <result property="importCustom" column="import_custom" />
+        <result property="importPort" column="import_port" />
+        <result property="lcNo" column="lc_no" />
+        <result property="containerNo" column="container_no" />
+        <result property="carType" column="car_type" />
+        <result property="carNo" column="car_no" />
+        <result property="rmaNo" column="rma_no" />
+        <result property="rmaQty" column="rma_qty" />
+        <result property="originalDeclarationNo" column="original_declaration_no" />
+        <result property="originalIrNo" column="original_ir_no" />
+        <result property="importPerson" column="import_person" />
+        <result property="finalReviser" column="final_reviser" />
+        <result property="lastModifiedTime" column="last_modified_time" />
+        <result property="remarks" column="remarks" />
+        <result property="status" column="status" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+        <result property="originalCountry" column="original_country"/>
+        <result property="declaringCustom" column="declaring_custom"/>
+        <result property="tradingType" column="trading_type" />
+        <result property="taxPreperty" column="tax_preperty" />
+        <result property="tariffTax" column="tariff_tax" />
+        <result property="tariff" column="tariff" />
+        <result property="valueAddedTax" column="value_added_tax" />
+        <result property="text1" column="text1" />
+        <result property="text2" column="text2" />
+        <result property="text3" column="text3" />
+        
+        <result property="shipFromCountryName" column="shipFromCountryName"/>
+        <result property="shipFromPortName" column="shipFromPortName"/>
+        <result property="loadingPortName" column="loadingPortName"/>
+        <result property="importCustomName" column="importCustomName"/>
+        <result property="importPortName" column="importPortName"/>
+        <result property="dischargePortName" column="dischargePortName"/>
+        <result property="goodsCodeName" column="goodsCodeName"/>
+        <result property="tradingTypeName" column="tradingTypeName"/>
+        <result property="taxPrepertyName" column="taxPrepertyName"/>
+        
+    </resultMap>
+    
+    <resultMap id="ReportMap" type="com.hidm.importexport.vo.ImportReportVo">
+        <id property="id" column="id" />
+        <result property="itemId" column="item_id" />
+        <result property="org" column="org" />
+        <result property="freightType" column="freight_type" />
+        <result property="goodsCode" column="goods_code" />
+        <result property="irNo" column="ir_no" />
+        <result property="declarationNo" column="declaration_no" />
+        <result property="declarationTime" column="declaration_time" />
+        <result property="releaseTime" column="release_time" />
+        <result property="arriveTime" column="arrive_time" />
+        <result property="receiveTime" column="receive_time" />
+        <result property="sailingTime" column="sailing_time" />
+        <result property="exporter" column="exporter" />
+        <result property="gw" column="gw" />
+        <result property="nw" column="nw" />
+        <result property="chw" column="chw" />
+        <result property="totalPackage" column="total_package" />
+        <result property="packingType" column="packing_type" />
+        <result property="recordNo" column="record_no" />
+        <result property="unusual" column="unusual" />
+        <result property="appType" column="app_type" />
+        <result property="broker" column="broker" />
+        <result property="forwarder" column="forwarder" />
+        <result property="freightTerm" column="freight_term" />
+        <result property="tradeTerm" column="trade_term" />
+        <result property="bl" column="bl" />
+        <result property="mawb" column="mawb" />
+        <result property="hawb" column="hawb" />
+        <result property="flightVesselVoy" column="flight_vessel_voy" />
+        <result property="shipFromCountry" column="ship_from_country" />
+        <result property="shipFromPort" column="ship_from_port" />
+        <result property="loadingPort" column="loading_port" />
+        <result property="dischargePort" column="discharge_port" />
+        <result property="inhouseDate" column="inhouse_date" />
+        <result property="outhouseDate" column="outhouse_date" />
+        <result property="invoiceNo" column="invoice_no" />
+        <result property="importCustom" column="import_custom" />
+        <result property="importPort" column="import_port" />
+        <result property="lcNo" column="lc_no" />
+        <result property="containerNo" column="container_no" />
+        <result property="carType" column="car_type" />
+        <result property="carNo" column="car_no" />
+        <result property="rmaNo" column="rma_no" />
+        <result property="rmaQty" column="rma_qty" />
+        <result property="originalDeclarationNo" column="original_declaration_no" />
+        <result property="originalIrNo" column="original_ir_no" />
+        <result property="importPerson" column="import_person" />
+        <result property="finalReviser" column="final_reviser" />
+        <result property="lastModifiedTime" column="last_modified_time" />
+        <result property="remarks" column="remarks" />
+        <result property="materialNo" column="material_no" />
+        <result property="assetNo" column="asset_no" />
+        <result property="tradeTerm" column="trade_term" />
+        <result property="unitPrice" column="unit_price" />
+        <result property="qty" column="qty" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="currency" column="currency" />
+        <result property="goodsDesc" column="goods_desc" />
+        <result property="chineseName" column="chinese_name" />
+        <result property="tradingType" column="trading_type" />
+        <result property="hsCode" column="hs_code" />
+        <result property="tariffTax" column="tariff_tax" />
+        <result property="tariff" column="tariff" />
+        <result property="valueAddedTax" column="value_added_tax" />
+        <result property="taxPreperty" column="tax_preperty" />
+        <result property="poNo" column="po_no" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+        <result property="unit" column="unit"/>
+        <result property="grNo" column="gr_no"/>
+        <result property="employeeNo" column="employee_no"/>
+        <result property="stock" column="stock"/>
+        
+        <result property="shipFromCountryName" column="shipFromCountryName"/>
+        <result property="shipFromPortName" column="shipFromPortName"/>
+        <result property="loadingPortName" column="loadingPortName"/>
+        <result property="importCustomName" column="importCustomName"/>
+        <result property="importPortName" column="importPortName"/>
+        <result property="dischargePortName" column="dischargePortName"/>
+        <result property="goodsCodeName" column="goodsCodeName"/>
+        <result property="originalCountryName" column="originalCountryName"/>
+        <result property="carTypeName" column="carTypeName"/>
+        <result property="tradingTypeName" column="tradingTypeName"/>
+        <result property="taxPrepertyName" column="taxPrepertyName"/>
+        <result property="packingTypeName" column="packingTypeName"/>
+        <result property="appTypeName" column="appTypeName"/>
+        <result property="declaringCustomName" column="declaringCustomName"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_IMPORT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_import(
+        <trim suffixOverrides=",">
+        id,
+        <if test="org != null">
+            org,
+        </if>
+        <if test="freightType != null">
+            freight_type,
+        </if>
+        <if test="goodsCode != null">
+            goods_code,
+        </if>
+        <if test="irNo != null">
+            ir_no,
+        </if>
+        <if test="declarationNo != null">
+            declaration_no,
+        </if>
+        <if test="declarationTime != null">
+            declaration_time,
+        </if>
+        <if test="releaseTime != null">
+            release_time,
+        </if>
+        <if test="arriveTime != null">
+            arrive_time,
+        </if>
+        <if test="receiveTime != null">
+            receive_time,
+        </if>
+        <if test="sailingTime != null">
+            sailing_time,
+        </if>
+        <if test="gw != null">
+            gw,
+        </if>
+        <if test="nw != null">
+            nw,
+        </if>
+        <if test="chw != null">
+            chw,
+        </if>
+        <if test="totalPackage != null">
+            total_package,
+        </if>
+        <if test="packingType != null">
+            packing_type,
+        </if>
+        <if test="recordNo != null">
+            record_no,
+        </if>
+        <if test="unusual != null">
+            unusual,
+        </if>
+        <if test="appType != null">
+            app_type,
+        </if>
+        <if test="broker != null">
+            broker,
+        </if>
+        <if test="forwarder != null">
+            forwarder,
+        </if>
+        <if test="freightTerm != null">
+            freight_term,
+        </if>
+        <if test="bl != null">
+            bl,
+        </if>
+        <if test="mawb != null">
+            mawb,
+        </if>
+        <if test="hawb != null">
+            hawb,
+        </if>
+        <if test="flightVesselVoy != null">
+            flight_vessel_voy,
+        </if>
+        <if test="shipFromCountry != null">
+            ship_from_country,
+        </if>
+        <if test="shipFromPort != null">
+            ship_from_port,
+        </if>
+        <if test="loadingPort != null">
+            loading_port,
+        </if>
+        <if test="dischargePort != null">
+            discharge_port,
+        </if>
+        <if test="inhouseDate != null">
+            inhouse_date,
+        </if>
+        <if test="outhouseDate != null">
+            outhouse_date,
+        </if>
+        <if test="invoiceNo != null">
+            invoice_no,
+        </if>
+        <if test="tradingType != null">
+            trading_type,
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty,
+        </if>
+        <if test="tariffTax != null">
+            tariff_tax,
+        </if>
+        <if test="tariff != null">
+            tariff,
+        </if>
+        <if test="valueAddedTax != null">
+            value_added_tax,
+        </if>
+        <if test="importCustom != null">
+            import_custom,
+        </if>
+        <if test="importPort != null">
+            import_port,
+        </if>
+        <if test="lcNo != null">
+            lc_no,
+        </if>
+        <if test="containerNo != null">
+            container_no,
+        </if>
+        <if test="carType != null">
+            car_type,
+        </if>
+        <if test="carNo != null">
+            car_no,
+        </if>
+        <if test="rmaNo != null">
+            rma_no,
+        </if>
+        <if test="rmaQty != null">
+            rma_qty,
+        </if>
+        <if test="originalDeclarationNo != null">
+            original_declaration_no,
+        </if>
+        <if test="originalIrNo != null">
+            original_ir_no,
+        </if>
+        <if test="importPerson != null">
+            import_person,
+        </if>
+        <if test="finalReviser != null">
+            final_reviser,
+        </if>
+        <if test="lastModifiedTime != null">
+            last_modified_time,
+        </if>
+        <if test="remarks != null">
+            remarks,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        <if test="originalCountry != null">
+            original_country,
+        </if>
+        <if test="declaringCustom != null">
+            declaring_custom,
+        </if>
+        <if test="text1 != null">
+            text1,
+        </if>
+        <if test="text2 != null">
+            text2,
+        </if>
+        <if test="text3 != null">
+            text3,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="org != null">
+            #{org},
+        </if>
+        <if test="freightType != null">
+            #{freightType},
+        </if>
+        <if test="goodsCode != null">
+            #{goodsCode},
+        </if>
+        <if test="irNo != null">
+            #{irNo},
+        </if>
+        <if test="declarationNo != null">
+            #{declarationNo},
+        </if>
+        <if test="declarationTime != null">
+            #{declarationTime},
+        </if>
+        <if test="releaseTime != null">
+            #{releaseTime},
+        </if>
+        <if test="arriveTime != null">
+            #{arriveTime},
+        </if>
+        <if test="receiveTime != null">
+            #{receiveTime},
+        </if>
+        <if test="sailingTime != null">
+            #{sailingTime},
+        </if>
+        <if test="gw != null">
+            #{gw},
+        </if>
+        <if test="nw != null">
+            #{nw},
+        </if>
+        <if test="chw != null">
+            #{chw},
+        </if>
+        <if test="totalPackage != null">
+            #{totalPackage},
+        </if>
+        <if test="packingType != null">
+            #{packingType},
+        </if>
+        <if test="recordNo != null">
+            #{recordNo},
+        </if>
+        <if test="unusual != null">
+            #{unusual},
+        </if>
+        <if test="appType != null">
+            #{appType},
+        </if>
+        <if test="broker != null">
+            #{broker},
+        </if>
+        <if test="forwarder != null">
+            #{forwarder},
+        </if>
+        <if test="freightTerm != null">
+            #{freightTerm},
+        </if>
+        <if test="bl != null">
+            #{bl},
+        </if>
+        <if test="mawb != null">
+            #{mawb},
+        </if>
+        <if test="hawb != null">
+            #{hawb},
+        </if>
+        <if test="flightVesselVoy != null">
+            #{flightVesselVoy},
+        </if>
+        <if test="shipFromCountry != null">
+            #{shipFromCountry},
+        </if>
+        <if test="shipFromPort != null">
+            #{shipFromPort},
+        </if>
+        <if test="loadingPort != null">
+            #{loadingPort},
+        </if>
+        <if test="dischargePort != null">
+            #{dischargePort},
+        </if>
+        <if test="inhouseDate != null">
+            #{inhouseDate},
+        </if>
+        <if test="outhouseDate != null">
+            #{outhouseDate},
+        </if>
+        <if test="invoiceNo != null">
+            #{invoiceNo},
+        </if>
+        <if test="tradingType != null">
+            #{tradingType},
+        </if>
+        <if test="taxPreperty != null">
+            #{taxPreperty},
+        </if>
+        <if test="tariffTax != null">
+            #{tariffTax},
+        </if>
+        <if test="tariff != null">
+            #{tariff},
+        </if>
+        <if test="valueAddedTax != null">
+            #{valueAddedTax},
+        </if>
+        <if test="importCustom != null">
+            #{importCustom},
+        </if>
+        <if test="importPort != null">
+            #{importPort},
+        </if>
+        <if test="lcNo != null">
+            #{lcNo},
+        </if>
+        <if test="containerNo != null">
+            #{containerNo},
+        </if>
+        <if test="carType != null">
+            #{carType},
+        </if>
+        <if test="carNo != null">
+            #{carNo},
+        </if>
+        <if test="rmaNo != null">
+            #{rmaNo},
+        </if>
+        <if test="rmaQty != null">
+            #{rmaQty},
+        </if>
+        <if test="originalDeclarationNo != null">
+            #{originalDeclarationNo},
+        </if>
+        <if test="originalIrNo != null">
+            #{originalIrNo},
+        </if>
+        <if test="importPerson != null">
+            #{importPerson},
+        </if>
+        <if test="finalReviser != null">
+            #{finalReviser},
+        </if>
+        <if test="lastModifiedTime != null">
+            #{lastModifiedTime},
+        </if>
+        <if test="remarks != null">
+            #{remarks},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        <if test="originalCountry != null">
+            #{originalCountry},
+        </if>
+        <if test="declaringCustom != null">
+            #{declaringCustom},
+        </if>
+        <if test="text1 != null">
+            #{text1},
+        </if>
+        <if test="text2 != null">
+            #{text2},
+        </if>
+        <if test="text3 != null">
+            #{text3},
+        </if>
+        </trim>
+        )
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_import
+        <set>
+        <if test="org != null">
+            org = #{org},
+        </if>
+        <if test="freightType != null">
+            freight_type = #{freightType},
+        </if>
+        <if test="goodsCode != null">
+            goods_code = #{goodsCode},
+        </if>
+        <if test="irNo != null">
+            ir_no = #{irNo},
+        </if>
+        <if test="declarationNo != null">
+            declaration_no = #{declarationNo},
+        </if>
+        <if test="declarationTime != null">
+            declaration_time = #{declarationTime},
+        </if>
+        <if test="releaseTime != null">
+            release_time = #{releaseTime},
+        </if>
+        <if test="arriveTime != null">
+            arrive_time = #{arriveTime},
+        </if>
+        <if test="receiveTime != null">
+            receive_time = #{receiveTime},
+        </if>
+        <if test="sailingTime != null">
+            sailing_time = #{sailingTime},
+        </if>
+        <if test="gw != null">
+            gw = #{gw},
+        </if>
+        <if test="nw != null">
+            nw = #{nw},
+        </if>
+        <if test="chw != null">
+            chw = #{chw},
+        </if>
+        <if test="totalPackage != null">
+            total_package = #{totalPackage},
+        </if>
+        <if test="packingType != null">
+            packing_type = #{packingType},
+        </if>
+        <if test="recordNo != null">
+            record_no = #{recordNo},
+        </if>
+        <if test="unusual != null">
+            unusual = #{unusual},
+        </if>
+        <if test="appType != null">
+            app_type = #{appType},
+        </if>
+        <if test="broker != null">
+            broker = #{broker},
+        </if>
+        <if test="forwarder != null">
+            forwarder = #{forwarder},
+        </if>
+        <if test="freightTerm != null">
+            freight_term = #{freightTerm},
+        </if>
+        <if test="bl != null">
+            bl = #{bl},
+        </if>
+        <if test="mawb != null">
+            mawb = #{mawb},
+        </if>
+        <if test="hawb != null">
+            hawb = #{hawb},
+        </if>
+        <if test="flightVesselVoy != null">
+            flight_vessel_voy = #{flightVesselVoy},
+        </if>
+        <if test="shipFromCountry != null">
+            ship_from_country = #{shipFromCountry},
+        </if>
+        <if test="shipFromPort != null">
+            ship_from_port = #{shipFromPort},
+        </if>
+        <if test="loadingPort != null">
+            loading_port = #{loadingPort},
+        </if>
+        <if test="dischargePort != null">
+            discharge_port = #{dischargePort},
+        </if>
+        <if test="inhouseDate != null">
+            inhouse_date = #{inhouseDate},
+        </if>
+        <if test="outhouseDate != null">
+            outhouse_date = #{outhouseDate},
+        </if>
+        <if test="invoiceNo != null">
+            invoice_no = #{invoiceNo},
+        </if>
+        <if test="tradingType != null">
+            trading_type = #{tradingType},
+        </if>
+        <if test="taxPreperty != null">
+            tax_preperty = #{taxPreperty},
+        </if>
+        <if test="tariffTax != null">
+            tariff_tax = #{tariffTax},
+        </if>
+        <if test="tariff != null">
+            tariff = #{tariff},
+        </if>
+        <if test="valueAddedTax != null">
+            value_added_tax = #{valueAddedTax},
+        </if>
+        <if test="importCustom != null">
+            import_custom = #{importCustom},
+        </if>
+        <if test="importPort != null">
+            import_port = #{importPort},
+        </if>
+        <if test="lcNo != null">
+            lc_no = #{lcNo},
+        </if>
+        <if test="containerNo != null">
+            container_no = #{containerNo},
+        </if>
+        <if test="carType != null">
+            car_type = #{carType},
+        </if>
+        <if test="carNo != null">
+            car_no = #{carNo},
+        </if>
+        <if test="rmaNo != null">
+            rma_no = #{rmaNo},
+        </if>
+        <if test="rmaQty != null">
+            rma_qty = #{rmaQty},
+        </if>
+        <if test="originalDeclarationNo != null">
+            original_declaration_no = #{originalDeclarationNo},
+        </if>
+        <if test="originalIrNo != null">
+            original_ir_no = #{originalIrNo},
+        </if>
+        <if test="importPerson != null">
+            import_person = #{importPerson},
+        </if>
+        <if test="finalReviser != null">
+            final_reviser = #{finalReviser},
+        </if>
+        <if test="lastModifiedTime != null">
+            last_modified_time = #{lastModifiedTime},
+        </if>
+        <if test="remarks != null">
+            remarks = #{remarks},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="updateUser != null">
+            update_user=#{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME=#{updateTime},
+        </if>
+        <if test="originalCountry != null">
+            original_country=#{originalCountry},
+        </if>
+        <if test="declaringCustom != null">
+            declaring_custom=#{declaringCustom},
+        </if>
+        <if test="text1 != null">
+            text1=#{text1},
+        </if>
+        <if test="text2 != null">
+            text2=#{text2},
+        </if>
+        <if test="text3 != null">
+            text3=#{text3},
+        </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+    select * from
+    (    
+    select t.*,ROWNUM RN from
+    (
+	select m.*, 
+	  tft.name as freightTypeName,
+	  tpt.name as packingTypeName,
+	  ts.name || '(' || ts.code || ')' as shipFromCountryName, 
+	  tp.name || '(' || tp.code || ')' as shipFromPortName, 
+	  tl.name || '(' || tl.code || ')' as loadingPortName, 
+	  tc.name || '(' || tc.code || ')' as importCustomName, 
+	  ip.name || '(' || ip.code || ')' as importPortName,
+	  disp.name || '(' || disp.code || ')' as dischargePortName,  
+	    tsc.name || '(' || tsc.code || ')' as originalCountryName,
+	    ttp.name || '(' || ttp.code || ')' as taxPrepertyName,
+	    ttt.name || '(' || ttt.code || ')' as tradingTypeName,
+	  gc.name || '(' || gc.code || ')' as goodsCodeName
+	  from t_import m
+	  left join T_FREIGHT_TYPE tft on m.freight_type = tft.code
+	  left join T_PACKING_TYPE tpt on m.packing_type = tpt.code
+	  left join t_ship_from_country ts on m.ship_from_country = ts.code
+	  left join T_LOADING_PORT tp on m.ship_from_port = tp.code
+	  left join T_LOADING_PORT tl on m.loading_port = tl.code
+	  left join t_import_custom tc on m.import_custom = tc.code
+	  left join T_LOADING_PORT ip on m.import_port = ip.code
+	  left join T_LOADING_PORT disp on m.discharge_port = disp.code
+	  left join t_goods_Code gc on m.goods_code = gc.code
+	  left join t_ship_from_country tsc on m.original_country = tsc.code
+	  left join t_tax_preperty ttp on m.tax_preperty = ttp.code
+	  left join t_trading_type ttt on m.trading_type = ttt.code
+	<where>
+	    m.del_flag = 0
+	    <if test="importInfo != null">
+		  <if test="importInfo.id != null and importInfo.id != 0">
+			AND m.id = #{importInfo.id}
+		  </if>
+		  <if test="importInfo.irNo != null and importInfo.irNo != ''">
+			AND m.ir_no = #{importInfo.irNo}
+		  </if>
+		  <if test="importInfo.status != null and importInfo.status != ''">
+			AND m.status = #{importInfo.status}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.update_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.update_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		<if test="statusArray != null">
+	        AND m.status in 
+	        <foreach collection="statusArray" open=" (" close=")" item="statu" separator=",">
+	            #{statu}
+	        </foreach>
+	    </if>
+	</where>
+	order by m.id desc
+	)t 
+	
+	<if test="page != null">
+        WHERE ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+    </if>
+	)
+	<if test="page != null">
+	where RN &gt; #{page.rowStart}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_import m
+	<where>
+	    m.del_flag = 0
+	    <if test="importInfo != null">
+		  <if test="importInfo.id != null and importInfo.id != 0">
+			AND m.id = #{importInfo.id}
+		  </if>
+		  <if test="importInfo.irNo != null and importInfo.irNo != ''">
+			AND m.ir_no = #{importInfo.irNo}
+		  </if>
+		  <if test="importInfo.status != null and importInfo.status != ''">
+			AND m.status = #{importInfo.status}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND m.update_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND m.update_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		<if test="statusArray != null">
+	        AND m.status in 
+	        <foreach collection="statusArray" open=" (" close=")" item="statu" separator=",">
+	            #{statu}
+	        </foreach>
+	    </if>
+	</where>
+    </select>
+    
+    <select id="selectReportList" resultMap="ReportMap">
+    select * from
+    (
+	select i.*, t.material_no, t.asset_no, t.trade_term, t.unit_price, t.qty, t.total_amount,
+	    t.currency, t.goods_desc, t.chinese_name, t.hs_code,
+	    t.po_no, t.id as item_id,t.vendor as exporter, ROWNUM RN
+	from t_import_item t 
+	left join t_import i on t.import_id = i.id
+	<where>
+	    i.del_flag = 0
+	     <if test="irNo != null and irNo != ''">
+			AND i.ir_no = #{irNo}
+		</if>
+	    <if test="goodsCode != null and goodsCode != ''">
+			AND i.goods_code = #{goodsCode}
+		</if>
+	    <if test="importItem != null">
+		  <if test="importItem.materialNo != null and importItem.materialNo != ''">
+			AND t.material_no = #{importItem.materialNo}
+		  </if>
+		  <if test="importItem.assetNo != null and importItem.assetNo != ''">
+			AND t.asset_no = #{importItem.assetNo}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.declaration_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.declaration_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+		<if test="page != null">
+	        AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+	</where>
+	order by i.id, t.id
+	)
+	<if test="page != null">
+	where RN &gt; #{page.rowStart}
+	</if>
+    </select>
+    
+    <select id="reportCount" resultType="int">
+	select count(t.id) 
+	from t_import i 
+	left join t_import_item t on t.import_id = i.id
+	<where>
+	    i.del_flag = 0
+	    <if test="irNo != null and irNo != ''">
+			AND i.ir_no = #{irNo}
+		</if>
+	    <if test="goodsCode != null and goodsCode != ''">
+			AND i.goods_code = #{goodsCode}
+		</if>
+	    <if test="importItem != null">
+		  <if test="importItem.materialNo != null and importItem.materialNo != ''">
+			AND t.material_no = #{importItem.materialNo}
+		  </if>
+		  <if test="importItem.assetNo != null and importItem.assetNo != ''">
+			AND t.asset_no = #{importItem.assetNo}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.declaration_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.declaration_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    <select id="selectExport" resultMap="ReportMap">
+	select ftm.name as freight_term, i.*, t.material_no, t.asset_no, t.trade_term, t.unit_price, t.qty, t.total_amount,
+	    t.currency, t.goods_desc, t.chinese_name, t.hs_code, t.dept, t.po_no,t.vendor as exporter, t.unit, t.gr_no,  t.employee_no,  t.stock,  
+	    tft.name as freightTypeName,
+	    tpt.name as packingTypeName,
+	    ts.name || '(' || ts.code || ')' as shipFromCountryName, 
+	    tp.name || '(' || tp.code || ')' as shipFromPortName, 
+	    tl.name || '(' || tl.code || ')' as loadingPortName, 
+	    tc.name || '(' || tc.code || ')' as importCustomName, 
+	    tcd.name || '(' || tcd.code || ')' as declaringCustomName, 
+	    ip.name || '(' || ip.code || ')' as importPortName,
+	    disp.name || '(' || disp.code || ')' as dischargePortName,  
+	    gc.name || '(' || gc.code || ')' as goodsCodeName,
+	    ttp.name || '(' || ttp.code || ')' as taxPrepertyName,
+	    tct.name || '(' || tct.code || ')' as carTypeName,
+	    tsc.name || '(' || tsc.code || ')' as originalCountryName,
+	    tat.name || '(' || tat.code || ')' as appTypeName,
+	    ttt.name || '(' || ttt.code || ')' as tradingTypeName
+	from t_import_item t 
+	left join t_import i on t.import_id = i.id
+	left join T_FREIGHT_TYPE tft on i.freight_type = tft.code
+	left join T_FREIGHT_TERM ftm on i.freight_term = ftm.code
+	left join T_PACKING_TYPE tpt on i.packing_type = tpt.code
+	left join t_ship_from_country ts on i.ship_from_country = ts.code
+	left join t_ship_from_country tsc on i.original_country = tsc.code
+	left join T_LOADING_PORT tp on i.ship_from_port = tp.code
+	left join T_LOADING_PORT tl on i.loading_port = tl.code
+	left join t_import_custom tc on i.import_custom = tc.code
+	left join t_import_custom tcd on i.declaring_custom = tcd.code
+	left join T_LOADING_PORT ip on i.import_port = ip.code
+	left join T_LOADING_PORT disp on i.discharge_port = disp.code
+	left join t_goods_Code gc on i.goods_code = gc.code
+	left join t_tax_preperty ttp on i.tax_preperty = ttp.code
+	left join t_trading_type ttt on i.trading_type = ttt.code
+	left join t_car_type tct on i.car_type = tct.code
+	left join t_app_type tat on i.app_type = tat.code
+	<where>
+	    i.del_flag = 0
+	    <if test="irNo != null and irNo != ''">
+			AND i.ir_no = #{irNo}
+		</if>
+	    <if test="itemIds != null and itemIds.length > 0">
+			AND t.id in 
+	        <foreach collection="itemIds" open=" (" close=")" item="id" separator=",">
+	            #{id}
+	        </foreach>
+		</if>
+	    <if test="goodsCode != null and goodsCode != ''">
+			AND i.goods_code = #{goodsCode}
+		</if>
+	    <if test="importItem != null">
+		  <if test="importItem.materialNo != null and importItem.materialNo != ''">
+			AND t.material_no = #{importItem.materialNo}
+		  </if>
+		  <if test="importItem.assetNo != null and importItem.assetNo != ''">
+			AND t.asset_no = #{importItem.assetNo}
+		  </if>
+		</if>
+		<if test="timeRange != null">
+		  <if test="timeRange.startTime != null">
+			AND i.declaration_time &gt;= #{timeRange.startTime}
+		  </if>
+		  <if test="timeRange.endTime != null">
+			AND i.declaration_time &lt; #{timeRange.endTime}
+		  </if>
+		</if>
+	</where>
+	order by i.id
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_import
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="selectByIrNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select m.*
+		  from t_import m
+		<where>
+			ROWNUM &lt;= 1
+		  <if test="irNo != null">
+			AND m.ir_no = #{irNo}
+		  </if>
+		</where>
+    </select>
+    
+    <insert id="insertImports" parameterType="java.lang.Long">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_IMPORT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into t_import
+        (id, org, freight_type, goods_code, ir_no, declaration_no, declaration_time, release_time, arrive_time, 
+        receive_time, sailing_time, gw, nw, chw, total_package, packing_type, record_no, unusual, app_type, broker, 
+        forwarder, freight_term, bl, mawb, hawb, flight_vessel_voy, ship_from_country, ship_from_port, loading_port, 
+        discharge_port, inhouse_date, outhouse_date, invoice_no, trading_type, tax_preperty, tariff_tax, tariff, 
+        value_added_tax, import_custom, import_port, lc_no, container_no, car_type, car_no, rma_no, rma_qty, 
+        original_declaration_no, original_ir_no, import_person, final_reviser, last_modified_time, remarks, add_user, 
+        original_country, declaring_custom, text1, text2, text3)  
+        select T_IMPORT_SEQ.nextval, A.* FROM (  
+        <foreach collection="list" item="item" index="index" separator="union all">  
+            select
+  			#{item.org, jdbcType=VARCHAR},  #{item.freightType, jdbcType=VARCHAR},  
+  			#{item.goodsCode, jdbcType=VARCHAR},  #{item.irNo, jdbcType=VARCHAR},  
+  			#{item.declarationNo, jdbcType=VARCHAR},  #{item.declarationTime, jdbcType=DATE},  
+  			#{item.releaseTime, jdbcType=DATE},  #{item.arriveTime, jdbcType=DATE},  #{item.receiveTime, jdbcType=DATE},  
+  			#{item.sailingTime, jdbcType=DATE},  #{item.gw, jdbcType=NUMBER},  #{item.nw, jdbcType=NUMBER},  
+  			#{item.chw, jdbcType=NUMBER},  #{item.totalPackage, jdbcType=INTEGER},  #{item.packingType, jdbcType=VARCHAR}, 
+  			#{item.recordNo, jdbcType=VARCHAR},  #{item.unusual, jdbcType=INTEGER},  #{item.appType, jdbcType=VARCHAR}, 
+  			#{item.broker, jdbcType=VARCHAR},  #{item.forwarder, jdbcType=VARCHAR},  
+  			#{item.freightTerm, jdbcType=VARCHAR},  #{item.bl, jdbcType=VARCHAR},  #{item.mawb, jdbcType=VARCHAR},  
+  			#{item.hawb, jdbcType=VARCHAR},  #{item.flightVesselVoy, jdbcType=VARCHAR},  
+  			#{item.shipFromCountry, jdbcType=VARCHAR},  #{item.shipFromPort, jdbcType=VARCHAR},  
+  			#{item.loadingPort, jdbcType=VARCHAR},  #{item.dischargePort, jdbcType=VARCHAR},  
+  			#{item.inhouseDate, jdbcType=DATE},  #{item.outhouseDate, jdbcType=DATE},  
+  			#{item.invoiceNo, jdbcType=VARCHAR},  #{item.tradingType, jdbcType=VARCHAR}, 
+  			#{item.taxPreperty, jdbcType=VARCHAR},  #{item.tariffTax, jdbcType=VARCHAR},  
+  			#{item.tariff, jdbcType=VARCHAR},  #{item.valueAddedTax, jdbcType=VARCHAR},  
+  			#{item.importCustom, jdbcType=VARCHAR},  #{item.importPort, jdbcType=VARCHAR},  
+  			#{item.lcNo, jdbcType=VARCHAR},  #{item.containerNo, jdbcType=VARCHAR},  
+  			#{item.carType, jdbcType=VARCHAR},  #{item.carNo, jdbcType=VARCHAR},  #{item.rmaNo, jdbcType=VARCHAR},  
+  			#{item.rmaQty, jdbcType=INTEGER},  #{item.originalDeclarationNo, jdbcType=VARCHAR},  
+  			#{item.originalIrNo, jdbcType=VARCHAR},  #{item.importPerson, jdbcType=VARCHAR},  
+  			#{item.finalReviser, jdbcType=VARCHAR},  #{item.lastModifiedTime, jdbcType=DATE},  
+  			#{item.remarks, jdbcType=VARCHAR},  #{item.addUser, jdbcType=VARCHAR},  
+  			#{item.originalCountry, jdbcType=VARCHAR},  #{item.declaringCustom, jdbcType=VARCHAR}, 
+            #{item.text1, jdbcType=VARCHAR},  #{item.text2, jdbcType=VARCHAR}, 
+            #{item.text3, jdbcType=VARCHAR}
+            from  
+            dual  
+        </foreach>  
+        ) A
+	 </insert>
+    
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+		select m.* from t_import m
+    </select>
+    
+    <select id="selectImportInfoByIds" resultMap="BaseResultMap">
+        select m.* from t_import m 
+        <where>
+            and m.id in
+            <foreach collection="array" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>

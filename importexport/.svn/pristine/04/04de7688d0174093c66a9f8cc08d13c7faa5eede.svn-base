@@ -1,0 +1,65 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="js/business/receive.js"></script>
+	<script type="text/javascript" src="js/business/itemHis.js"></script>
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+		    var irNoV = "${irNo}";
+		    $('#itemIrNo').val(irNoV);
+		    if (!irNoV) {
+		    	irNoV = 'empty';
+		    }
+		    
+		    $('input[name="isBatch"]').prop('checked', false);
+			$('input[name="isBatch"][value="' + ${isBatch} + '"]').prop('checked', true);
+		    if(1 == "${isBatch}") {
+		    	$('#batchsDiv').show();
+		    	$('#itemsDiv').hide();
+		    }else {
+		    	$('#batchsDiv').hide();
+		    	$('#itemsDiv').show();
+		    }
+			
+		    $.post('/importexport/receive/search',
+					{
+		                irNo: irNoV
+					},
+					function(resultStr){
+						if (resultStr){
+							var result = $.parseJSON(resultStr);
+							var importInfos = result.rows;
+							if (importInfos.length > 0) {
+								var importInfo = importInfos[0];
+								putFormValueByObj(importInfo);
+							}
+						} else {
+							alert('系统错误');
+						}
+					},'html');
+		    
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+	
+	<h4>收货管理</h4>
+	
+	<#include "receive_edit.html">
+	<#include "../itemhis/itemhis_view.html">
+	<#include "../batchhis/batchhis_view.html">

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.MaterialInventoryDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.MaterialInventoryVo">
+        <id property="id" column="id" />
+		<result property="histmon" column="histmon" />
+		<result property="goodsCode" column="goods_code" />
+		<result property="goodsDescription" column="goods_description" />
+		<result property="goodsDescriptionCn" column="goods_description_cn" />
+		<result property="hsCode" column="hs_code" />
+		<result property="taxPreperty" column="tax_preperty" />
+		<result property="freeNo" column="free_no" />
+		<result property="iterm" column="iterm" />
+		<result property="unit" column="unit" />
+		<result property="materialNo" column="material_no" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="vendor" column="vendor" />
+		<result property="dept" column="dept" />
+		<result property="userId" column="user_id" />
+		<result property="grQty" column="gr_qty" />
+		<result property="retreatGoodsQty" column="retreat_goods_qty" />
+		<result property="useGoodsQty" column="use_goods_qty" />
+		<result property="returnMaterialQty" column="return_material_qty" />
+		<result property="productionScrapQty" column="production_scrap_qty" />
+		<result property="inlineGoodsQty" column="inline_goods_qty" />
+		<result property="inventoryScrapQty" column="inventory_scrap_qty" />
+		<result property="resaleQty" column="resale_qty" />
+		<result property="inventoryProfitQty" column="inventory_profit_qty" />
+		<result property="inventoryLossesQty" column="inventory_losses_qty" />
+		<result property="scrapInventoryQty" column="scrap_inventory_qty" />
+		<result property="destroyQty" column="destroy_qty" />
+		<result property="insertTime" column="insert_time" />
+		<result property="taxPrepertyName" column="taxPrepertyName" />
+		<result property="goodsCodeName" column="goodsCodeName" />
+		<result property="freeNoName" column="freeNoName" />
+    </resultMap>
+
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from
+  		(
+		select m.*, ROWNUM RN 
+		from t_material_inventory m 
+		<where>
+		    <if test="materialInventory != null">
+			  <if test="materialInventory.materialNo != null and materialInventory.materialNo != ''">
+				AND m.material_no = #{materialInventory.materialNo}
+			  </if>
+			  <if test="materialInventory.goodsCode != null and materialInventory.goodsCode != ''">
+				AND m.goods_code = #{materialInventory.goodsCode}
+			  </if>
+			  <if test="materialInventory.histmon != null and materialInventory.histmon != ''">
+				AND m.histmon = #{materialInventory.histmon}
+			  </if>
+			</if>
+			<if test="page != null">
+		   		AND ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		    </if>
+		</where>
+		order by m.id desc
+		)
+		<if test="page != null">
+		where RN &gt; #{page.rowStart}
+		</if>
+    </select>
+    
+    <select id="selectHistMon" resultMap="BaseResultMap">
+		select m.histmon from t_material_inventory m group by m.histmon
+    </select>
+    
+    <select id="countList" resultType="int">
+	select count(*) from t_material_inventory m
+	<where>
+	    <if test="materialInventory != null">
+		  <if test="materialInventory.materialNo != null and materialInventory.materialNo != ''">
+			AND m.material_no = #{materialInventory.materialNo}
+		  </if>
+		  <if test="materialInventory.goodsCode != null and materialInventory.goodsCode != ''">
+			AND m.goods_code = #{materialInventory.goodsCode}
+		  </if>
+		  <if test="materialInventory.histmon != null and materialInventory.histmon != ''">
+			AND m.histmon = #{materialInventory.histmon}
+		  </if>
+		</if>
+	</where>
+    </select>
+    
+    
+    <select id="selectExport" resultMap="BaseResultMap">
+	select t.*, tfn.name as freeNoName, 
+	    ttp.name || '(' || ttp.code || ')' as taxPrepertyName,
+	    gc.name || '(' || gc.code || ')' as goodsCodeName
+	from t_material_inventory t 
+	left join t_goods_Code gc on t.goods_code = gc.code
+	left join t_tax_preperty ttp on t.tax_preperty = ttp.code
+	left join t_free_no tfn on t.free_no = tfn.code
+	<where>
+	    <if test="inventoryIds != null and inventoryIds.length > 0">
+			AND t.id in 
+	        <foreach collection="inventoryIds" open=" (" close=")" item="id" separator=",">
+	            #{id}
+	        </foreach>
+		</if>
+	    <if test="materialInventory != null">
+		  <if test="materialInventory.materialNo != null and materialInventory.materialNo != ''">
+			AND t.material_no = #{materialInventory.materialNo}
+		  </if>
+		  <if test="materialInventory.goodsCode != null and materialInventory.goodsCode != ''">
+			AND t.goods_code = #{materialInventory.goodsCode}
+		  </if>
+		  <if test="materialInventory.histmon != null and materialInventory.histmon != ''">
+			AND t.histmon = #{materialInventory.histmon}
+		  </if>
+		</if>
+	</where>
+	order by t.id
+    </select>
+    
+</mapper>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.ImportBatchDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.vo.ImportBatchVo">
+        <id property="id" column="id" />
+        <result property="poNo" column="po_no" />
+        <result property="poItem" column="po_item" />
+        <result property="factory" column="factory" />
+        <result property="materialNo" column="material_no" />
+        <result property="batchNo" column="batch_no" />
+        <result property="importId" column="import_id" />
+        <result property="unit" column="unit" />
+        <result property="qty" column="qty" />
+        <result property="produceTime" column="produce_time" />
+        <result property="overdueTime" column="overdue_time" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+        <result property="itemId" column="item_id"/>
+        <result property="moveType" column="move_type"/>
+        <result property="nWeight" column="n_weight"/>
+        <result property="gWeight" column="g_weight"/>
+        <result property="packageType" column="package_type"/>
+        <result property="bSize" column="b_size"/>
+        
+        <result property="grNo" column="gr_no"/>
+        <result property="stock" column="stock"/>
+        <result property="irNo" column="ir_No"/>
+        <result property="status" column="status"/>
+        <result property="sapBatchNo" column="sap_batch_no"/>
+        <result property="isBatch" column="isbatch"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_IMPORT_BATCH_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_import_batch(
+        <trim suffixOverrides=",">
+        id,
+        <if test="poNo != null">
+            po_no,
+        </if>
+        <if test="poItem != null">
+            po_item,
+        </if>
+        <if test="factory != null">
+            factory,
+        </if>
+        <if test="materialNo != null">
+            material_no,
+        </if>
+        <if test="batchNo != null">
+            batch_no,
+        </if>
+        <if test="importId != null">
+            import_id,
+        </if>
+        <if test="unit != null">
+            unit,
+        </if>
+        <if test="qty != null">
+            qty,
+        </if>
+        <if test="produceTime != null">
+            produce_time,
+        </if>
+        <if test="overdueTime != null">
+            overdue_time,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        <if test="nWeight != null">
+            n_weight,
+        </if>
+        <if test="gWeight != null">
+            g_weight,
+        </if>
+        <if test="packageType != null">
+            package_type,
+        </if>
+        <if test="bSize != null">
+            b_size,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="poNo != null">
+            #{poNo},
+        </if>
+        <if test="poItem != null">
+            #{poItem},
+        </if>
+        <if test="factory != null">
+            #{factory},
+        </if>
+        <if test="materialNo != null">
+            #{materialNo},
+        </if>
+        <if test="batchNo != null">
+            #{batchNo},
+        </if>
+        <if test="importId != null">
+            #{importId},
+        </if>
+        <if test="unit != null">
+            #{unit},
+        </if>
+        <if test="qty != null">
+            #{qty},
+        </if>
+        <if test="produceTime != null">
+            #{produceTime},
+        </if>
+        <if test="overdueTime != null">
+            #{overdueTime},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        <if test="nWeight != null">
+            #{nWeight},
+        </if>
+        <if test="gWeight != null">
+            #{gWeight},
+        </if>
+        <if test="packageType != null">
+            #{packageType},
+        </if>
+        <if test="bSize != null">
+            #{bSize},
+        </if>
+        </trim>
+        )
+    </insert>
+    
+    <insert id="insertBatch">  
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            SELECT T_IMPORT_BATCH_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into t_import_batch
+        (id, po_no, po_item, factory, material_no, batch_no, import_id, unit, qty, produce_time, overdue_time, add_user,  
+        g_weight, n_weight, package_type, b_size)  
+        select T_IMPORT_BATCH_SEQ.nextval, A.* FROM (  
+        <foreach collection="list" item="item" index="index"  
+            separator="union all">  
+            select
+            #{item.poNo, jdbcType=VARCHAR},  
+            #{item.poItem, jdbcType=VARCHAR},  
+            #{item.factory, jdbcType=VARCHAR},  
+            #{item.materialNo, jdbcType=VARCHAR},  
+            #{item.batchNo, jdbcType=VARCHAR},
+            #{item.importId, jdbcType=BIGINT},
+            #{item.unit, jdbcType=VARCHAR},
+            #{item.qty, jdbcType=NUMERIC},
+            #{item.produceTime, jdbcType=DATE},
+            #{item.overdueTime, jdbcType=DATE},
+            #{item.addUser, jdbcType=VARCHAR}, 
+            #{item.gWeight, jdbcType=NUMERIC},
+            #{item.nWeight, jdbcType=NUMERIC},
+            #{item.packageType, jdbcType=VARCHAR},
+            #{item.bSize, jdbcType=VARCHAR}
+            from  
+            dual  
+        </foreach>  
+        ) A  
+    </insert>  
+  
+    <update id="updateById">
+        UPDATE t_import_batch
+        <set>
+        <if test="poNo != null">
+            po_no = #{poNo},
+        </if>
+        <if test="poItem != null">
+            po_item = #{poItem},
+        </if>
+        <if test="factory != null">
+            factory = #{factory},
+        </if>
+        <if test="materialNo != null">
+            material_no = #{materialNo},
+        </if>
+        <if test="batchNo != null">
+            batch_no = #{batchNo},
+        </if>
+        <if test="importId != null">
+            import_id = #{importId},
+        </if>
+        <if test="unit != null">
+            unit = #{unit},
+        </if>
+        <if test="qty != null">
+            qty = #{qty},
+        </if>
+        <if test="sapBatchNo != null">
+            sap_batch_no = #{sapBatchNo},
+        </if>
+        <if test="produceTime != null">
+            produce_time = #{produceTime},
+        </if>
+        <if test="overdueTime != null">
+            overdue_time = #{overdueTime},
+        </if>
+        <if test="updateUser != null">
+            update_user = #{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME = #{updateTime},
+        </if>
+        <if test="nWeight != null">
+            n_weight = #{nWeight},
+        </if>
+        <if test="gWeight != null">
+            g_weight = #{gWeight},
+        </if>
+        <if test="packageType != null">
+            package_type = #{packageType},
+        </if>
+        <if test="bSize != null">
+            bSize = #{bSize},
+        </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+    select * from
+	    (
+	    select s.*, ROWNUM RN from 
+		    (
+			select t.*,m.gr_no,m.stock,m.id as item_id,m.move_type,m.status,m.isbatch from t_import_batch t
+			inner join t_import i on t.import_id = i.id
+			left join T_IMPORT_ITEM m on m.po_no = t.po_no and m.po_item = t.po_item and i.id = m.import_id
+			<where>
+			    <if test="irNo != null and irNo != ''">
+					AND i.ir_no = #{irNo}
+				</if>
+				<if test="stat != null">
+                    AND m.status =#{stat}
+                </if>
+			    <if test="importBatch != null">
+				  <if test="importBatch.id != null and importBatch.id != 0">
+					AND t.id = #{importBatch.id}
+				  </if>
+				  <if test="importBatch.importId != null and importBatch.importId != 0">
+					AND t.import_id = #{importBatch.importId}
+				  </if>
+				  <if test="importBatch.poNo != null and importBatch.poNo != ''">
+					AND t.po_no = #{importBatch.poNo}
+				  </if>
+				  <if test="importBatch.poItem != null and importBatch.poItem != ''">
+					AND t.po_item = #{importBatch.poItem}
+				  </if>
+				  <if test="importBatch.materialNo != null and importBatch.materialNo != ''">
+					AND t.material_no = #{importBatch.materialNo}
+				  </if>
+				  <if test="importBatch.batchNo != null and importBatch.batchNo != ''">
+					AND t.batch_no = #{importBatch.batchNo}
+				  </if>
+				</if>
+				<if test="timeRange != null">
+				  <if test="timeRange.startTime != null">
+					AND t.update_time &gt;= #{timeRange.startTime}
+				  </if>
+				  <if test="timeRange.endTime != null">
+					AND t.update_time &lt; #{timeRange.endTime}
+				  </if>
+				</if>
+			</where>
+			order by t.update_time desc, t.po_no, t.po_item
+			)s
+		<if test="page != null">
+	        where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+	    </if>
+		)
+		<if test="page != null">
+		where RN &gt; #{page.rowStart}
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from (
+	    select t.*,m.gr_no,m.stock,m.id as item_id,m.move_type,m.status,m.isbatch, ROWNUM RN from t_import_batch t
+	    inner join t_import i on t.import_id = i.id
+	    left join T_IMPORT_ITEM m on m.po_no = t.po_no and m.po_item = t.po_item and i.id = m.import_id
+			<where>
+			    <if test="irNo != null and irNo != ''">
+					AND i.ir_no = #{irNo}
+				</if>
+				<if test="stat != null">
+		            AND m.status =#{stat}
+		        </if>
+			    <if test="importBatch != null">
+				  <if test="importBatch.id != null and importBatch.id != 0">
+					AND t.id = #{importBatch.id}
+				  </if>
+				  <if test="importBatch.importId != null and importBatch.importId != 0">
+					AND t.import_id = #{importBatch.importId}
+				  </if>
+				  <if test="importBatch.poNo != null and importBatch.poNo != ''">
+					AND t.po_no = #{importBatch.poNo}
+				  </if>
+				  <if test="importBatch.poItem != null and importBatch.poItem != ''">
+					AND t.po_item = #{importBatch.poItem}
+				  </if>
+				  <if test="importBatch.materialNo != null and importBatch.materialNo != ''">
+					AND t.material_no = #{importBatch.materialNo}
+				  </if>
+				  <if test="importBatch.batchNo != null and importBatch.batchNo != ''">
+					AND t.batch_no = #{importBatch.batchNo}
+				  </if>
+				</if>
+				<if test="timeRange != null">
+				  <if test="timeRange.startTime != null">
+					AND t.update_time &gt;= #{timeRange.startTime}
+				  </if>
+				  <if test="timeRange.endTime != null">
+					AND t.update_time &lt; #{timeRange.endTime}
+				  </if>
+				</if>
+			</where>
+	   )
+    </select>
+    
+    <select id="countByImportIds" resultType="int">
+        select count(1) from t_import_batch
+        WHERE import_id in
+        <foreach collection="array" open=" (" close=")" item="importId" separator=",">
+            #{importId}
+        </foreach>
+    </select>
+    
+    <delete id="deleteByIds">
+        delete from t_import_batch
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteImportBatchByIrNo" parameterType="String">
+			delete from t_import_batch t where t.sap_batch_no is null and t.import_id = (select m.id
+			from t_import m where m.ir_no = #{irNo})
+    </delete>
+</mapper>

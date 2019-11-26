@@ -1,0 +1,195 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="js/business/importBatch.js"></script>
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	
+	<script type="text/javascript">	
+	function batchStockFormatter(value, row, index) {
+		var stockV = value;
+		if(!stockV) {
+			stockV = "";
+		}
+		return "<input type='text' id='stock_" + row.itemId + "' name='stock' value='" + stockV + "' style='width:50px;height:25px'>";
+	}
+	$(function(){
+		var irNoV = "${irNo}";
+		var stat = 0;
+		$('#batchIrNo').val(irNoV);
+		$('#importBatchTable').bootstrapTable({
+			pagination: true,
+			cache:false,
+			pageNumber:1,
+			pageSize:100,
+			pageList: [100, 500],
+			sidePagination: "server",
+			height:530,
+		    columns: [{
+		    	field: 'checkboxf',
+		        checkbox: true,
+		        select: false,
+		    }, {
+		        field: 'poNo',
+		        title: 'PO NO'
+		    }, {
+		        field: 'poItem',
+		        title: 'PO Item'
+		    }, {
+		        field: 'materialNo',
+		        title: '料号'
+		    }, {
+		    	field: 'stock',
+		        title: '库存地点',
+		        formatter: batchStockFormatter
+		    }, {
+		        field: 'factory',
+		        title: '厂别'
+		    }, {
+		        field: 'batchNo',
+		        title: '批号'
+		    }, {
+		        field: 'sapBatchNo',
+		        title: 'SAP Batch No',
+		    }, {
+		        field: 'qty',
+		        title: '数量'
+		    }, {
+		        field: 'unit',
+		        title: '单位'
+		    }, {
+		        field: 'produceTime',
+		        title: '生产日期',
+		        formatter: produceTimeFormatter
+		    }, {
+                field: 'gWeight',
+                title: '毛重',
+            }, {
+                field: 'nWeight',
+                title: '净重',
+            }, {
+                field: 'bSize',
+                title: '尺寸',
+            }, {
+                field: 'packageType',
+                title: '包装类型',
+            }, {
+		        field: 'overdueTime',
+		        title: '过期日期',
+		        formatter: overdueTimeFormatter
+		    }, {
+		    	field: 'grNo',
+		        title: 'GR NO'
+		    }, {
+		        field: 'moveType',
+		        title: 'Move Type',
+		    }, {
+		        field: 'status',
+		        title: '收货状态',
+		        formatter: statusFormatter
+		    }, {
+    	       field: 'operate',
+    	       title: '操作',
+    	       align: 'center',
+        	   formatter: operateFormatter,
+    	       events: "operateEvents"
+   	        }, {
+		        field: 'itemId',
+		        title: 'itemId',
+		        visible: false
+		    }, {
+		        field: 'isBatch',
+		        title: 'isBatch',
+		        visible: false
+   	        },{
+		        field: 'importId',
+		        title: 'importId',
+		        visible: false
+		    }, {
+		        field: 'id',
+		        title: 'id',
+		        visible: false
+		    }],
+		    url : '/importexport/importBatch/search',
+		    queryParams : function (params) {
+                   var temp = {   
+                       rows: params.limit,
+                       page: (params.offset / params.limit) + 1,
+                       sort: params.sort,
+                       sortOrder: params.order,
+                       irNo: irNoV,
+                       stat: stat
+                   };
+                   return temp;
+               },
+               onLoadSuccess: function (data) {
+                	var fieldNames = ['checkboxf', 'factory', 'poItem', 'poNo', 'materialNo', 'grNo', 'stock', 'moveType', 'status', 'operate'];
+                	mergeCells(data.rows, ["poNo", "poItem"], fieldNames, $('#importBatchTable'));//行合并
+                },
+               
+	        clickToSelect: true
+		});
+
+
+		//item历史记录查看
+		function operateFormatter(value, row, index) {
+            return ['<button type="button" class="itemHisView btn btn-primary">查看历史</button>',
+            ].join('')
+ 	   }
+		window.operateEvents = {
+            'click .itemHisView': function (e, value, row, index) {
+				var itemId = row.itemId;
+					
+				getHisModel(itemId);
+			}	
+        }
+		$('.form_date').datetimepicker({
+			format: 'yyyy-mm-dd',
+	        language:  'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });
+		
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // 获取已激活的标签页的名称
+            var activeTab = $(e.target).text();
+            // 获取前一个激活的标签页的名称
+            var previousTab = $(e.relatedTarget).text();
+            
+            if (activeTab.trim() == '批次信息') {
+            }
+        });
+	});
+	</script>
+	
+	<div id="uploadBatchDiv" style="margin-top:2px;margin-bottom:2px">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="input-group">
+            <span class="input-group-addon">选择Excel:</span>
+            <input id="fileName" type="file" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button id="upload-file-btn" class="btn btn-primary" type="button" onclick="upload()">上传</button>
+          </div>
+        </div>
+	</div>
+	
+	
+	<div class="btn-group" style="margin-top:2px;margin-bottom:2px">
+        <button type="button" class="btn btn-default" onclick="receiveBatches()">收货</button>
+		<input id="batchIrNo" type="hidden"/>
+    </div>
+    
+	<table id="importBatchTable"></table>
+	
+    <#include "receive_error.html">

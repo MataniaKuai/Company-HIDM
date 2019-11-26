@@ -1,0 +1,32 @@
+    <div class="modal fade" id="picModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="picModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width:400px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="picModalLabel">
+					上传照片
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <form id="picForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+			    <div class="form-group">
+                    <label class="col-sm-4 control-label">Asset No</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="assetNo" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">选择照片</label>
+                    <div class="col-sm-6">
+                        <input type="file" name="fileName"/>
+                    </div>
+                </div>
+                    <input type="hidden" name="id">
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="doUpload()">提交</button>
+			</div>
+		</div>
+	</div>
+    </div>

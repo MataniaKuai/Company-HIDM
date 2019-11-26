@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.entity.User">
+        <id property="id" column="id" />
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    
+    <!-- 插入数据库用户表 -->  
+    <insert id="insert">
+        INSERT INTO t_user(user_name,password)
+        VALUES(#{userName},#{password})
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_user SET   
+            user_name=#{userName}, password=#{password}  
+        WHERE id=#{id}  
+    </update>
+    
+    <select id="checkUser" resultType="int">
+        select count(*) from t_user where user_name=#{userName} and password=#{password}
+    </select>
+    
+    <select id="selectUser" resultMap="BaseResultMap">
+        select * from t_user where user_name=#{userName} and password=#{password}
+    </select>
+</mapper>

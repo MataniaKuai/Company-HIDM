@@ -1,0 +1,36 @@
+    <div class="panel panel-default" id="dataDiv" style="display:block;">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				进口信息
+			</h3>
+		</div>
+		<div class="panel-body">
+		    <ul id="myTab" class="nav nav-tabs">
+	          <li class="active">
+		        <a href="#items" data-toggle="tab">
+			                  收货
+		        </a>
+	          </li>
+	          <li>
+		        <a href="#home" data-toggle="tab">
+			                  进口数据信息
+		        </a>
+	          </li>
+	          
+	        </ul>
+	        <div id="myTabContent" class="tab-content">
+	          <div class="tab-pane fade in active" id="items">
+                <#include "receive_item_manage.html">
+              </div>
+	          <div class="tab-pane fade" id="home">
+			    <form id="editForm" class="form-horizontal" role="form">
+                <#include "../importinfo.html">
+                
+                </form>
+              </div>
+            </div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="button" class="btn btn-default" onclick="closeDataDiv()">返回</button>
+		</div>
+	</div>

@@ -1,0 +1,391 @@
+    <div class="panel panel-default" id="dataDiv" style="display:none;">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				进口信息
+			</h3>
+		</div>
+		<div class="panel-body">
+		    <ul id="myTab" class="nav nav-tabs">
+		      <li class="active">
+		        <a href="#home" data-toggle="tab">
+			                  基本信息
+		        </a>
+	          </li>
+	          <li>
+		        <a href="#items" data-toggle="tab">
+			                  明细信息
+		        </a>
+	          </li>
+	        </ul>
+	        <div id="myTabContent" class="tab-content">
+	          <div class="tab-pane fade in active" id="home">
+			    <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">ORG</label>
+                    <div class="col-sm-3">
+                    <select name="org" class="form-control selectpicker org" data-live-search="true" required data-bv-notempty-message="ORG不能为空">
+                        <option value="">请选择</option>
+                         <#list orgList as org>
+							<option value="${org.code!}">${org.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Freight Type</label>
+                    <div class="col-sm-3">
+                    <select name="freightType" class="form-control selectpicker freightType" data-live-search="true" required data-bv-notempty-message="Freight Type不能为空">
+                        <option value="">请选择</option>
+                        <#list freighttypeList as item>
+							<option value="${item.code!}">${item.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Goods Code</label>
+                    <div class="col-sm-3">
+                    <select name="goodsCode" class="form-control selectpicker goodsCode" data-live-search="true" required data-bv-notempty-message="Goods Code不能为空">
+                        <option value="">请选择</option>
+                        <#list goodList as goods>
+							<option value="${goods.code!}">${goods.name!}(${goods.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-2">
+                    <button id="addIrNoBtn" type="button" class="btn btn-primary" onclick="addIrNo()">ADD IR NO</button>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">IR NO</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="irNo" class="form-control"
+                            required data-bv-notempty-message="IR NO不能为空"
+                            data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="30" data-bv-stringlength-message="IR NO长度范围[6-30]"
+                        >
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Declaration No</label>
+                    <div class="col-sm-3"><input type="text" name="declarationNo" maxlength="21" class="form-control"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Declaration Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="declarationTime" name="declarationTime" type="text" value="">
+                    </div>
+
+                    <label class="col-sm-1 control-label">Release Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="releaseTime" name="releaseTime" type="text" value="">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Arrival Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="arriveTime" name="arriveTime" type="text" value="">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Receive Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="receiveTime" name="receiveTime" type="text" value="">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Sailing Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="sailingTime" name="sailingTime" type="text" value="">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">G.W.(KG)</label>
+                    <div class="col-sm-3"><input type="text" name="gw" class="form-control"></div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">N.W.(KG)</label>
+                    <div class="col-sm-3"><input type="text" name="nw" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">CH.W(KG)</label>
+                    <div class="col-sm-3"><input type="text" name="chw" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Total Package</label>
+                    <div class="col-sm-3"><input type="text" name="totalPackage" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Packing Type</label>
+                    <div class="col-sm-3">
+                    <select name="packingType" class="form-control selectpicker packingType" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list packingList as item>
+							<option value="${item.code!}">${item.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Record No</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="recordNo" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Unusual</label>
+                    <div class="radio col-sm-3">
+                    <label><input type="radio" name="unusual" id="unusual1" value="1">是</label>
+                    <label><input type="radio" name="unusual" id="unusual0" value="0">否</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">App Type</label>
+                    <div class="col-sm-3">
+                    <select name="appType" class="form-control selectpicker appType" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list appList as item>
+							<option value="${item.code!}">${item.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Broker</label>
+                    <div class="col-sm-3"><input type="text" name="broker" class="form-control"></div>
+                    
+                    
+                    <label class="col-sm-1 control-label">Remarks</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" id="remarks" name="remarks" type="text" value="">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Freight Term</label>
+                    <div class="col-sm-3">
+                    <select name="freightTerm" class="form-control selectpicker freightTerm" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list freightList as item>
+							<option value="${item.code!}">${item.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">B/L</label>
+                    <div class="col-sm-3"><input type="text" name="bl" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">MAWB</label>
+                    <div class="col-sm-3"><input type="text" name="mawb" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">HAWB</label>
+                    <div class="col-sm-3"><input type="text" name="hawb" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Flight/Vessel Voy</label>
+                    <div class="col-sm-3"><input type="text" name="flightVesselVoy" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Ship From Country</label>
+                    <div class="col-sm-3">
+                    <select name="shipFromCountry" class="form-control selectpicker shipFromCountry" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list shipfromList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Ship From Port</label>
+                    <div class="col-sm-3">
+                    <select name="shipFromPort" class="form-control selectpicker shipFromPort" data-live-search="true"> 
+                        <option value="">请选择</option>
+                        <#list loadingList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Loading Port</label>
+                    <div class="col-sm-3">
+                    <select name="loadingPort" class="form-control selectpicker loadingPort" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list loadingList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Discharge Port</label>
+                    <div class="col-sm-3">
+                    <select name="dischargePort" class="form-control selectpicker dischargePort" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list loadingList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Inhouse Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="inhouseDate" name="inhouseDate" type="text" value="">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Outhouse Date</label>
+                    <div class="col-sm-3">
+                        <input class="form-control form_date" id="outhouseDate" name="outhouseDate" type="text" value="">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Invoice No</label>
+                    <div class="col-sm-3"><input type="text" name="invoiceNo" class="form-control"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Trading Type</label>
+                    <div class="col-sm-3">
+                        <select name="tradingType" class="form-control selectpicker tradingType" data-live-search="true">
+                            <option value="">请选择</option>
+	                        <#list tradingTypes as item>
+								<option value="${item.code!}">${item.name!}(${item.code!})</option>
+							</#list>
+                            
+                        </select>
+                    </div>
+					
+					<label class="col-sm-1 control-label">Tax Preperty</label>
+                    <div class="col-sm-3">
+                        <select name="taxPreperty" class="form-control selectpicker taxPreperty" data-live-search="true">
+                            <option value="">请选择</option>
+	                        <#list taxPrepertys as item>
+								<option value="${item.code!}">${item.name!}(${item.code!})</option>
+							</#list>
+                        </select>
+                    </div>
+					
+					<label class="col-sm-1 control-label">Tariff tax</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="tariffTax" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Tariff</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="tariff" class="form-control">
+                    </div>
+					
+					<label class="col-sm-1 control-label">Value added tax</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="valueAddedTax" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">LC No</label>
+                    <div class="col-sm-3"><input type="text" name="lcNo" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Original Country</label>
+                    <div class="col-sm-3">
+                    <select name="originalCountry" class="form-control selectpicker originalCountry" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list shipfromList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Container No</label>
+                    <div class="col-sm-3"><input type="text" name="containerNo" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Car Type</label>
+                    <div class="col-sm-3">
+                    <select name="carType" class="form-control selectpicker carType" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list carList as item>
+							<option value="${item.code!}">${item.name!}</option>
+						</#list>
+                    </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Import Custom</label>
+                    <div class="col-sm-3">
+                    <select name="importCustom" class="form-control selectpicker importCustom" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list customList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-1 control-label">Declaring Customs</label>
+                    <div class="col-sm-3">
+                    <select name="declaringCustom" class="form-control selectpicker declaringCustom" data-live-search="true">
+                        <option value="">请选择</option>
+                        <#list customList as item>
+							<option value="${item.code!}">${item.name!}(${item.code!})</option>
+						</#list>
+                    </select>
+                    </div>
+                    
+					<label class="col-sm-1 control-label">RMA NO</label>
+                    <div class="col-sm-3"><input type="text" name="rmaNo" class="form-control"></div>
+
+                </div>
+                
+                <div class="form-group">                   
+                    <label class="col-sm-1 control-label">RMA Qty</label>
+                    <div class="col-sm-3"><input type="text" name="rmaQty" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Original Declaration No</label>
+                    <div class="col-sm-3"><input type="text" name="originalDeclarationNo" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Original Ir No</label>
+                    <div class="col-sm-3"><input type="text" name="originalIrNo" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">                                     
+                    <label class="col-sm-1 control-label">Import Person</label>
+                    <div class="col-sm-3"><input type="text" name="importPerson" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Forwarder</label>
+                    <div class="col-sm-3"><input type="text" name="forwarder" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">Car No</label>
+                    <div class="col-sm-3"><input type="text" name="carNo" class="form-control"></div>
+                    
+                </div>
+
+                <div class="form-group">                 
+                    <label class="col-sm-1 control-label">Last modified time</label>
+                    <div class="col-sm-3"><input type="text" name="lastModifiedTime" class="form-control form_date"></div>
+                    <label class="col-sm-1 control-label">Final Reviser</label>
+                    <div class="col-sm-3"><input type="text" name="finalReviser" class="form-control" value="${(user.userName)!''}"></div>
+                    <label class="col-sm-1 control-label">Text_1</label>
+                    <div class="col-sm-3"><input type="text" name="text1" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Text_2</label>
+                    <div class="col-sm-3"><input type="text" name="text2" class="form-control"></div>
+                    <label class="col-sm-1 control-label">Text_3</label>
+                    <div class="col-sm-3"><input type="text" name="text3" class="form-control"></div>
+                </div>
+                    
+                <input type="hidden" name="id">
+                
+                <div class="panel-footer text-right">
+			        <button type="button" class="btn btn-default" onclick="closeDataDiv()">返回</button>
+			        <button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+		        </div>
+                </form>
+              </div>
+              <div class="tab-pane fade" id="items">
+                <#include "item_manage.html">
+                
+                <div class="panel-footer text-right">
+			        <button type="button" class="btn btn-default" onclick="closeDataDiv()">返回</button>
+		        </div>
+              </div>
+            </div>
+		</div>
+	</div>

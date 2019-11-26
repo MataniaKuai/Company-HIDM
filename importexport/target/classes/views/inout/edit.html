@@ -1,0 +1,104 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLabel">
+					进出厂信息
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goods Code</label>
+                    <div class="col-sm-4">
+                    <select name="goodsCode" class="form-control selectpicker goodsCode" data-live-search="true" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Material No</label>
+                    <div class="radio col-sm-4">
+                        <input type="text" name="materialNo" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Asset No</label>
+                    <div class="col-sm-4"><input type="text" name="assetNo" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">Goods Description</label>
+                    <div class="col-sm-4"><input type="text" name="goodsDesc" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">                    
+                    <label class="col-sm-2 control-label">中文品名</label>
+                    <div class="col-sm-4"><input type="text" name="chineseName" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">监管状态</label>
+                    <div class="col-sm-4">
+                    <select name="controlStatus" class="form-control selectpicker controlStatus" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">解除监管方式</label>
+                    <div class="col-sm-4">
+                    <select name="relieveMode" class="form-control selectpicker relieveMode" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">出厂时间</label>
+                    <div class="col-sm-4">
+                        <input class="form-control form_date" id="outTime" name="outTime" type="text" value="">
+                    </div>
+
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">出厂原因</label>
+                    <div class="col-sm-4">
+                    <select name="outReason" class="form-control selectpicker outReason" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">复运出口原因</label>
+                    <div class="col-sm-4">
+                    <select name="reexportReason" class="form-control selectpicker reexportReason" data-live-search="true">
+                        <option value="">请选择</option>
+                    </select>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">RE-EXPORT NO</label>
+                    <div class="col-sm-4"><input type="text" name="reexportNo" class="form-control"></div>
+                    
+                    <label class="col-sm-2 control-label">出厂放行单编号</label>
+                    <div class="col-sm-4"><input type="text" name="outReleaseNo" class="form-control"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否回厂</label>
+                    <div class="col-sm-4">
+                    <label><input type="radio" name="isReturn" id="isReturn1" value="1">是</label>
+                    <label><input type="radio" name="isReturn" id="isReturn0" value="0">否</label>
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">回厂时间</label>
+                    <div class="col-sm-4"><input type="text" name="returnTime" class="form-control form_date"></div>
+                </div>
+                
+                <input type="hidden" name="id">
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+			</div>
+		</div>
+	</div>
+    </div>

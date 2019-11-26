@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.importexport.dao.FileInfoDao">
+    <resultMap id="BaseResultMap" type="com.hidm.importexport.entity.FileInfo">
+        <id property="id" column="id" />
+        <result property="fileName" column="file_name" />
+        <result property="filePath" column="file_path" />
+        <result property="fileType" column="file_type" />
+        <result property="delFlag" column="del_flag" />
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="addUser" column="add_user"/>
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT T_FILE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_file(
+        <trim suffixOverrides=",">
+        id,
+        <if test="fileName != null">
+            file_name,
+        </if>
+        <if test="filePath != null">
+            file_path,
+        </if>
+        <if test="fileType != null">
+            file_type,
+        </if>
+        <if test="addUser != null">
+            add_user,
+        </if>
+        </trim>
+        )
+        VALUES(
+        <trim suffixOverrides=",">
+            #{id},
+        <if test="fileName != null">
+            #{fileName},
+        </if>
+        <if test="filePath != null">
+            #{filePath},
+        </if>
+        <if test="fileType != null">
+            #{fileType},
+        </if>
+        <if test="addUser != null">
+            #{addUser},
+        </if>
+        </trim>
+        )
+    </insert>
+  
+    <update id="updateById">
+        UPDATE t_file
+        <set>
+        <if test="fileName != null">
+            file_name = #{fileName},
+        </if>
+        <if test="filePath != null">
+            file_path = #{filePath},
+        </if>
+        <if test="fileType != null">
+            file_type = #{fileType},
+        </if>
+        <if test="updateUser != null">
+            update_user=#{updateUser},
+        </if>
+        <if test="updateTime != null">
+            UPDATE_TIME=#{updateTime},
+        </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    
+    
+</mapper>

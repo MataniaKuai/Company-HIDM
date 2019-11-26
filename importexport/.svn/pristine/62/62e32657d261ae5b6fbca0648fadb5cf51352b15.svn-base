@@ -1,0 +1,128 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLabel">
+					进口明细信息
+				</h4>
+			</div>
+			<div class="modal-body">
+			    <form id="itemEditForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">PO NO</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="poNo" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">PO Item</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="poItem" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Vendor</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="vendor" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Material NO</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialNo" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goods Description</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="goodsDesc" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Unit</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="unit" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Qty</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="qty" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Unit Price</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="unitPrice" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Total Amount</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="totalAmount" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Currency</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="currency" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Asset NO</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="assetNo" class="form-control">
+                    </div>
+                    
+                    <label class="col-sm-2 control-label">Trade Term</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="tradeTerm" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">中文品名</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="chineseName" class="form-control">
+                    </div>
+                    <label class="col-sm-2 control-label">HS Code</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="hsCode" class="form-control">
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    
+                    <label class="col-sm-2 control-label">GR NO</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="grNo" class="form-control">
+                    </div>
+                    <label class="col-sm-2 control-label">Dept</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="dept" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    
+                    <label class="col-sm-2 control-label">Employee NO</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="employeeNo" class="form-control">
+                    </div>
+                    <label class="col-sm-2 control-label">库存地点</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="stock" class="form-control">
+                    </div>
+                </div>
+                
+                <input type="hidden" name="itemId">
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="itemSaveBtn" type="button" class="btn btn-primary" onclick="itemSave()">保存</button>
+			</div>
+		</div>
+	</div>
+    </div>

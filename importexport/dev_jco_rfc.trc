@@ -1,0 +1,64 @@
+
+**** Error file opened at 20190111 163951 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Jan 11 16:39:51,369<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 16:39:55,503<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 16:40:02,241<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+
+**** Error file opened at 20190111 164126 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Jan 11 16:41:26,515<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+
+**** Error file opened at 20190114 165620 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Mon Jan 14 16:56:20,525<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 16:56:24,563<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 17:12:25,833<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+
+**** Error file opened at 20190326 171033 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Tue Mar 26 17:10:33,257<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:04,664<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:07,215<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:11,268<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:22,252<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:24,119<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
+Error:  >Tue Mar 26 17:11:36,084<    >RfcGetException rc (7) message: No RFC authorization for function module RFCPING.
+<RfcGetException
+
+
