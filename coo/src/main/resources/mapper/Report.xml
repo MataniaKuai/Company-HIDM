@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.ReportDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.ReportVo">
+		<result property="id" column="id" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+		<result property="purchasePrice" column="purchase_price" />
+		<result property="tax" column="tax" />
+		<result property="installationHookupCost" column="ihookup_cost" />
+		<result property="floorCost" column="floor_cost" />
+        <result property="housing" column="housing" />
+		<result property="trainingCost" column="training_cost" />
+		<result property="qualificationCost" column="qua_cost" />
+		<result property="operateLaborCost" column="operate_labor_cost" />
+		<result property="maintainLaborCost" column="maintain_labor_cost" />
+		<result property="totalMaterialCost" column="total_m_cost" />
+		<result property="partsCost" column="parts_costs" />
+		<result property="totalUtilityCost" column="total_u_cost" />
+		<result property="mainServiceCost" column="main_service_cost" />
+		<result property="additionalCost" column="additional_cost" />
+		<result property="waferCostRework" column="wafer_cost_rework" />
+		<result property="waferCostScrap" column="wafer_cost_scrap" />
+		<result property="uph" column="uph" />
+		<result property="uptimeRate" column="uptime_rate" />
+		<result property="reworkRate" column="rework_rate" />
+		<result property="scrapRate" column="scrap_rate" />
+		<result property="uStatus" column="uStatus" />
+		<result property="mStatus" column="mStatus" />
+		<result property="oStatus" column="oStatus" />
+		<result property="pStatus" column="pStatus" />
+		<result property="iStatus" column="iStatus" />
+        <result property="userSubmit" column="user_submit" />
+        <result property="proSubmit" column="pro_submit" />
+        <result property="opSubmit" column="op_submit" />
+        <result property="mfgSubmit" column="mfg_submit" />
+	</resultMap>
+
+	<select id="selectList" resultMap="BaseResultMap">
+		select
+		p.user_base_id,
+		u.eq_type_id,
+		u.user_module,
+		u.vendor,
+		u.model,
+        u.housing,
+		p.purchase_price,
+		p.tax,
+		u.ihookup_cost,
+		u.scrap_rate,
+		i.floor_cost,
+		p.training_cost,
+		u.qua_cost,
+		i.operate_labor_cost,
+		i.maintain_labor_cost,
+		u.total_m_cost,
+		u.parts_costs,
+		u.total_u_cost,
+		p.main_service_cost,
+		p.additional_cost,
+		o.wafer_cost_rework,
+		o.wafer_cost_scrap,
+		u.uph,
+		u.uptime_rate,
+		u.rework_rate,
+		u.scrap_rate,
+		i.coo_value,
+        u.is_submit user_submit,
+        p.is_submit pro_submit,
+        o.is_submit op_submit,
+        m.is_submit mfg_submit
+		from T_USER_BASE u
+		left join t_pro p on p.user_base_id = u.id
+		left join t_ie i on i.user_base_id = u.id
+		left join t_op o on o.user_base_id = u.id
+        left join t_mfg m on m.user_base_id = u.id
+		where u.eq_type_id=#{eqTypeId}
+		<if test="vendorModels != null">
+			<foreach collection="vendorModels" item="vendorModel" index="index"  open=" and (" separator="or" close=")">
+                u.vendor || '/' || u.model = #{vendorModel} 
+            </foreach>
+		</if>
+		order by u.id desc
+	</select>
+	
+	
+	<select id="selectListById" resultMap="BaseResultMap">
+		select
+		u.eq_type_id,
+		u.user_module,
+		u.vendor,
+		u.model,
+		p.purchase_price,
+		p.tax,
+        u.housing,
+		u.ihookup_cost,
+		u.scrap_rate,
+		i.floor_cost,
+		i.id as id,
+		p.training_cost,
+		u.qua_cost,
+		i.operate_labor_cost,
+		i.maintain_labor_cost,
+		u.total_m_cost,
+		u.parts_costs,
+		u.total_u_cost,
+		p.main_service_cost,
+		p.additional_cost,
+		o.wafer_cost_rework,
+		o.wafer_cost_scrap,
+		u.uph,
+		u.uptime_rate,
+		u.rework_rate,
+		u.scrap_rate,
+		i.coo_value
+		from T_USER_BASE u
+		left join t_pro p on p.user_base_id = u.id
+		left join t_ie i on i.user_base_id = u.id
+		left join t_op o on o.user_base_id = u.id
+		where u.id=#{id}
+		order by u.id desc
+	</select>
+	
+	<select id="selectStatusById" resultMap="BaseResultMap">
+		select u.status as uStatus, m.status as mStatus, o.status as oStatus, p.status as pStatus, i.status as iStatus
+		from t_user_base u 
+		left join t_mfg m on m.user_base_id = u.id
+		left join t_op o on o.user_base_id = u.id
+		left join t_pro p on p.user_base_id = u.id
+		left join t_ie i on i.user_base_id = u.id
+		where u.id = #{id}
+		order by u.id desc
+	</select>
+</mapper>

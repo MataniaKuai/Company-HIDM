@@ -1,0 +1,28 @@
+package com.hidm.coo.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.hidm.coo.entity.MFGBase;
+import com.hidm.coo.vo.MFGBaseSearchVo;
+import com.hidm.coo.vo.MFGBaseVo;
+
+@Mapper
+public interface MFGBaseDao {
+    public int insert(MFGBase mfgBase);
+    
+    public void updateById(MFGBase mfgBase);
+    
+    public int count(MFGBaseSearchVo mfgBaseVO);
+    
+    public List<MFGBaseVo> selectList(MFGBaseSearchVo mfgBaseVO);
+    
+    public void deleteByIds(Long[] ids);
+
+    public List<MFGBaseVo> selectAll();
+    
+    public void deleteByUserBaseIds(Long[] ids);
+
+    public List<MFGBaseVo> selectInfoByIds(Long[] ids);
+}

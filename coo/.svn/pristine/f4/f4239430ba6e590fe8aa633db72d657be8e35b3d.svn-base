@@ -1,0 +1,145 @@
+package com.hidm.coo.service.impl;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hidm.coo.dao.OPBaseDao;
+import com.hidm.coo.entity.OPBase;
+import com.hidm.coo.service.OPBaseService;
+import com.hidm.coo.service.UserBaseService;
+import com.hidm.coo.util.SAPConn;
+import com.hidm.coo.vo.OPBaseSearchVo;
+import com.hidm.coo.vo.OPBaseVo;
+import com.hidm.coo.vo.UserBaseVo;
+import com.sap.conn.jco.JCoDestination;
+import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.JCoParameterList;
+import com.sap.conn.jco.JCoTable;
+
+@Service(value = "opBaseService")
+public class OPBaseServiceImpl implements OPBaseService {
+	
+	private static Logger log = Logger.getLogger(OPBaseServiceImpl.class);
+	
+    @Autowired
+    private OPBaseDao opBaseDao;
+
+    @Autowired
+    private SAPConn sapConService;
+    
+    @Autowired
+    private UserBaseService userBaseService;
+    
+    @Override
+    @Transactional
+    public int insert(OPBase opBase) {
+        return opBaseDao.insert(opBase);
+    }
+
+    @Override
+    @Transactional
+    public void updateById(OPBase opBase) {
+        opBaseDao.updateById(opBase);
+    }
+
+    @Override
+    public int count(OPBaseSearchVo opBaseVO) {
+        return opBaseDao.count(opBaseVO);
+    }
+
+    @Override
+    public List<OPBaseVo> selectList(OPBaseSearchVo opBaseVO) {
+        return opBaseDao.selectList(opBaseVO);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByIds(Long[] ids) {
+        opBaseDao.deleteByIds(ids);
+    }
+
+    @Override
+    public List<OPBaseVo> selectAll() {
+        return opBaseDao.selectAll();
+    }
+
+    @Override
+    public List<OPBaseVo> selectInfoByIds(Long[] ids) {
+        return opBaseDao.selectInfoByIds(ids);
+    }
+    
+    @Override
+    @Transactional
+    public void deleteByUserBaseIds(Long[] ids) {
+    	opBaseDao.deleteByUserBaseIds(ids);
+    }
+
+	@Override
+    @Transactional
+	public OPBase synchToSap(OPBase opBase) {
+		 boolean success = false;
+         JCoFunction function = null;
+         JCoDestination destination = sapConService.connect();
+         JCoTable table = null;
+         try {
+        	 boolean hasData = false;
+             function = destination.getRepository().getFunction("ZCOO_JAVATOSAP_003");
+             JCoParameterList input = function.getImportParameterList();
+             hasData = true;
+             Long[] baseId = new Long[1];
+             baseId[0] = opBase.getUserBaseId();
+             List<UserBaseVo> userVoList = userBaseService.selectInfoByIds(baseId);
+             input.setValue("IV_EQTYPEID", userVoList.get(0).getEqTypeId());
+             input.setValue("IV_EQTYPE", userVoList.get(0).getEqTypeId());
+             input.setValue("IV_MODULE", userVoList.get(0).getModule());
+             input.setValue("IV_VENDORID", userVoList.get(0).getVendor());
+             input.setValue("IV_VENDOR", userVoList.get(0).getVendor());
+             input.setValue("IV_MODELID", userVoList.get(0).getModel());
+             input.setValue("IV_MODEL", userVoList.get(0).getModel());
+             input.setValue("IV_REWORKCOST", opBase.getReworkCost());
+             input.setValue("IV_SCRAPCOST", opBase.getScrapCost());
+             
+             if (hasData) {
+            	 log.info("begin to call SAP to receive. " + input.toXML());
+                 function.execute(destination);
+                 table = function.getTableParameterList().getTable("T_MESSAGE");
+                 log.info("finish to call SAP to receive. T_MESSAGE: " + table.toXML());
+                 table.firstRow();
+                 String sapError = "";
+                 for (int i = 0; i < table.getNumRows(); i++, table.nextRow()) {
+                     String ok = table.getString("ZIS_OK");
+                     if ("S".equals(ok)) {
+                         success = true;
+                     } else {
+                         String message = table.getString("MSG");
+                         sapError = sapError + "[" + message + "] ";
+                         log.error("Fail to connection. ok:" + ok + ", message:" + message);
+                     }
+                 }
+             }
+             
+             if (success) {
+            	 JCoParameterList exportParameterList = function.getExportParameterList();
+                 log.info("Success to call SAP to receive. " + table.toXML());
+                 //table.firstRow();
+                 opBase.setWaferCostRework(exportParameterList.getString("EX_WAFERCOSTREWORK"));
+                 System.out.println(exportParameterList.getString("EX_WAFERCOSTREWORK"));
+                 opBase.setWaferCostScrap(exportParameterList.getString("EX_WAFERCOSTSCRAP"));
+            	 System.out.println(exportParameterList.getString("EX_WAFERCOSTSCRAP"));
+            	 
+            	 opBaseDao.updateById(opBase);
+             }
+         } catch (Exception e) {
+        	 log.error("Failed to connection. success: " + success, e);
+             throw new RuntimeException(e);
+         }
+         
+		return opBase;
+	}
+    
+    
+}

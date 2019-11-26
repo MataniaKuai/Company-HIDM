@@ -1,0 +1,489 @@
+
+
+
+CREATE SEQUENCE T_USER_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+create table  T_USER 
+(
+   id                 NUMBER        not null,
+   user_name          varchar2(20),
+   password           varchar2(32),
+   update_time        DATE     default SYSDATE not null,
+   add_time           DATE     default SYSDATE not null,
+   add_user           varchar2(100),
+   update_user        varchar2(100),
+   del_flag           integer   default 0,
+   constraint PK_T_USER primary key (id)
+);
+
+comment on column T_USER.user_name is '用户';
+comment on column T_USER.password is '密码';
+
+
+
+CREATE SEQUENCE T_ROLE_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+create table T_ROLE
+(
+  id  NUMBER NOT NULL ,
+  name varchar2(32) DEFAULT NULL,
+  update_time DATE default SYSDATE not null,
+  add_time DATE default SYSDATE not null,
+  add_user varchar2(100) DEFAULT '',
+  update_user varchar2(100) DEFAULT '',
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_ROLE primary key (id)
+);
+
+comment on column T_ROLE.name is '角色名称';
+
+
+
+CREATE SEQUENCE T_USER_ROLE_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_USER_ROLE(
+  id NUMBER NOT NULL,
+  userid NUMBER(20) DEFAULT NULL,
+  rid NUMBER(20) DEFAULT NULL,
+  update_time DATE default SYSDATE not null,
+  add_time DATE default SYSDATE not null,
+  add_user varchar2(100) DEFAULT '',
+  update_user varchar2(100) DEFAULT '',
+  del_flag integer  DEFAULT 0,
+   constraint PK_USER_ROLE primary key (id)
+);
+
+comment on column T_USER_ROLE.userid is '用户ID';
+comment on column T_USER_ROLE.rid is '角色ID';
+
+
+
+CREATE SEQUENCE T_PERMISSION_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_PERMISSION
+(
+  id NUMBER NOT NULL,
+  url varchar2(256) DEFAULT NULL,
+  name varchar2(64) DEFAULT NULL,
+  update_time DATE default SYSDATE not null,
+  add_time DATE default SYSDATE not null,
+  add_user varchar2(100) DEFAULT '',
+  update_user varchar2(100) DEFAULT '',
+  del_flag integer DEFAULT 0,
+  constraint PK_T_PERMISSION primary key (id)
+);
+
+comment on column T_PERMISSION.url is 'url地址';
+comment on column T_PERMISSION.name is 'url描述';
+
+
+
+CREATE SEQUENCE T_ROLE_PERMISSION_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_ROLE_PERMISSION
+(
+  id NUMBER NOT NULL ,
+  rid NUMBER(20) DEFAULT NULL,
+  pid NUMBER(20) DEFAULT NULL,
+  update_time DATE default SYSDATE not null,
+  add_time DATE default SYSDATE not null,
+  add_user varchar2(100)  DEFAULT '',
+  update_user varchar2(100)  DEFAULT '',
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_ROLE_PERMISSION primary key (id)
+);
+
+comment on column T_ROLE_PERMISSION.rid is '角色ID';
+comment on column T_ROLE_PERMISSION.pid is '权限ID';
+
+
+CREATE SEQUENCE T_OTHERS_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_OTHERS
+(
+  id NUMBER NOT NULL,
+  item varchar2(100),
+  ovalue varchar2(100),
+  unit varchar2(50),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_OTHERS primary key (id)
+);
+
+
+CREATE SEQUENCE T_EQ_TYPE_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_EQ_TYPE
+(
+  id NUMBER NOT NULL,
+  eq_module varchar2(50),
+  eq_type varchar2(100),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_EQ_TYPE primary key (id)
+);
+
+CREATE SEQUENCE T_MATERIAL_COEFFICIENT_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_MATERIAL_COEFFICIENT
+(
+  id NUMBER NOT NULL,
+  material_no varchar2(100),
+  material_group varchar2(100),
+  material_name varchar2(100),
+  bom_unit varchar2(50),
+  coefficient varchar2(50),
+  material_price varchar2(100),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_MATERIAL_COEFFICIENT primary key (id)
+);
+
+
+CREATE SEQUENCE T_UTILITY_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_UTILITY
+(
+  id NUMBER NOT NULL,
+  utility_no varchar2(100),
+  utility_group varchar2(100),
+  utility_name varchar2(100),
+  utility_unit varchar2(50),
+  utility_coefficient varchar2(50),
+  utility_price varchar2(100),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_UTILITY primary key (id)
+);
+
+CREATE SEQUENCE T_USER_BASE_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_USER_BASE
+(
+  id NUMBER NOT NULL,
+  eq_type_id VARCHAR2(100),
+  user_module varchar2(100),
+  vendor varchar2(100),
+  model varchar2(100),
+  user_length varchar2(100),
+  width varchar2(100),
+  housing varchar2(100),
+  man_machine varchar2(100),
+  shift varchar2(100),
+  uph varchar2(100),
+  uptime_rate varchar2(100),
+  rework_rate varchar2(100),
+  scrap_rate varchar2(100),
+  installation_cost varchar2(100),
+  hookup_cost varchar2(100),
+  ihookup_cost varchar2(100),
+  qua_cost varchar2(100),
+  parts_costs varchar2(100),
+  total_u_cost varchar2(100),
+  total_m_cost varchar2(100),
+  status NUMBER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_USER_BASE primary key (id)
+);
+
+CREATE SEQUENCE T_UTILITY_COST_ITEM_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_UTILITY_COST_ITEM
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  utility varchar2(100),
+  usage_by_year varchar2(100),
+  item_no NUMBER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_UTILITY_COST_ITEM primary key (id)
+);
+
+CREATE SEQUENCE T_MATERIALS_COST_ITEM_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_MATERIALS_COST_ITEM
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  material_no varchar2(100),
+  usage_by_year varchar2(100),
+  item_no NUMBER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_MATERIALS_COST_ITEM primary key (id)
+);
+
+CREATE SEQUENCE T_PRO_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_PRO
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  purchase_price varchar2(100),
+  tax varchar2(100),
+  training_cost varchar2(100),
+  main_service_cost varchar2(100),
+  additional_cost varchar2(100),
+  status INTEGER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  maintain_status INTEGER,
+  constraint PK_T_PRO primary key (id)
+);
+
+CREATE SEQUENCE T_OP_SEQ
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_OP
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  wafer_cost_rework varchar2(100),
+  wafer_cost_scrap varchar2(100),
+  rework_cost varchar2(100),
+  scrap_cost varchar2(100),
+  status INTEGER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  maintain_status INTEGER,
+  constraint PK_T_OP primary key (id)
+);
+
+CREATE SEQUENCE T_MFG_SEQ
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_MFG
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  operational varchar2(100),
+  operatert varchar2(100),
+  status INTEGER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  maintain_status INTEGER,
+  constraint PK_T_MFG primary key (id)
+);
+
+CREATE TABLE t_business_his
+(
+  id NUMBER NOT NULL,
+  business_id varchar2(100) NOT NULL,
+  business_no varchar2(100) DEFAULT '',
+  business_type integer NOT NULL, 
+  action integer NOT NULL,
+  add_time DATE DEFAULT SYSDATE NOT NULL,
+  add_user varchar2(100) DEFAULT '',
+  content varchar2(4000) DEFAULT '',
+  constraint PK_t_business_his primary key (id)
+);
+
+CREATE SEQUENCE T_IE_SEQ
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+
+
+CREATE TABLE T_IE
+(
+  id NUMBER NOT NULL,
+  user_base_id NUMBER NOT NULL,
+  operate_Labor_Salary NUMBER(38, 5),
+  maintain_Labor_Salary NUMBER(38, 5),
+  operate_Labor_Cost varchar2(100),
+  maintain_Labor_Cost varchar2(100),
+  floor_Cost  NUMBER(38, 5),
+  floor_Cost_Acount NUMBER(38, 5),
+  coo_value NUMBER(38, 5),
+  status INTEGER,
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_IE primary key (id)
+);
+
+create index idx_business_his on t_business_his(business_id);
+
+create sequence T_BUSINESS_HIS_SEQ
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+  
+CREATE SEQUENCE T_VENDOR_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+CREATE TABLE T_VENDOR
+(
+  id NUMBER NOT NULL,
+  vendor_no varchar2(100),
+  vendor varchar2(100),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_VENDOR primary key (id)
+);
+
+CREATE SEQUENCE T_MODEL_SEQ 
+  INCREMENT BY 1 
+  START WITH 1 
+  NOMAXvalue 
+  NOCYCLE 
+  NOCACHE;
+
+CREATE TABLE T_MODEL_TYPE
+(
+  id NUMBER NOT NULL,
+  model_no varchar2(100),
+  model varchar2(100),
+  add_time DATE default SYSDATE not null,
+  add_user_id varchar2(50),
+  update_time DATE default SYSDATE not null,
+  update_user_id NUMBER,
+  del_flag integer  DEFAULT 0,
+  constraint PK_T_MODEL primary key (id)
+);

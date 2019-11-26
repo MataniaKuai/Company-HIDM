@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.MaterialCoefficientDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.MaterialCoefficientVo">
+		<id property="id" column="id" />
+		<result property="materialNo" column="material_no" />
+		<result property="materialGroup" column="material_group" />
+		<result property="materialName" column="material_name" />
+		<result property="bomUnit" column="bom_unit" />
+		<result property="coefficient" column="coefficient" />
+		<result property="materialPrice" column="material_price" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_MATERIAL_COEFFICIENT_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_material_coefficient(
+		<trim suffixOverrides=",">
+			id,
+			<if test="materialNo != null">
+				material_no,
+			</if>
+			<if test="materialGroup != null">
+				material_group,
+			</if>
+			<if test="materialName != null">
+				material_name,
+			</if>
+			<if test="bomUnit != null">
+				bom_unit,
+			</if>
+			<if test="coefficient != null">
+				coefficient,
+			</if>
+			<if test="materialPrice != null">
+				material_price,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="materialNo != null">
+				#{materialNo},
+			</if>
+			<if test="materialGroup != null">
+				#{materialGroup},
+			</if>
+			<if test="materialName != null">
+				#{materialName},
+			</if>
+			<if test="bomUnit != null">
+				#{bomUnit},
+			</if>
+			<if test="coefficient != null">
+				#{coefficient},
+			</if>
+			<if test="materialPrice != null">
+				#{materialPrice},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_material_coefficient
+		<set>
+			<if test="materialNo != null">
+				material_no = #{materialNo},
+			</if>
+			<if test="materialGroup != null">
+				material_group = #{materialGroup},
+			</if>
+			<if test="materialName != null">
+				material_name = #{materialName},
+			</if>
+			<if test="bomUnit != null">
+				bom_unit = #{bomUnit},
+			</if>
+			<if test="coefficient != null">
+				coefficient = #{coefficient},
+			</if>
+			<if test="materialPrice != null">
+				material_price = #{materialPrice},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_material_coefficient m
+		<where>
+			<if test="materialCoefficient != null">
+				<if test="materialCoefficient.id != null and materialCoefficient.id != 0">
+					AND m.id = #{materialCoefficient.id}
+				</if>
+				<if
+					test="materialCoefficient.materialNo != null and materialCoefficient.materialNo != ''">
+					AND m.material_no like '%' || #{materialCoefficient.materialNo} || '%'
+				</if>
+				<if
+					test="materialCoefficient.materialGroup != null and materialCoefficient.materialGroup!= ''">
+					AND m.material_group like '%' || #{materialCoefficient.materialGroup} || '%'
+				</if>
+				<if
+					test="materialCoefficient.materialName != null and materialCoefficient.materialName!= ''">
+					AND m.material_name like '%' || #{materialCoefficient.materialName} || '%'
+				</if>
+				<if
+					test="materialCoefficient.bomUnit != null and materialCoefficient.bomUnit != ''">
+					AND m.bom_unit = #{materialCoefficient.bomUnit}
+				</if>
+				<if
+					test="materialCoefficient.coefficient != null and materialCoefficient.coefficient != ''">
+					AND m.coefficient = #{materialCoefficient.coefficient}
+				</if>
+				<if
+					test="materialCoefficient.materialPrice != null and materialCoefficient.materialPrice != ''">
+					AND m.material_price = #{materialCoefficient.materialPrice}
+				</if>
+				<if
+					test="materialCoefficient.delFlag != null and materialCoefficient.delFlag != 0">
+					AND m.del_flag = #{materialCoefficient.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select * from
+		t_material_coefficient m
+		<where>
+			m.del_flag = 0
+			<if test="materialCoefficient != null">
+				<if
+					test="materialCoefficient.materialNo != null and materialCoefficient.materialNo != ''">
+					AND m.material_no like '%' || #{materialCoefficient.materialNo} || '%'
+				</if>
+				<if
+					test="materialCoefficient.materialGroup != null and materialCoefficient.materialGroup!= ''">
+					AND m.material_group like '%' || #{materialCoefficient.materialGroup} || '%'
+				</if>
+				<if
+					test="materialCoefficient.materialName != null and materialCoefficient.materialName!= ''">
+					AND m.material_name like '%' || #{materialCoefficient.materialName} || '%'
+				</if>
+			</if>			
+		</where>
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+
+	<delete id="deleteByIds">
+		delete from t_material_coefficient
+		WHERE id in
+		<foreach collection="array" open=" (" close=")" item="id"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="selectByMaterialNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from T_MATERIAL_COEFFICIENT t where t.material_no = #{materialNo}
+	</select>
+
+	<select id="selectInfoByMaterialNo" resultMap="BaseResultMap">
+		select * from t_material_coefficient t where t.material_no = #{materialNo}
+	</select>
+
+</mapper>

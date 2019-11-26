@@ -1,0 +1,64 @@
+
+<div class="panel panel-default" id="dataDiv" style="display: none;">
+	<div class="panel-heading">
+		<h3 class="panel-title" >MC信息</h3>
+	</div>
+	<div class="panel-body">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#home" data-toggle="tab"> 基本信息 </a>
+			</li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+				<form id="editForm" class="form-horizontal" role="form">
+					<div class="form-group">
+
+						<label class="col-sm-1 control-label" title="EQ Type">EQ Type</label>
+						<div class="col-sm-2">
+							<input type="text" name="eqTypeId" class="form-control">
+						</div>
+
+						<label class="col-sm-1 control-label" title="Module">Module</label>
+						<div class="col-sm-2">
+							<input type="text" name="module" class="form-control">
+						</div>
+
+						<label class="col-sm-1 control-label" title="Format “OEM(Supplier)” means OEM and Suppliers are not the same company">Vendor</label>
+						<div class="col-sm-2">
+							<input type="text" name="vendor" class="form-control">
+						</div>
+						<label class="col-sm-1 control-label" title="Equipment Model">Model</label>
+						<div class="col-sm-2">
+							<input type="text" name="model" class="form-control">
+						</div>
+					</div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" title="Total cost of selected material">TotalMaterialCost</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="totalMaterialCost" class="form-control">
+                        </div>
+                        <label class="col-sm-2 control-label" title="Total cost of selected utility">Add User</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="addUserId" class="form-control">
+                        </div>
+                    </div>
+
+					<div class="input-group" id="materialsGroup">
+						<label class="input-group-addon" title="selected material and filled usage by KWafer">Materials配置:</label>
+						<div id = "displayMaterial">
+					    </div>
+
+					</div>
+
+					<input type="hidden" name="id">
+					<input type="hidden" name="userBaseId">
+					<div class="panel-footer text-right">
+						<button type="button" class="btn btn-default"
+							onclick="closeDataDiv()">返回</button>
+						<button id="saveBtn" type="button" class="btn btn-primary"
+							onclick="save()">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.EQMouduleDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.EQMouduleVo">
+		<id property="id" column="id" />
+		<result property="moudule" column="moudule" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from T_EQ_Moudule m
+	</select>
+</mapper>

@@ -1,0 +1,99 @@
+package com.hidm.coo.service;
+
+import java.util.List;
+
+import com.hidm.coo.entity.EQtype;
+import com.hidm.coo.vo.EQtypeSearchVo;
+import com.hidm.coo.vo.EQtypeVo;
+
+/**
+ * 
+*Description: 获取EQtype
+*@author yl
+*@date 2019.6.13
+*@version 1.0
+*
+ */
+public interface EQtypeService {
+    
+    /**
+     * 
+    *Description: 新增数据
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public int insert(EQtype eqtype);
+    
+    /**
+     * 
+    *Description: 根据id更新记录
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public void updateById(EQtype eqtype);
+    
+    /**
+     * 
+    *Description: 查询记录数量
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public int count(EQtypeSearchVo eqtypeVO);
+    
+    /**
+     * 
+    *Description: 查询记录列表
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<EQtypeVo> selectList(EQtypeSearchVo eqtypeVO);
+    
+    /**
+     * 
+    *Description: 根据id删除记录
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public void deleteByIds(Long[] ids);
+
+    /**
+     * 
+    *Description: 查询所有信息
+    *@param EQtype
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<EQtypeVo> selectAll();
+
+    /**
+     * 
+    *Description: 根据id查询记录
+    *@param ids Long[]
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<EQtypeVo> selectInfoByIds(Long[] ids);
+
+    public List<EQtypeVo> selectCheckData(EQtypeSearchVo vo);
+    
+    public List<EQtypeVo> selectInfoByModules(String[] modules);
+}

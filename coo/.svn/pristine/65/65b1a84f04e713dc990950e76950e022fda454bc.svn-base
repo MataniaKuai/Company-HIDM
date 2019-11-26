@@ -1,0 +1,61 @@
+
+<div class="panel panel-default" id="dataDiv" style="display: none;">
+	<div class="panel-heading">
+		<h3 class="panel-title">MFG信息</h3>
+	</div>
+	<div class="panel-body">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#home" data-toggle="tab"> 基本信息  </a>
+			</li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+				<form id="editForm" class="form-horizontal" role="form">
+					<div class="form-group">
+
+						<label class="col-sm-1 control-label" title="EQ Type">EQ Type</label>
+						<div class="col-sm-2">
+							<input type="text" name="eqTypeId" class="form-control">
+						</div>
+
+						<label class="col-sm-1 control-label" title="Module">Module</label>
+						<div class="col-sm-2">
+							<input type="text" name="module" class="form-control">
+						</div>
+
+						<label class="col-sm-1 control-label" title="Format “OEM(Supplier)” means OEM and Suppliers are not the same company">Vendor</label>
+						<div class="col-sm-2">
+							<input type="text" name="vendor" class="form-control">
+						</div>
+						<label class="col-sm-1 control-label" title="Equipment Model">Model</label>
+						<div class="col-sm-2">
+							<input type="text" name="model" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label" title="Machine quantities one operator can operate">Man-Machine(Operational)</label>
+						<div class="col-sm-3">
+							<input type="text" name="operational" class="form-control" required data-bv-notempty-message="不能为空！">
+						</div>
+
+						<label class="col-sm-3 control-label" title="Shift of Operator"><font color="red">Operater Shift</font></label>
+						<div class="col-sm-3">
+							<input type="text" name="operatert" class="form-control" required data-bv-notempty-message="不能为空！">
+						</div>
+
+					</div>
+
+					<input type="hidden" name="housing">
+					<input type="hidden" name="id">
+					<input type="hidden" name="userBaseId">
+					<div class="panel-footer text-right">
+						<button type="button" class="btn btn-default"
+							onclick="closeDataDiv()">关闭</button>
+						<button id="saveBtn" type="button" class="btn btn-primary"
+							onclick="save()">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

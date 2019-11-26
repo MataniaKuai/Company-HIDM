@@ -1,0 +1,32 @@
+package com.hidm.coo.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.hidm.coo.entity.User;
+import com.hidm.coo.vo.UserSearchVo;
+import com.hidm.coo.vo.UserVo;
+
+@Mapper
+public interface UserDao {
+    public int insert(User user);
+    
+    public void updateById(User user);
+    
+    public int checkUser(User user);
+    
+    public User selectUser(User user);
+    
+    public int count(UserSearchVo user);
+    
+    public List<UserVo> selectList(UserSearchVo user);
+    
+    public void deleteByIds(Long[] ids);
+    
+    public List<UserVo> selectAll();
+
+    public List<UserVo> selectInfoByIds(Long[] ids);
+    
+}

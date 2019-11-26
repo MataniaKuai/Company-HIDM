@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.ModelDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.ModelVo">
+		<id property="id" column="id" />
+		<result property="modelNo" column="model_no" />
+		<result property="model" column="model" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_model_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_model_type(
+		<trim suffixOverrides=",">
+			id,
+			<if test="modelNo != null">
+				model_no,
+			</if>
+			<if test="model != null">
+				model,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="modelNo != null">
+				#{modelNo},
+			</if>
+			<if test="model != null">
+				#{model},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_model_type
+		<set>
+			<if test="modelNo != null">
+				model_no = #{modelNo},
+			</if>
+			<if test="model != null">
+				model = #{model},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_model_type m
+		<where>
+			<if test="model != null">
+				<if test="model.id != null and model.id != 0">
+					AND m.id = #{vendor.id}
+				</if>
+				<if test="model.modelNo != null and model.modelNo != 0">
+					AND m.model_no = #{model.modelNo}
+				</if>
+				<if test="model.model != null and model.model != ''">
+					AND m.model = #{model.model}
+				</if>
+				<if test="model.delFlag != null and model.delFlag != 0">
+					AND m.del_flag = #{eqType.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select * from t_model_type m
+		 <where>
+            <if test="model != null">
+                <if test="model.model != null and model.model != ''">
+                    AND m.model like '%' || #{model.model} || '%'
+                </if>
+            </if>
+        </where>
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	 <delete id="deleteByIds">
+        delete from t_model_type
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+     <select id="selectInfoByIds" resultMap="BaseResultMap">
+        select * from t_model_type t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    
+</mapper>

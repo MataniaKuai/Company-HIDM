@@ -1,0 +1,28 @@
+app:
+    name: coo
+
+server:
+    port: 8081
+    context-path: /coo
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+    profiles:
+        active: '@activatedProperties@'
+    #datasource:
+        #jndi-name: jdbc/coo
+        
+mybatis:
+    mapperLocations: classpath:mapper/*.xml
+    
+logging:
+    level:
+        com.hidm.coo.dao: info

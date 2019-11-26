@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.UserBaseDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.UserBaseVo">
+		<id property="id" column="id" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+		<result property="length" column="user_length" />
+		<result property="width" column="width" />
+		<result property="housing" column="housing" />
+		<result property="manMachine" column="man_machine" />
+		<result property="shift" column="shift" />
+		<result property="uph" column="uph" />
+		<result property="uptimeRate" column="uptime_rate" />
+		<result property="reworkRate" column="rework_rate" />
+		<result property="scrapRate" column="scrap_rate" />
+		<result property="installationCost" column="installation_cost" />
+		<result property="hookupCost" column="hookup_cost" />
+		<result property="installationHookupCost" column="ihookup_cost" />
+		<result property="qualificationCost" column="qua_cost" />
+		<result property="partsCost" column="parts_costs" />
+		<result property="totalUtilityCost" column="total_u_cost" />
+		<result property="totalMaterialCost" column="total_m_cost" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_USER_BASE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_user_base(
+		<trim suffixOverrides=",">
+			id,
+			<if test="eqTypeId != null">
+				eq_type_id,
+			</if>
+			<if test="module != null">
+				user_module,
+			</if>
+			<if test="vendor != null">
+				vendor,
+			</if>
+			<if test="model != null">
+				model,
+			</if>
+			<if test="length != null">
+				user_length,
+			</if>
+			<if test="width != null">
+				width,
+			</if>
+			<if test="housing != null">
+				housing,
+			</if>
+			<if test="manMachine != null">
+				man_machine,
+			</if>
+			<if test="shift != null">
+				shift,
+			</if>
+			<if test="uph != null">
+				uph,
+			</if>
+			<if test="uptimeRate != null">
+				uptime_rate,
+			</if>
+			<if test="reworkRate != null">
+				rework_rate,
+			</if>
+			<if test="scrapRate != null">
+				scrap_rate,
+			</if>
+			<if test="installationCost != null">
+				installation_cost,
+			</if>
+			<if test="hookupCost != null">
+				hookup_cost,
+			</if>
+			<if test="installationHookupCost != null">
+				ihookup_cost,
+			</if>
+			<if test="qualificationCost != null">
+				qua_cost,
+			</if>
+			<if test="partsCost != null">
+				parts_costs,
+			</if>
+			<if test="totalUtilityCost != null">
+				total_u_cost,
+			</if>
+			<if test="totalMaterialCost != null">
+				total_m_cost,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="eqTypeId != null">
+				#{eqTypeId},
+			</if>
+			<if test="module != null">
+				#{module},
+			</if>
+			<if test="vendor != null">
+				#{vendor},
+			</if>
+			<if test="model != null">
+				#{model},
+			</if>
+			<if test="length != null">
+				#{length},
+			</if>
+			<if test="width != null">
+				#{width},
+			</if>
+			<if test="housing != null">
+				#{housing},
+			</if>
+			<if test="manMachine != null">
+				#{manMachine},
+			</if>
+			<if test="shift != null">
+				#{shift},
+			</if>
+			<if test="uph != null">
+				#{uph},
+			</if>
+			<if test="uptimeRate != null">
+				#{uptimeRate},
+			</if>
+			
+			<if test="reworkRate != null">
+				#{reworkRate},
+			</if>
+			<if test="scrapRate != null">
+				#{scrapRate},
+			</if>
+			<if test="installationCost != null">
+				#{installationCost},
+			</if>
+			<if test="hookupCost != null">
+				#{hookupCost},
+			</if>
+			<if test="installationHookupCost != null">
+				#{installationHookupCost},
+			</if>
+			<if test="qualificationCost != null">
+				#{qualificationCost},
+			</if>
+			<if test="partsCost != null">
+				#{partsCost},
+			</if>
+			<if test="totalUtilityCost != null">
+				#{totalUtilityCost},
+			</if>
+			<if test="totalMaterialCost != null">
+				#{totalMaterialCost},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_user_base
+		<set>
+			<if test="eqTypeId != null">
+				eq_type_id = #{eqTypeId},
+			</if>
+			<if test="module != null">
+				user_module = #{module},
+			</if>
+			<if test="vendor != null">
+				vendor = #{vendor},
+			</if>
+			<if test="model != null">
+				model = #{model},
+			</if>
+			<if test="length != null">
+				user_length = #{length},
+			</if>
+			<if test="width != null">
+				width = #{width},
+			</if>
+			<if test="housing != null">
+				housing = #{housing},
+			</if>
+			<if test="manMachine != null">
+				man_machine = #{manMachine},
+			</if>
+			<if test="shift != null">
+				shift = #{shift},
+			</if>
+			<if test="uph != null">
+				uph = #{uph},
+			</if>
+			<if test="uptimeRate != null">
+				uptime_rate = #{uptimeRate},
+			</if>
+			<if test="reworkRate != null">
+				rework_rate = #{reworkRate},
+			</if>
+			<if test="scrapRate != null">
+				scrap_rate = #{scrapRate},
+			</if>
+			<if test="installationCost != null">
+				installation_cost = #{installationCost},
+			</if>
+			<if test="hookupCost != null">
+				hookup_cost = #{hookupCost},
+			</if>
+			<if test="installationHookupCost != null">
+				ihookup_cost = #{installationHookupCost},
+			</if>
+			<if test="qualificationCost != null">
+				qua_cost = #{qualificationCost},
+			</if>
+			<if test="partsCost != null">
+				parts_costs = #{partsCost},
+			</if>
+			<if test="totalUtilityCost != null">
+				total_u_cost = #{totalUtilityCost},
+			</if>
+			<if test="totalMaterialCost != null">
+				total_m_cost = #{totalMaterialCost},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+			<if test="status != null">
+				del_flag = #{status},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_user_base m
+		<where>
+			<if test="userBase != null">
+				<if test="userBase.id != null and userBase.id != 0">
+					AND m.id = #{userBase.id}
+				</if>
+				<if test="userBase.eqTypeId != null and userBase.eqTypeId != ''">
+					AND m.eq_type_id = #{userBase.eqTypeId}
+				</if>
+				<if test="userBase.module != null and userBase.module != ''">
+					AND m.user_module = #{userBase.module}
+				</if>
+				<if test="userBase.vendor != null and userBase.vendor != ''">
+					AND m.vendor = #{userBase.vendor}
+				</if>
+				<if test="userBase.model != null and userBase.model != ''">
+					AND m.model = #{userBase.model}
+				</if>
+				<if test="userBase.length != null and userBase.length != ''">
+					AND m.user_length = #{userBase.length}
+				</if>
+				<if test="userBase.width != null and userBase.width != ''">
+					AND m.width = #{userBase.width}
+				</if>
+				<if test="userBase.housing != null and userBase.housing != ''">
+					AND m.housing = #{userBase.housing}
+				</if>
+				<if test="userBase.manMachine != null and userBase.manMachine != ''">
+					AND m.man_machine = #{userBase.manMachine}
+				</if>
+				<if test="userBase.shift != null and userBase.shift != ''">
+					AND m.shift = #{userBase.shift}
+				</if>
+				<if test="userBase.uph != null and userBase.uph != ''">
+					AND m.uph = #{userBase.uph}
+				</if>
+				<if test="userBase.uptimeRate != null and userBase.uptimeRate != ''">
+					AND m.uptime_rate = #{userBase.uptimeRate}
+				</if>
+				<if test="userBase.reworkRate != null and userBase.reworkRate != ''">
+					AND m.rework_rate = #{userBase.reworkRate}
+				</if>
+				<if test="userBase.scrapRate != null and userBase.scrapRate != ''">
+					AND m.scrap_rate = #{userBase.scrapRate}
+				</if>
+				<if test="userBase.delFlag != null and userBase.delFlag != 0">
+					AND m.del_flag = #{userBase.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select * from t_user_base m
+        <where>
+            <if test="userBase != null">
+                <if test="userBase.eqTypeId != null and userBase.eqTypeId != ''">
+                    AND m.eq_type_id = #{userBase.eqTypeId}
+                </if>
+            </if>
+        </where>
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	<delete id="deleteByIds">
+        delete from t_user_base
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+ 	<select id="selectInfoByIds" resultMap="BaseResultMap">
+        select * from t_user_base t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+   
+</mapper>

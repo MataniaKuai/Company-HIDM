@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.EQtypeDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.EQtypeVo">
+		<id property="id" column="id" />
+		<result property="eqType" column="eq_type" />
+		<result property="moudule" column="eq_module" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_EQ_TYPE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_eq_type(
+		<trim suffixOverrides=",">
+			id,
+			<if test="eqType != null">
+				eq_type,
+			</if>
+			<if test="moudule != null">
+				eq_module,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="eqType != null">
+				#{eqType},
+			</if>
+			<if test="moudule != null">
+				#{moudule},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_eq_type
+		<set>
+			<if test="eqType != null">
+				eq_type = #{eqType},
+			</if>
+			<if test="moudule != null">
+				eq_module = #{moudule},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_eq_type m
+		<where>
+			<if test="eqType != null">
+				<if test="eqType.id != null and eqType.id != 0">
+					AND m.id = #{eqType.id}
+				</if>
+				<if test="eqType.eqType != null and eqType.eqType != ''">
+					AND m.eq_type like '%' || #{eqType.eqType} || '%'
+				</if>
+				<if test="eqType.delFlag != null and eqType.delFlag != 0">
+					AND m.del_flag = #{eqType.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select * from t_eq_type m
+        <where>
+            m.del_flag = 0
+            <if test="eqType != null">
+              <if test="eqType.eqType != null and eqType.eqType != ''">
+                AND m.eq_type like '%' || #{eqType.eqType} || '%'
+              </if>
+            </if>
+        </where>
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+    
+    <select id="selectInfoByIds" resultMap="BaseResultMap">
+        select * from t_eq_type t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    
+	 <delete id="deleteByIds">
+        delete from t_eq_type
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

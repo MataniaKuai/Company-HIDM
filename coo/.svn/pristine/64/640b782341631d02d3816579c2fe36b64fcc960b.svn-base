@@ -1,0 +1,136 @@
+function add(){
+	
+	$('input[name="eqType"]').val("");
+	$('input[name="moudule"]').val("");
+	$('input[name="id"]').val("");
+	$('#dataModal').modal('show');
+
+
+	$('#editForm input').attr("disabled", false);
+	$('#saveBtn').show();
+}
+
+function putFormValue() {
+	var selects = $('#eqTypeTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var eqTypeV = selects[0].eqType;
+		var moduleV = selects[0].moudule;
+		
+		$('input[name="eqType"]').val(eqTypeV);
+		$('input[name="moudule"]').val(moduleV);
+		$('input[name="id"]').val(idV);
+
+		$('#dataModal').modal('show');
+		
+		return true;
+	}
+	
+	return false;
+}
+
+function view(){
+	if (!putFormValue()) {
+		alert('只能选择一条记录查看');
+		
+		return;
+	}
+	
+	$('#editForm input').attr("disabled", true);
+	$('#saveBtn').hide();
+	
+	putFormValue();
+}
+
+function edit(){
+	var selects = $('#eqTypeTable').bootstrapTable('getSelections');
+	if (selects.length != 1) {
+		alert('只能选择一条记录编辑');
+		return;
+	}
+	
+	$('#editForm input').attr("disabled", false);
+	$('#saveBtn').show();
+	
+	putFormValue();
+}
+
+function save(){
+	$("#editForm").bootstrapValidator("validate");
+	if (!$("#editForm").data('bootstrapValidator').isValid()) {
+		return;
+	}
+	
+	var eqTypeV = $('input[name="eqType"]').val();
+	var moduleV = $('input[name="moudule"]').val();
+	
+	var idV = $('input[name="id"]').val();
+
+	var checked = true;
+	var param1 = {eqType: eqTypeV};
+	$.ajax({
+		url: "/coo/eqType/checkData",
+		type: 'POST',
+		cache: false,
+		async:false,
+		data: param1,
+		success: function(data) {
+			if(idV.length == 0){
+				if (data && data.list.length > 0) {
+					alert('该记录已存在');
+					checked = false;
+				}
+			}else{
+				if (data.list.length > 0 && idV != data.list[0].id) {
+					alert('该记录已存在');
+					checked = false;
+				}
+			}
+		}
+	});
+
+    if(checked){
+    	$.post('/coo/eqType/save',
+    			{ id: idV, eqType: eqTypeV, moudule: moduleV
+    			},
+    			function(result){
+    				if (result){
+    					doSearch();
+    					$('#dataModal').modal('hide');
+    				} else {
+    					alert('系统错误');
+    				}
+    			},'json');
+    }
+}
+
+function remove(){
+	var rows = $('#eqTypeTable').bootstrapTable('getSelections');
+	if (rows && rows.length > 0){
+		var ids = new Array();
+		for (var i = 0; i < rows.length; i++) {
+			var row = rows[i];		
+			ids.push(row.id);
+		}
+		
+		$.post('/coo/eqType/delete',{ids: ids},function(result){
+			if (result){
+				doSearch();
+			} else {
+				$.messager.show({
+					title: '错误',
+					msg: '系统错误'
+				});
+			}
+		},'json');
+	} else {
+		alert('至少选择一条记录。');
+	}
+}
+
+function doSearch() {
+	var eqTypeV = $('input[id="eqType"]').val();    
+    $('#eqTypeTable').bootstrapTable('selectPage', 1);
+	$('#eqTypeTable').bootstrapTable('refresh', {query:{eqType: eqTypeV, page:1}});
+}
+

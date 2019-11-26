@@ -1,0 +1,72 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalLabel">
+                                              Material  Coefficient
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Material No</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialNo" class="form-control"
+                            required data-bv-notempty-message="EQ Type不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                    <label class="col-sm-1 control-label">Material group</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialGroup" class="form-control"
+                            required data-bv-notempty-message="Module不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label">Material name</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialName" class="form-control"
+                            required data-bv-notempty-message="EQ Type不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                    <label class="col-sm-1 control-label">BOM unit</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="bomUnit" class="form-control"
+                            required data-bv-notempty-message="Module不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label">Coefficient</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="coefficient" class="form-control"
+                            required data-bv-notempty-message="EQ Type不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                    <label class="col-sm-1 control-label">Material Price</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="materialPrice" class="form-control"
+                            required data-bv-notempty-message="Module不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                </div>
+                
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="loginName" value="${(user.userName)!''}"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+            </div>
+        </div>
+    </div>
+    </div>

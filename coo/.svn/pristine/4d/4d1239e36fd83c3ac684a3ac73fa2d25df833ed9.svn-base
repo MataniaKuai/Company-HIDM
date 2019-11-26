@@ -1,0 +1,178 @@
+
+<div class="panel panel-default" id="dataDiv" style="display: none;">
+	<div class="panel-heading">
+		<h3 class="panel-title">输入信息</h3>
+	</div>
+	<div class="panel-body">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#home" data-toggle="tab"> 基本信息 </a>
+			</li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+				<form id="editForm" class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-1 control-label">EQ Type</label>
+						<div class="col-sm-2">
+							<select name="eqTypeId" class="form-control selectpicker eqType"
+								data-live-search="true" required
+								data-bv-notempty-message="EQ Type不能为空">
+								<option value="">请选择</option>
+								<#list eqTypeList as eqType>
+								<option value="${eqType.eqType!},${eqType.moudule!}">${eqType.eqType!}</option>
+								</#list>
+							</select>
+						</div>
+						<label class="col-sm-1 control-label">Module</label>
+						<div class="col-sm-2">
+							<input type="text" name="module" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-1 control-label">Vendor</label>
+						<div class="col-sm-2">
+							<select name="vendor" class="form-control selectpicker vendor"
+								data-live-search="true" required
+								data-bv-notempty-message="Vendor不能为空"">
+								<option value="">请选择</option>
+								<#list vendorList as vendor>
+								<option value="${vendor.vendor!}">${vendor.vendorNo!} ${vendor.vendor!}</option>
+								</#list>
+							</select>
+						</div>
+						<label class="col-sm-1 control-label">Model</label>
+						<div class="col-sm-2">
+							<select name="model" class="form-control selectpicker model"
+								data-live-search="true" required
+								data-bv-notempty-message="Model"">
+								<option value="">请选择</option>
+								<#list modelList as model>
+								<option value="${model.model!}">${model.modelNo!} ${model.model!}</option>
+								</#list>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+
+
+
+						<label class="col-sm-2 control-label">Length(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="length" class="form-control" onBlur="changLength()" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-3 control-label">Width(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="width" class="form-control" onBlur="changWidth()" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-sm-2 control-label">Housing(m²)-Main
+							tool</label>
+						<div class="col-sm-3">
+							<input type="text" name="housing" class="form-control">
+						</div>
+
+						<label class="col-sm-3 control-label">Man-Machine(Maintenance)</label>
+						<div class="col-sm-3">
+							<input type="text" name="manMachine" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Shift(Maintenance)</label>
+						<div class="col-sm-3">
+							<input type="text" name="shift" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label">UPH(unit per hour)</label>
+						<div class="col-sm-3">
+							<input type="text" name="uph" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Uptime Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="uptimeRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label">Rework Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="reworkRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Scrap Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="scrapRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label">Installation Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="installationCost" onBlur="changInstallation()" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Hookup Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="hookupCost" onBlur="changHookup()" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label">Installation and
+							Hookup Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="installationHookupCost"
+								class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Qualification Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="qualificationCost" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-3 control-label">Parts Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="partsCost" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+					</div>
+					
+					<div class="input-group" id="utilityGroup">
+						<label class="input-group-addon">Utility配置:</label>
+						<div id = "displayUtility">
+						</div>
+						<button class="btn btn-info" type="button" data-toggle="tooltip" title="新增" id="addUtilityGrpBtn" onclick="addUtilityGrp(this)" ><span class="glyphicon glyphicon-plus"></span></button>
+
+					</div>
+					<br />
+					<div class="input-group" id="materialsGroup">
+						<label class="input-group-addon">Materials配置:</label>
+						<div id = "displayMaterial">
+					    </div>
+						<button class="btn btn-info" type="button" data-toggle="tooltip" title="新增" id="addMaterialsGrpBtn" onclick="addMaterialsGrp(this)" ><span class="glyphicon glyphicon-plus"></span></button>
+
+					</div>
+					
+					
+					</div>
+
+					</div>
+					
+					<input type="hidden" name="id">
+					<div class="panel-footer text-right">
+						<button type="button" class="btn btn-default"
+							onclick="closeDataDiv()">返回</button>
+						<button id="saveBtn" type="button" class="btn btn-primary"
+							onclick="save()">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

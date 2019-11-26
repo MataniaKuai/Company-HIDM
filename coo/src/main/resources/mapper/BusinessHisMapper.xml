@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.BusinessHisDao">
+    <resultMap id="BaseResultMap" type="com.hidm.coo.entity.BusinessHis">
+        <id property="id" column="id" />
+        <result property="businessId" column="business_id" />
+        <result property="businessNo" column="business_no" />
+        <result property="businessType" column="business_type" />
+        <result property="action" column="action" />
+        <result property="addTime" column="add_time" />
+        <result property="addUser" column="add_user" />
+        <result property="content" column="content" />
+    </resultMap>
+
+    <insert id="insert">
+        <selectKey resultType="java.lang.Long" order="BEFORE"
+            keyProperty="id">
+            SELECT T_BUSINESS_HIS_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO t_business_his(
+        <trim suffixOverrides=",">
+            id,
+            <if test="businessId != null">
+                business_id,
+            </if>
+            <if test="businessNo != null">
+                business_no,
+            </if>
+            <if test="businessType != null">
+                business_type,
+            </if>
+            <if test="action != null">
+                action,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addUser != null">
+                add_user,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        )
+        VALUES(
+         <trim suffixOverrides=",">
+            #{id},
+            <if test="businessId != null">
+                #{businessId},
+            </if>
+            <if test="businessNo != null">
+                #{businessNo},
+            </if>
+            <if test="businessType != null">
+                #{businessType},
+            </if>
+            <if test="action != null">
+                #{action},
+            </if>
+            <if test="addTime != null">
+                #{addTime},
+            </if>
+            <if test="addUser != null">
+                #{addUser},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <select id="count" resultType="int">
+		select count(*) from t_business_his m
+		<where>
+			<if test="businessHis != null">
+				<if test="businessHis.id != null and businessHis.id != 0">
+					AND m.id = #{businessHis.id}
+				</if>
+				<if test="businessHis.businessId != null and businessHis.businessId != 0">
+					AND m.business_id = #{businessHis.businessId}
+				</if>
+				<if test="businessHis.businessNo != null and businessHis.businessNo != ''">
+					AND m.business_no = #{businessHis.businessNo}
+				</if>
+				<if test="businessHis.businessType != null and businessHis.businessType != 0">
+					AND m.business_type = #{businessHis.businessType}
+				</if>
+				<if test="businessHis.action != null and businessHis.action != ''">
+					AND m.action = #{businessHis.action}
+				</if>
+				<if test="businessHis.addTime != null and businessHis.addTime != ''">
+					AND m.add_time = #{businessHis.addTime}
+				</if>
+				<if test="businessHis.addUser != null and businessHis.addUser != ''">
+					AND m.add_user = #{businessHis.addUser}
+				</if>
+				<if test="businessHis.content != null and businessHis.content != ''">
+					AND m.content = #{businessHis.content}
+				</if>
+			</if>
+
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+		select * from
+		(
+		select t.*,ROWNUM RN from
+		(
+		select m.*
+		from t_business_his m
+		<where>
+			<if test="businessHis != null">
+				<if test="businessHis.id != null and businessHis.id != 0">
+					AND m.id = #{businessHis.id}
+				</if>
+				<if test="businessHis.businessId != null and businessHis.businessId != 0">
+					AND m.business_id = #{businessHis.businessId}
+				</if>
+				<if test="businessHis.businessNo != null and businessHis.businessNo != ''">
+					AND m.business_no = #{businessHis.businessNo}
+				</if>
+				<if test="businessHis.businessType != null and businessHis.businessType != 0">
+					AND m.business_type = #{businessHis.businessType}
+				</if>
+				<if test="businessHis.action != null and businessHis.action != ''">
+					AND m.action = #{businessHis.action}
+				</if>
+				<if test="businessHis.addTime != null and businessHis.addTime != ''">
+					AND m.add_time = #{businessHis.addTime}
+				</if>
+				<if test="businessHis.addUser != null and businessHis.addUser != ''">
+					AND m.add_user = #{businessHis.addUser}
+				</if>
+				<if test="businessHis.content != null and businessHis.content != ''">
+					AND m.content = #{businessHis.content}
+				</if>
+			</if>
+		</where>
+		order by m.id desc
+		)t
+
+		<if test="page != null">
+			WHERE ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+    
+</mapper>

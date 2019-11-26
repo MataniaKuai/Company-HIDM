@@ -1,0 +1,144 @@
+package com.hidm.coo.service;
+
+import java.util.List;
+
+import com.hidm.coo.entity.User;
+import com.hidm.coo.vo.PortalUserVo;
+import com.hidm.coo.vo.UserSearchVo;
+import com.hidm.coo.vo.UserVo;
+
+/**
+ * 
+*Description: 处理用户信息数据
+*@author GuoRong
+*@date 2018年11月30日
+*@version 1.0
+*
+ */
+public interface UserService {
+	/**
+	 * 
+	*Description: 新增记录
+	*@param user
+	*@return 
+	*@author GuoRong
+	*@date 2018年11月30日
+	*@version 1.0
+	 */
+    public int insert(User user);
+    
+    /**
+     * 
+    *Description: 根据id查询记录
+    *@param user  
+    *@author GuoRong
+    *@date 2018年11月30日
+    *@version 1.0
+     */
+    public void updateById(User user);
+    
+    /**
+     * 
+    *Description: 验证用户信息
+    *@param user
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月30日
+    *@version 1.0
+     */
+    public boolean checkUser(User user);
+    
+    /**
+     * 
+    *Description: 查询所有用户记录
+    *@param user
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月30日
+    *@version 1.0
+     */
+    public User selectUser(User user);
+    
+    /**
+     * 
+    *Description: 根据用户名获取用户信息
+    *@param employeeNo
+    *@return 
+    *@author GuoRong
+    *@date 2018年11月30日
+    *@version 1.0
+     */
+    public PortalUserVo getUserInfoByEmployeeNo(String employeeNo);
+    
+    /**
+     * 
+    *Description: 查询记录数量
+    *@param Others
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public int count(UserSearchVo userVO);
+    
+    /**
+     * 
+    *Description: 查询记录列表
+    *@param Others
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<UserVo> selectList(UserSearchVo userVO);
+    
+    /**
+     * 
+    *Description: 根据id删除记录
+    *@param Others
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public void deleteByIds(Long[] ids);
+
+    /**
+     * 
+    *Description: 查询所有信息
+    *@param Others
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<UserVo> selectAll();
+
+    /**
+     * 
+    *Description: 根据id查询记录
+    *@param ids Long[]
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<UserVo> selectInfoByIds(Long[] ids);
+    
+	/**
+	 * 
+	*Description: 根据名称查询
+	*@return 
+	*@author yl
+	*@date 2019.6.13
+	*@version 1.0
+	 */
+    public User selectByName(String name);
+
+    /**
+     * 根据id查询
+     * @param id
+     */
+    public User selectById(Long id);
+    
+}

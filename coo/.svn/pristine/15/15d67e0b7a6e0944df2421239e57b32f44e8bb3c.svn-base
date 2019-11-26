@@ -1,0 +1,94 @@
+package com.hidm.coo.controller;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hidm.coo.entity.Others;
+import com.hidm.coo.service.EQtypeService;
+import com.hidm.coo.service.IEBaseService;
+import com.hidm.coo.service.OthersService;
+import com.hidm.coo.service.ReportService;
+import com.hidm.coo.vo.EQtypeVo;
+import com.hidm.coo.vo.ReportSearchVo;
+import com.hidm.coo.vo.ReportVo;
+
+@Controller
+public class ReportController {
+	@Autowired
+    private EQtypeService eqTypeService;
+    
+    @Autowired
+    private ReportService reportService;
+    
+    @Autowired
+    private OthersService othersService;
+    
+    @Autowired
+    private IEBaseService ieBaseService;
+    /**
+     * 数据对比跳转到列表页面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("report/contrastReport")
+    public String index(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	List<EQtypeVo> eqTypeList = eqTypeService.selectList(null);
+        model.addAttribute("eqTypeList", eqTypeList);
+        Others other1=othersService.selectByName("Lifetime");
+        Others other2=othersService.selectByName("Engineering time Rate(%)");
+        Others other3=othersService.selectByName("Idle time Rate(%)");
+        Others other4=othersService.selectByName("Floor Cost_Fix");
+
+        List<ReportVo> list1 = new ArrayList<ReportVo>();
+        if (null != reportSearchVo && null != reportSearchVo.getEqTypeId()) {
+        	model.addAttribute("currentEqTypeId", reportSearchVo.getEqTypeId());
+            List<ReportVo> list = reportService.selectList(reportSearchVo);
+            for(ReportVo re : list) {
+                re.setYear(other1.getValue());
+                re.setEngineeringTimeRate(other2.getValue());
+                re.setIdleTimeRate(other3.getValue());
+                String reworkRate = re.getReworkRate().replaceAll("%", "");
+                String scrapRate = re.getScrapRate().replaceAll("%", "");
+                re.setCompositeYieldRate((100-Double.parseDouble(reworkRate)-Double.parseDouble(scrapRate))+"%");
+                if(re.getHousing() != null && other4.getValue() != null) {
+                    BigDecimal floorCost = new BigDecimal(other4.getValue());
+                    re.setFloorCostAcount(floorCost.multiply(new BigDecimal(re.getHousing())));
+                }
+                re.setPartsCost((new BigDecimal(re.getPartsCost()).multiply(new BigDecimal(other1.getValue()))).toString());
+                
+                //计算COO Value
+                String cooValue = ieBaseService.synchToSAP(re.getUserBaseId());
+                re.setCooValue(cooValue);
+            }
+            model.addAttribute("records", list);
+            reportSearchVo.setVendorModels(null);
+            list1 = reportService.selectList(reportSearchVo);
+        }
+        model.addAttribute("vendorModels", list1);
+        
+        return "/report/manage";
+    }
+    
+    @RequestMapping("report/searchVendorModels")
+    @ResponseBody
+    public Map<String, Object> search(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	List<ReportVo> list = reportService.selectList(reportSearchVo);
+    	
+    	Map<String, Object> result = new HashMap<String, Object>();
+        result.put("vendorModels", list);
+        return result;
+    }
+    
+}

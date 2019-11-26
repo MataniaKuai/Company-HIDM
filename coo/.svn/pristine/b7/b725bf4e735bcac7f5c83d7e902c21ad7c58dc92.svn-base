@@ -1,0 +1,118 @@
+package com.hidm.coo.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.hidm.coo.entity.MaterialCoefficient;
+import com.hidm.coo.vo.MaterialCoefficientSearchVo;
+import com.hidm.coo.vo.MaterialCoefficientVo;
+
+/**
+ * 
+*Description: 获取MaterialCoefficient
+*@author yl
+*@date 2019.6.13
+*@version 1.0
+*
+ */
+public interface MaterialCoefficientService {
+    
+    /**
+     * 
+    *Description: 新增数据
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public int insert(MaterialCoefficient materialCoefficient);
+    
+    /**
+     * 
+    *Description: 根据id更新记录
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public void updateById(MaterialCoefficient materialCoefficient);
+    
+    /**
+     * 
+    *Description: 查询记录数量
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public int count(MaterialCoefficientSearchVo materialCoefficientVO);
+    
+    /**
+     * 
+    *Description: 查询记录列表
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<MaterialCoefficientVo> selectList(MaterialCoefficientSearchVo materialCoefficientVO);
+    
+    /**
+     * 
+    *Description: 根据id删除记录
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public void deleteByIds(Long[] ids);
+
+    /**
+     * 
+    *Description: 查询所有信息
+    *@param MaterialCoefficient
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<MaterialCoefficientVo> selectAll();
+
+    /**
+     * 
+    *Description: 根据id查询记录
+    *@param ids Long[]
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<MaterialCoefficientVo> selectInfoByIds(Long[] ids);
+
+
+	public ArrayList<MaterialCoefficientVo> selectByMaterialNo(String materialNo);
+
+    /**
+     * 
+    *Description: 根据MaterialNo查询记录
+    *@param ids Long[]
+    *@return 
+    *@author yl
+    *@date 2019.6.13
+    *@version 1.0
+     */
+    public List<MaterialCoefficientVo> selectInfoByMaterialNo(MaterialCoefficientVo materialCoefficientVo);
+
+    public List<MaterialCoefficientVo> selectCheckData(MaterialCoefficientSearchVo vo);
+    
+    public Map<String, String> getMatrialPrice(List<MaterialCoefficientVo> list);
+
+    public List<MaterialCoefficientVo> selectInfoByNos(String[] materialNameArr);
+
+}

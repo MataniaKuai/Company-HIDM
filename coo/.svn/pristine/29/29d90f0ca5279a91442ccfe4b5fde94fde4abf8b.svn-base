@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.OPBaseDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.OPBaseVo">
+		<id property="id" column="id" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="waferCostRework" column="wafer_cost_rework" />
+		<result property="waferCostScrap" column="wafer_cost_scrap" />
+		<result property="reworkCost" column="rework_cost" />
+		<result property="scrapCost" column="scrap_cost" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+		<result property="uph" column="uph" />
+		<result property="uptimeRate" column="uptime_rate" />
+		<result property="reworkRate" column="rework_rate" />
+		<result property="scrapRate" column="scrap_rate" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_OP_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_op(
+		<trim suffixOverrides=",">
+			id,
+			<if test="userBaseId != null">
+				user_base_id,
+			</if>
+			<if test="waferCostRework != null">
+				wafer_cost_rework,
+			</if>
+			<if test="waferCostScrap != null">
+				wafer_cost_scrap,
+			</if>
+			<if test="reworkCost != null">
+				rework_cost,
+			</if>
+			<if test="scrapCost != null">
+				scrap_cost,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="userBaseId != null">
+				#{userBaseId},
+			</if>
+			<if test="waferCostRework != null">
+				#{waferCostRework},
+			</if>
+			<if test="waferCostScrap != null">
+				#{waferCostScrap},
+			</if>
+			<if test="reworkCost != null">
+				#{reworkCost},
+			</if>
+			<if test="scrapCost != null">
+				#{scrapCost},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_op
+		<set>
+			<if test="userBaseId != null">
+				user_base_id = #{userBaseId},
+			</if>
+			<if test="waferCostRework != null">
+				wafer_cost_rework = #{waferCostRework},
+			</if>
+			<if test="waferCostScrap != null">
+				wafer_cost_scrap = #{waferCostScrap},
+			</if>
+			<if test="reworkCost != null">
+				rework_cost = #{reworkCost},
+			</if>
+			<if test="scrapCost != null">
+				scrap_cost = #{scrapCost},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_op m
+		<where>
+			<if test="opBase != null">
+				<if test="opBase.id != null and opBase.id != 0">
+					AND m.id = #{opBase.id}
+				</if>
+				<if test="opBase.userBaseId != null and opBase.userBaseId != 0">
+					AND m.user_base_id = #{opBase.userBaseId}
+				</if>
+				<if test="opBase.waferCostRework != null and opBase.waferCostRework != 0">
+					AND m.wafer_cost_rework = #{opBase.waferCostRework}
+				</if>
+				<if test="opBase.waferCostScrap != null and opBase.waferCostScrap != 0">
+					AND m.wafer_cost_scrap = #{opBase.waferCostScrap}
+				</if>
+				<if test="opBase.reworkCost != null and opBase.reworkCost != 0">
+					AND m.rework_cost = #{opBase.reworkCost}
+				</if>
+				<if test="opBase.scrapCost != null and opBase.scrapCost != 0">
+					AND m.scrap_cost = #{opBase.scrapCost}
+				</if>
+				<if test="opBase.delFlag != null and opBase.delFlag != 0">
+					AND m.del_flag = #{opBase.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select m.*,
+		u.eq_type_id,
+		u.user_module,
+		u.vendor,
+		u.model,
+		u.uph,
+		u.uptime_rate,
+		u.rework_rate,
+		u.scrap_rate
+		from t_op m
+		left join T_USER_BASE u on m.user_base_id = u.id
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	 <delete id="deleteByIds">
+        delete from t_op
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+     <delete id="deleteByUserBaseIds">
+        delete from t_op
+        WHERE user_base_id in
+        <foreach collection="array" open=" (" close=")" item="userBaseId" separator=",">
+            #{userBaseId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.MaterialsCostItemDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.MaterialsCostItemVo">
+		<id property="id" column="id" />
+		<result property="itemNo" column="item_no" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="materialNo" column="material_no" />
+		<result property="usageByYear" column="usage_by_year" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="materialName" column="material_name" />
+		<result property="bomUnit" column="bom_unit" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_MATERIALS_COST_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_materials_cost_item(
+		<trim suffixOverrides=",">
+			id,
+			<if test="userBaseId != null">
+				user_base_id,
+			</if>
+			<if test="itemNo != null">
+				item_no,
+			</if>
+			<if test="materialNo != null">
+				material_no,
+			</if>
+			<if test="usageByYear != null">
+				usage_by_year,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="userBaseId != null">
+				#{userBaseId},
+			</if>
+			<if test="itemNo != null">
+				#{itemNo},
+			</if>
+			<if test="materialNo != null">
+				#{materialNo},
+			</if>
+			<if test="usageByYear != null">
+				#{usageByYear},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_materials_cost_item
+		<set>
+			<if test="userBaseId != null">
+				user_base_id = #{userBaseId},
+			</if>
+			<if test="itemNo != null">
+				item_no = #{itemNo},
+			</if>
+			<if test="materialNo != null">
+				material_no = #{materialNo},
+			</if>
+			<if test="usageByYear != null">
+				usage_by_year = #{usageByYear},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE user_base_id=#{userBaseId} AND material_no = #{materialNo}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_materials_cost_item m
+		<where>
+			<if test="materialsCostItem != null">
+				<if test="materialsCostItem.id != null and materialsCostItem.id != 0">
+					AND m.id = #{materialsCostItem.id}
+				</if>
+				<if test="materialsCostItem.itemNo != null and materialsCostItem.itemNo != ''">
+					AND m.item_no = #{materialsCostItem.itemNo}
+				</if>
+				<if test="materialsCostItem.userBaseId != null and materialsCostItem.userBaseId != ''">
+					AND m.user_base_id = #{materialsCostItem.userBaseId}
+				</if>
+				<if test="materialsCostItem.materialNo != null and materialsCostItem.materialNo != ''">
+					AND m.material_no = #{materialsCostItem.materialNo}
+				</if>
+				<if test="materialsCostItem.usageByYear != null and materialsCostItem.usageByYear != ''">
+					AND m.usage_by_year = #{materialsCostItem.usageByYear}
+				</if>
+				<if test="materialsCostItem.delFlag != null and materialsCostItem.delFlag != 0">
+					AND m.del_flag = #{materialsCostItem.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select * from t_materials_cost_item m
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	 <delete id="deleteByIds">
+        delete from t_materials_cost_item
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+     <delete id="deleteByUserBaseIds">
+        delete from t_materials_cost_item
+        WHERE user_base_id in
+        <foreach collection="array" open=" (" close=")" item="userBaseId" separator=",">
+            #{userBaseId}
+        </foreach>
+    </delete>
+    
+     <select id="searchInfo" resultMap="BaseResultMap">
+ 		select t.material_no, t.usage_by_year, m.material_name, m.bom_unit
+		from T_MATERIALS_COST_ITEM t left join T_MATERIAL_COEFFICIENT m
+		on t.material_no = m.material_no
+		where t.user_base_id = #{userBaseId}
+	</select>
+	
+	<select id="selectByUserBaseId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+ 		select * from T_MATERIALS_COST_ITEM t 
+		where t.user_base_id = #{userBaseId}
+	</select>
+</mapper>

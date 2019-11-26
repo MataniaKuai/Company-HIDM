@@ -1,0 +1,22 @@
+#for tests only !
+<<<<<<< .mine
+#Thu Sep 05 16:09:04 CST 2019
+||||||| .r91
+#Fri Jun 28 16:17:36 CST 2019
+=======
+#Tue Aug 06 16:12:48 CST 2019
+>>>>>>> .r127
+jco.client.lang=ZH
+jco.destination.peak_limit=10
+jco.client.client=300
+<<<<<<< .mine
+jco.client.passwd=fh*~LbdUd1;=9FzUIDmTq}~2_RG=tl2!a83+,e63JsqpGDB^
+||||||| .r91
+jco.client.passwd=dTDY!pPvsX@]i5pQVP6[4u[1]%_jxYS_pSkVuwQdDF!6@eH/
+=======
+jco.client.passwd=eGMY7^Jv+`14dOK17%O(7^.3U8yt711_Z3S7a*]V.7Vwz#b{
+>>>>>>> .r127
+jco.client.user=jck_rfc
+jco.client.sysnr=10
+jco.destination.pool_capacity=3
+jco.client.ashost=ERPDEV01

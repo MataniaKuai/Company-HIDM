@@ -1,0 +1,147 @@
+Environment variables:
+  - =::=::\
+  - =C:=C:\program1\workspace\importexport
+  - ALLUSERSPROFILE=C:\ProgramData
+  - ANT_HOME=C:\program1\apache-ant-1.10.5
+  - APPDATA=C:\Users\E101157\AppData\Roaming
+  - BSPRINT_CLIENT=C:/Users/Haclientadmin/AppData/Roaming/Brocadesoft
+  - CLASSPATH=.;C:\Program Files\Java\jdk1.8.0_161\lib;C:\Program Files\Java\jdk1.8.0_161\lib\dt.jar;C:\Program Files\Java\jdk1.8.0_161\lib\tools.jar；C:\program1\apache-ant-1.10.5\lib
+  - COMPUTERNAME=IT-LEIYANG
+  - ComSpec=C:\Windows\system32\cmd.exe
+  - CommonProgramFiles=C:\Program Files\Common Files
+  - CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+  - CommonProgramW6432=C:\Program Files\Common Files
+  - DriverData=C:\Windows\System32\Drivers\DriverData
+  - ERROR_CODE=0
+  - HOMEDRIVE=H:
+  - HOMEPATH=\
+  - HOMESHARE=\\nutanix-profile\docs\E101157
+  - JAVA_EXEC="C:\program1\sonar-scanner-3.3\bin\..\jre\bin\java.exe"
+  - JAVA_HOME=C:\program1\sonar-scanner-3.3\bin\..\jre
+  - LOCALAPPDATA=C:\Users\E101157\AppData\Local
+  - LOGONSERVER=\\HADC03
+  - MAVEN_HOME=C:\program1\apache-maven-3.5.2
+  - NUMBER_OF_PROCESSORS=8
+  - OS=Windows_NT
+  - OneDrive=C:\Users\E101157\OneDrive
+  - PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+  - PROCESSOR_ARCHITECTURE=AMD64
+  - PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 158 Stepping 9, GenuineIntel
+  - PROCESSOR_LEVEL=6
+  - PROCESSOR_REVISION=9e09
+  - PROJECT_HOME=C:\program1\workspace\importexport
+  - PROMPT=$P$G
+  - PSModulePath=C:\Users\E101157\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+  - PUBLIC=C:\Users\Public
+  - Path=C:\Program Files (x86)\Common Files\Oracle\Java\javapath;D:\app\E101157\product\11.2.0\client_1\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\program1\apache-maven-3.5.2\bin;C:\Program Files\TortoiseSVN\bin;C:\program1\apache-ant-1.10.5\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files\Git\cmd;C:\program1\sonar-scanner-3.3\bin;C:\Users\E101157\AppData\Local\Microsoft\WindowsApps;
+  - ProgramData=C:\ProgramData
+  - ProgramFiles=C:\Program Files
+  - ProgramFiles(x86)=C:\Program Files (x86)
+  - ProgramW6432=C:\Program Files
+  - SESSIONNAME=Console
+  - SONAR_RUNNER_HOME=C:\program1\sonar-scanner-3.3
+  - SONAR_SCANNER_HOME=C:\program1\sonar-scanner-3.3\bin\..
+  - SystemDrive=C:
+  - SystemRoot=C:\Windows
+  - TEMP=C:\Users\E101157\AppData\Local\Temp
+  - TMP=C:\Users\E101157\AppData\Local\Temp
+  - USERDNSDOMAIN=HIDMGROUP.COM
+  - USERDOMAIN=HIDMGROUP
+  - USERDOMAIN_ROAMINGPROFILE=HIDMGROUP
+  - USERNAME=E101157
+  - USERPROFILE=C:\Users\E101157
+  - scriptdir=C:\program1\sonar-scanner-3.3\bin
+  - use_embedded_jre=true
+  - windir=C:\Windows
+System properties:
+  - awt.toolkit=sun.awt.windows.WToolkit
+  - file.encoding=GBK
+  - file.encoding.pkg=sun.io
+  - file.separator=\
+  - java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment
+  - java.awt.headless=true
+  - java.awt.printerjob=sun.awt.windows.WPrinterJob
+  - java.class.path=C:\program1\sonar-scanner-3.3\bin\..\lib\sonar-scanner-cli-3.3.0.1492.jar
+  - java.class.version=52.0
+  - java.endorsed.dirs=C:\program1\sonar-scanner-3.3\jre\lib\endorsed
+  - java.ext.dirs=C:\program1\sonar-scanner-3.3\jre\lib\ext;C:\Windows\Sun\Java\lib\ext
+  - java.home=C:\program1\sonar-scanner-3.3\jre
+  - java.io.tmpdir=C:\Users\E101157\AppData\Local\Temp\
+  - java.library.path=C:\program1\sonar-scanner-3.3\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;D:\app\E101157\product\11.2.0\client_1\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;C:\program1\apache-maven-3.5.2\bin;C:\Program Files\TortoiseSVN\bin;C:\program1\apache-ant-1.10.5\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files\Git\cmd;C:\program1\sonar-scanner-3.3\bin;C:\Users\E101157\AppData\Local\Microsoft\WindowsApps;;.
+  - java.runtime.name=Java(TM) SE Runtime Environment
+  - java.runtime.version=1.8.0_121-b13
+  - java.specification.name=Java Platform API Specification
+  - java.specification.vendor=Oracle Corporation
+  - java.specification.version=1.8
+  - java.vendor=Oracle Corporation
+  - java.vendor.url=http://java.oracle.com/
+  - java.vendor.url.bug=http://bugreport.sun.com/bugreport/
+  - java.version=1.8.0_121
+  - java.vm.info=mixed mode
+  - java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+  - java.vm.specification.name=Java Virtual Machine Specification
+  - java.vm.specification.vendor=Oracle Corporation
+  - java.vm.specification.version=1.8
+  - java.vm.vendor=Oracle Corporation
+  - java.vm.version=25.121-b13
+  - line.separator=
+
+  - os.arch=amd64
+  - os.name=Windows 10
+  - os.version=10.0
+  - path.separator=;
+  - project.home=C:\program1\workspace\importexport
+  - scanner.home=C:\program1\sonar-scanner-3.3\bin\..
+  - sun.arch.data.model=64
+  - sun.boot.class.path=C:\program1\sonar-scanner-3.3\jre\lib\resources.jar;C:\program1\sonar-scanner-3.3\jre\lib\rt.jar;C:\program1\sonar-scanner-3.3\jre\lib\sunrsasign.jar;C:\program1\sonar-scanner-3.3\jre\lib\jsse.jar;C:\program1\sonar-scanner-3.3\jre\lib\jce.jar;C:\program1\sonar-scanner-3.3\jre\lib\charsets.jar;C:\program1\sonar-scanner-3.3\jre\lib\jfr.jar;C:\program1\sonar-scanner-3.3\jre\classes
+  - sun.boot.library.path=C:\program1\sonar-scanner-3.3\jre\bin
+  - sun.cpu.endian=little
+  - sun.cpu.isalist=amd64
+  - sun.desktop=windows
+  - sun.io.unicode.encoding=UnicodeLittle
+  - sun.java.command=org.sonarsource.scanner.cli.Main -X
+  - sun.java.launcher=SUN_STANDARD
+  - sun.jnu.encoding=GBK
+  - sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+  - sun.os.patch.level=
+  - sun.stderr.encoding=ms936
+  - sun.stdout.encoding=ms936
+  - user.country=CN
+  - user.dir=C:\program1\workspace\importexport
+  - user.home=C:\Users\E101157
+  - user.language=zh
+  - user.name=E101157
+  - user.script=
+  - user.timezone=Asia/Shanghai
+  - user.variant=
+SonarQube plugins:
+  - SonarC# 6.5.0.3766 (csharp)
+  - SonarPython 1.8.0.1496 (python)
+  - SonarJava 4.15.0.12310 (java)
+  - Chinese Pack 1.11 (l10nzh)
+  - Flex 2.3 (flex)
+  - SonarQube :: Plugins :: SCM :: Git 1.3.0.869 (scmgit)
+  - SonarXML 1.4.3.1027 (xml)
+  - SonarPHP 2.11.0.2485 (php)
+  - SonarTS 1.1.0.1079 (typescript)
+  - SonarQube :: Plugins :: SCM :: SVN 1.6.0.860 (scmsvn)
+  - SonarJS 3.2.0.5506 (javascript)
+Global properties:
+  - sonar.core.id=49B321BC-AWlruPRC-A4pQbI3y7xP
+  - sonar.core.startTime=2019-03-11T17:00:51+0800
+Settings for module: importexport
+  - sonar.host.url=http://localhost:9000
+  - sonar.jdbc.password=******
+  - sonar.jdbc.url=jdbc:mysql://localhost:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
+  - sonar.jdbc.username=root
+  - sonar.language=java
+  - sonar.projectBaseDir=C:\program1\workspace\importexport
+  - sonar.projectKey=importexport
+  - sonar.projectName=importexport
+  - sonar.projectVersion=1.0
+  - sonar.scanner.app=ScannerCli
+  - sonar.scanner.appVersion=3.3.0.1492
+  - sonar.sourceEncoding=GBK
+  - sonar.sources=src
+  - sonar.verbose=true
+  - sonar.working.directory=C:\program1\workspace\importexport\.scannerwork

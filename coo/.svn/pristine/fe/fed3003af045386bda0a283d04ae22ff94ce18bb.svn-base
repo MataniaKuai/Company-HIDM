@@ -1,0 +1,97 @@
+package com.hidm.coo.entity;
+
+import java.util.Date;
+
+public class Others {
+    private Long id;
+    
+    private String item;
+    
+    private String value;
+    
+    private String unit;
+    
+    private Date addTime;
+    
+    private Long addUserId;
+    
+    private Date updateTime;
+    
+    private Long updateUserId;
+    
+    private Integer delFlag;
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public Long getAddUserId() {
+        return addUserId;
+    }
+
+    public void setAddUserId(Long addUserId) {
+        this.addUserId = addUserId;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
+	public Integer getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
+    
+    
+}

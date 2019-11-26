@@ -1,0 +1,187 @@
+package com.hidm.coo.entity;
+
+import java.util.Date;
+
+public class PROBase {
+    private Long id;
+    
+    private Integer isSubmit;   
+    
+    private Long userBaseId;
+    
+    private String purchasePrice;
+    
+    private String tax;
+    
+    private String trainingCost;
+    
+    private String mainServiceCost;
+    
+    private String additionalCost;
+    
+    private Integer status;
+    
+    private Date addTime;
+    
+    private String addUserId;
+    
+    private Date updateTime;
+    
+    private String updateUserId;
+    
+    private Integer delFlag;
+    
+    private String eqTypeId;
+    
+    private String module;
+    
+    private String vendor;
+    
+    private String model;
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+       
+
+    public Integer getIsSubmit() {
+		return isSubmit;
+	}
+
+	public void setIsSubmit(Integer isSubmit) {
+		this.isSubmit = isSubmit;
+	}
+
+	public Long getUserBaseId() {
+        return userBaseId;
+    }
+
+    public void setUserBaseId(Long userBaseId) {
+        this.userBaseId = userBaseId;
+    }
+
+    public String getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(String purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public void setTax(String tax) {
+        this.tax = tax;
+    }
+
+    public String getTrainingCost() {
+        return trainingCost;
+    }
+
+    public void setTrainingCost(String trainingCost) {
+        this.trainingCost = trainingCost;
+    }
+
+    public String getMainServiceCost() {
+        return mainServiceCost;
+    }
+
+    public void setMainServiceCost(String mainServiceCost) {
+        this.mainServiceCost = mainServiceCost;
+    }
+
+    public String getAdditionalCost() {
+        return additionalCost;
+    }
+
+    public void setAdditionalCost(String additionalCost) {
+        this.additionalCost = additionalCost;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public String getAddUserId() {
+        return addUserId;
+    }
+
+    public void setAddUserId(String addUserId) {
+        this.addUserId = addUserId;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
+	public Integer getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public String getEqTypeId() {
+		return eqTypeId;
+	}
+
+	public void setEqTypeId(String eqTypeId) {
+		this.eqTypeId = eqTypeId;
+	}
+
+	public String getModule() {
+		return module;
+	}
+
+	public void setModule(String module) {
+		this.module = module;
+	}
+
+	public String getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
+}

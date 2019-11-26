@@ -1,0 +1,161 @@
+
+**** Error file opened at 20181213 174405 GMT+08:00 Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Thu Dec 13 17:44:05,392<    >RfcGetException rc (7) message: ######### - ########
+<RfcGetException
+
+
+Error:  >Thu Dec 13 17:44:07,204<    >RfcGetException rc (7) message: ######### - ########
+<RfcGetException
+
+
+
+**** Error file opened at 20181213 174501 GMT+08:00 Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Thu Dec 13 17:45:01,456<    >RfcGetException rc (7) message: ######### - ########
+<RfcGetException
+
+
+
+**** Error file opened at 20181213 174616 GMT+08:00 Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Thu Dec 13 17:46:16,342<    >RfcGetException rc (7) message: ######### - ########
+<RfcGetException
+
+
+
+**** Error file opened at 20190111 165118 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Jan 11 16:51:18,965<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 17:09:01,639<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 17:10:49,749<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 17:12:14,273<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Fri Jan 11 17:15:48,711<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+
+**** Error file opened at 20190114 094237 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Mon Jan 14 09:42:37,958<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 10:42:28,906<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 10:42:35,834<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 10:42:57,895<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+Error:  >Mon Jan 14 10:44:09,776<    >RfcGetException rc (7) message: The current application has triggered a termination with a short dump.
+<RfcGetException
+
+
+
+**** Error file opened at 20190222 092100 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Feb 22 09:21:00,622<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=ABAP_AS_WITH_POOL ASHOST=ERPDEV01 SYSNR=10 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'ERPDEV01' unknown
+TIME        Fri Feb 22 09:21:00 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'ERPDEV01' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20190222 092243 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Feb 22 09:22:43,195<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=ABAP_AS_WITH_POOL ASHOST=ERPDEV01 SYSNR=10 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'ERPDEV01' unknown
+TIME        Fri Feb 22 09:22:43 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'ERPDEV01' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+Error:  >Fri Feb 22 09:23:06,911<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=ABAP_AS_WITH_POOL ASHOST=ERPDEV01 SYSNR=10 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'ERPDEV01' unknown
+TIME        Fri Feb 22 09:23:06 2019
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'ERPDEV01' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20190628 134637 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Jun 28 13:46:37,182<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+
+
+**** Error file opened at 20190628 155147 China Standard Time Rel. 3.0.18 (2018-03-23) [721.1016]
+Error:  >Fri Jun 28 15:51:47,263<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+
+Error:  >Fri Jun 28 15:59:08,950<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+
+Error:  >Fri Jun 28 16:01:50,481<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+
+Error:  >Fri Jun 28 16:04:51,986<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+
+Error:  >Fri Jun 28 16:06:02,947<    >RfcGetException rc (7) message: Division by 0 (type P) in program SAPLZCOO                                
+<RfcGetException
+
+

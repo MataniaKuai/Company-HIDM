@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.PROBaseDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.PROBaseVo">
+		<id property="id" column="id" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="purchasePrice" column="purchase_price" />
+		<result property="tax" column="tax" />
+		<result property="trainingCost" column="training_cost" />
+		<result property="mainServiceCost" column="main_service_cost" />
+		<result property="additionalCost" column="additional_cost" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_PRO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_pro(
+		<trim suffixOverrides=",">
+			id,
+			<if test="userBaseId != null">
+				user_base_id,
+			</if>
+			<if test="purchasePrice != null">
+				purchase_price,
+			</if>
+			<if test="tax != null">
+				tax,
+			</if>
+			<if test="trainingCost != null">
+				training_cost,
+			</if>
+			<if test="mainServiceCost != null">
+				main_service_cost,
+			</if>
+			<if test="additionalCost != null">
+				additional_cost,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="userBaseId != null">
+				#{userBaseId},
+			</if>
+			<if test="purchasePrice != null">
+				#{purchasePrice},
+			</if>
+			<if test="tax != null">
+				#{tax},
+			</if>
+			<if test="trainingCost != null">
+				#{trainingCost},
+			</if>
+			<if test="mainServiceCost != null">
+				#{mainServiceCost},
+			</if>
+			<if test="additionalCost != null">
+				#{additionalCost},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_pro
+		<set>
+			<if test="userBaseId != null">
+				user_base_id = #{userBaseId},
+			</if>
+			<if test="purchasePrice != null">
+				purchase_price = #{purchasePrice},
+			</if>
+			<if test="tax != null">
+				tax = #{tax},
+			</if>
+			<if test="trainingCost != null">
+				training_cost = #{trainingCost},
+			</if>
+			<if test="mainServiceCost != null">
+				main_service_cost = #{mainServiceCost},
+			</if>
+			<if test="additionalCost != null">
+				additional_cost = #{additionalCost},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_pro m
+        left join T_USER_BASE u on m.user_base_id = u.id
+		<where>
+			<if test="proBase != null">
+				<if test="proBase.id != null and proBase.id != 0">
+					AND m.id = #{proBase.id}
+				</if>
+                <if test="proBase.eqTypeId != null and proBase.eqTypeId != ''">
+                    AND u.eq_type_id = #{proBase.eqTypeId}
+                </if>
+				<if test="proBase.purchasePrice != null and proBase.purchasePrice != ''">
+					AND m.purchase_price = #{proBase.purchasePrice}
+				</if>
+				<if test="proBase.tax != null and proBase.tax != ''">
+					AND m.tax = #{proBase.tax}
+				</if>
+				<if test="proBase.trainingCost != null and proBase.trainingCost != ''">
+					AND m.training_cost = #{proBase.trainingCost}
+				</if>
+				<if test="proBase.mainServiceCost != null and proBase.mainServiceCost != ''">
+					AND m.main_service_cost = #{proBase.mainServiceCost}
+				</if>
+				<if test="proBase.additionalCost != null and proBase.additionalCost != ''">
+					AND m.additional_cost = #{proBase.additionalCost}
+				</if>
+				<if test="proBase.delFlag != null and proBase.delFlag != 0">
+					AND m.del_flag = #{proBase.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select m.*,
+		u.eq_type_id,
+		u.user_module,
+		u.vendor,
+		u.model
+		from t_pro m
+		left join T_USER_BASE u on m.user_base_id = u.id
+        <where>
+            <if test="proBase != null">
+                <if test="proBase.eqTypeId != null and iproBase.eqTypeId != ''">
+                    AND u.eq_type_id = #{proBase.eqTypeId}
+                </if>
+            </if>
+        </where>
+		order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	<delete id="deleteByIds">
+        delete from t_pro
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteByUserBaseIds">
+        delete from t_pro
+        WHERE user_base_id in
+        <foreach collection="array" open=" (" close=")" item="userBaseId" separator=",">
+            #{userBaseId}
+        </foreach>
+    </delete>
+    
+ 	<select id="selectInfoByIds" resultMap="BaseResultMap">
+        select * from t_pro t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+   
+</mapper>

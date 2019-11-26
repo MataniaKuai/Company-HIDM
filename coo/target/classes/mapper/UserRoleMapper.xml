@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.coo.dao.UserRoleDao">
+    <resultMap id="BaseResultMap" type="com.hidm.coo.entity.UserRole">
+        <result property="uId" column="userid"/>
+        <result property="rId" column="rid"/>
+    </resultMap>
+    
+    <!-- 插入数据库用户表 -->  
+    <insert id="insert">
+        INSERT INTO t_user_role(userid, rid)
+        VALUES(#{uId},#{rId})
+    </insert>
+  
+    <update id="delete">
+        update t_user set del_flag = 1
+        WHERE userid=#{uId} and rid=#{rId} and del_flag = 0
+    </update>
+</mapper>

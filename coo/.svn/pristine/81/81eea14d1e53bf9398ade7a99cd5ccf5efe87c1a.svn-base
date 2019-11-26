@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.MFGBaseDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.MFGBaseVo">
+		<id property="id" column="id" />
+        <result property="isSubmit" column="is_submit" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="operational" column="operational" />
+		<result property="operatert" column="operatert" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+		<result property="uph" column="uph" />
+		<result property="uptimeRate" column="uptime_rate" />
+		<result property="reworkRate" column="rework_rate" />
+		<result property="scrapRate" column="scrap_rate" />
+		<result property="manMachine" column="man_machine" />
+		<result property="shift" column="shift" />
+		<result property="status" column="status" />
+		<result property="housing" column="housing" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_MFG_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_mfg(
+		<trim suffixOverrides=",">
+			id,
+			<if test="isSubmit != null">
+				is_submit,
+			</if>
+			<if test="userBaseId != null">
+				user_base_id,
+			</if>
+			<if test="operational != null">
+				operational,
+			</if>
+			<if test="operatert != null">
+				operatert,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="isSubmit != null">
+				#{isSubmit},
+			</if>
+			<if test="userBaseId != null">
+				#{userBaseId},
+			</if>
+			<if test="operational != null">
+				#{operational},
+			</if>
+			<if test="operatert != null">
+				#{operatert},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_mfg
+		<set>
+		    <if test="isSubmit != null">
+				is_submit = #{isSubmit},
+			</if>
+			<if test="userBaseId != null">
+				user_base_id = #{userBaseId},
+			</if>
+			<if test="operational != null">
+				operational = #{operational},
+			</if>
+			<if test="operatert != null">
+				operatert = #{operatert},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_mfg m
+        left join T_USER_BASE u on m.user_base_id = u.id
+		<where>
+            u.is_submit = 1
+			<if test="mfgBase != null">
+				<if test="mfgBase.id != null and mfgBase.id != 0">
+					AND m.id = #{mfgBase.id}
+				</if>
+                <if test="mfgBase.eqTypeId != null and mfgBase.eqTypeId != ''">
+                    AND u.eq_type_id like '%' ||  #{mfgBase.eqTypeId} || '%'
+                </if>
+                <if test="mfgBase.vendor != null and mfgBase.vendor != ''">
+                    AND u.vendor like '%' ||  #{mfgBase.vendor} || '%'
+                </if>
+                <if test="mfgBase.model != null and mfgBase.model != ''">
+                    AND u.model like '%' ||  #{mfgBase.model} || '%'
+                </if>
+				<if test="mfgBase.operational != null and mfgBase.operational != ''">
+					AND m.operational = #{mfgBase.operational}
+				</if>
+				<if test="mfgBase.operatert != null and mfgBase.operatert != ''">
+					AND m.operatert = #{mfgBase.operatert}
+				</if>
+				<if test="mfgBase.delFlag != null and mfgBase.delFlag != 0">
+					AND m.del_flag = #{mfgBase.delFlag}
+				</if>
+				<if test="mfgBase.status != null and mfgBase.status != 0">
+					status = #{status},
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select m.*,
+		u.eq_type_id,
+		u.user_module,
+		u.vendor,
+		u.model,
+		u.uph,
+		u.uptime_rate,
+		u.rework_rate,
+		u.scrap_rate,
+		u.man_machine,
+		u.housing,
+		u.shift
+		from t_mfg m
+		left join T_USER_BASE u on m.user_base_id = u.id
+        <where>
+            u.is_submit = 1
+            <if test="mfgBase != null">
+                <if test="mfgBase.eqTypeId != null and mfgBase.eqTypeId != ''">
+                    AND u.eq_type_id like '%' ||  #{mfgBase.eqTypeId} || '%'
+                </if>
+                <if test="mfgBase.vendor != null and mfgBase.vendor != ''">
+                    AND u.vendor like '%' ||  #{mfgBase.vendor} || '%'
+                </if>
+                <if test="mfgBase.model != null and mfgBase.model != ''">
+                    AND u.model like '%' ||  #{mfgBase.model} || '%'
+                </if>
+            </if>
+        </where>
+		order by m.status asc, m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	 <delete id="deleteByIds">
+        delete from t_mfg
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+      <delete id="deleteByUserBaseIds">
+        delete from t_mfg
+        WHERE user_base_id in
+        <foreach collection="array" open=" (" close=")" item="userBaseId" separator=",">
+            #{userBaseId}
+        </foreach>
+    </delete>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select * from t_mfg t where t.user_base_id = ${id}
+    </select>
+</mapper>

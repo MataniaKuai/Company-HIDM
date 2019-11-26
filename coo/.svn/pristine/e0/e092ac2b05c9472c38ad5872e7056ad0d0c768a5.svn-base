@@ -1,0 +1,212 @@
+
+<div class="panel panel-default" id="dataDiv" style="display: none;">
+	<div class="panel-heading">
+		<h3 class="panel-title">输入信息</h3>
+	</div>
+	<div class="panel-body">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#home" data-toggle="tab"> 基本信息 </a>
+			</li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+				<form id="editForm" class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-1 control-label" title="EQ Type">EQ Type</label>
+						<div class="col-sm-2">
+							<select name="eqTypeId" class="form-control selectpicker eqType"
+								data-live-search="true" required
+								data-bv-notempty-message="EQ Type不能为空">
+								<option value="">请选择</option>
+								<#list eqTypeList as eqType>
+								<option value="${eqType.eqType!}">${eqType.eqType!}</option>
+								</#list>
+							</select>
+						</div>
+						<label class="col-sm-1 control-label" title="Module">Module</label>
+						<div class="col-sm-2">
+							<input type="text" name="module"  value = "${moudule!}"class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-1 control-label" title="If OEM and Suppliers are not the same company then fill follow the format “OEM(Supplier)”">Vendor</label>
+						<div class="col-sm-2">
+							<select name="vendor" class="form-control selectpicker vendor"
+								data-live-search="true" required
+								data-bv-notempty-message="Vendor不能为空"">
+								<option value="">请选择</option>
+								<#list vendorList as vendor>
+								<option value="${vendor.vendor!}">${vendor.vendorNo!} ${vendor.vendor!}</option>
+								</#list>
+							</select>
+						</div>
+						<label class="col-sm-1 control-label" title="Model of the equipment">Model</label>
+						<div class="col-sm-2">
+							<select name="model" class="form-control selectpicker model"
+								data-live-search="true" required
+								data-bv-notempty-message="Model"">
+								<option value="">请选择</option>
+								<#list modelList as model>
+								<option value="${model.model!}">${model.modelNo!} ${model.model!}</option>
+								</#list>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+
+
+                        <label class="col-sm-2 control-label" title="Combined Depth of tool and easement space">Ds(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="dspace" class="form-control" onBlur="changdspace()" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label" title="Combined width of tool and easement space">Ws(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="wspace" class="form-control" onBlur="changwspace()" required data-bv-notempty-message="不能为空">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Depth of tool">Dt(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="length" class="form-control" onBlur="changLength()" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-3 control-label" title="Width of tool">Wt(m)</label>
+						<div class="col-sm-3">
+							<input type="text" name="width" class="form-control" onBlur="changWidth()" required data-bv-notempty-message="不能为空">
+						</div>
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-sm-2 control-label" title="Equipment Space in FAB=1/4*(Wt+Ws)*(Dt+Ds)">Housing(m²)-Main
+							tool</label>
+						<div class="col-sm-3">
+							<input type="text" name="housing" class="form-control">
+						</div>
+
+						<label class="col-sm-3 control-label" title="Machine quantities one Engineer can operate">Man-Machine(Maintenance)</label>
+						<div class="col-sm-3">
+							<input type="text" name="manMachine" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Shift of Engineer">Shift(Maintenance)</label>
+						<div class="col-sm-3">
+							<input type="text" name="shift" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label" title="Unit or Wafer per hour">UPH(unit per hour)</label>
+						<div class="col-sm-3">
+							<input type="text" name="uph" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Uptime Rate(%)">Uptime Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="uptimeRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label" title="Rework Rate(%)">Rework Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="reworkRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Scrap Rate(%)">Scrap Rate(%)</label>
+						<div class="col-sm-3">
+							<input type="text" name="scrapRate" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label" title="Cost of Installation(¥)">Installation Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="installationCost" onBlur="changInstallation()" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Cost of Hookup(¥)">Hookup Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="hookupCost" onBlur="changHookup()" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+						<label class="col-sm-3 control-label" title="Installation Cost + Hookup Cost">Installation and
+							Hookup Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="installationHookupCost"
+								class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" title="Qualification cost from move in to pi-run(¥)">Qualification Cost</label>
+						<div class="col-sm-3">
+							<input type="text" name="qualificationCost" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+
+						<label class="col-sm-3 control-label" title="Consumable parts cost per year(¥/year)">Parts cost per year</label>
+						<div class="col-sm-3">
+							<input type="text" name="partsCost" class="form-control" required data-bv-notempty-message="不能为空">
+						</div>
+					</div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" title="Total cost of selected utility">TotalUtilityCost</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="totalUtilityCost" class="form-control">
+                        </div>
+
+                        <label class="col-sm-3 control-label" title="Total cost of selected material">TotalMaterialCost</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="totalMaterialCost" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" title="Total cost of selected utility">Add User</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="addUserId" class="form-control" value="${userName!''}">
+                        </div>
+
+                        <label class="col-sm-3 control-label" title="Total cost of selected material">Update User</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="updateUserId" class="form-control">
+                        </div>
+                    </div>
+					
+					<div class="input-group" id="utilityGroup">
+						<label class="input-group-addon" title="select utility and fill usage by year">Utility配置:</label>
+						<div id = "displayUtility">
+						</div>
+						<button class="btn btn-info" type="button" data-toggle="tooltip" title="新增" id="addUtilityGrpBtn" onclick="addUtilityGrp(this)" ><span class="glyphicon glyphicon-plus"></span></button>
+
+					</div>
+					<br />
+					<div class="input-group" id="materialsGroup">
+						<label class="input-group-addon" title="select material and fill usage by KWafer">Materials配置:</label>
+						<div id = "displayMaterial">
+			    	    </div>
+						<button class="btn btn-info" type="button" data-toggle="tooltip" title="新增" id="addMaterialsGrpBtn" onclick="addMaterialsGrp(this)" ><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                    
+                    <br/>
+					<div class="input-group">
+					   <label class="input-group-addon" title="Add Comment"><b>Comment: </b></label>
+					   <div id = "displaycomment">
+					  <input type="text" name="coment" class="form-control" />
+					    </div>           
+					</div>
+
+					<input type="hidden" name="id">
+					<div class="panel-footer text-right">
+						<button type="button" class="btn btn-default"
+							onclick="closeDataDiv()">返回</button>
+						<button id="saveBtn" type="button" class="btn btn-primary"
+							onclick="save()">保存</button>
+						<button id="submitBtn" type="button" class="btn btn-primary"
+							onclick="userSubmit()">提交</button>
+					</div>
+			</div>
+		</div>
+	</div>

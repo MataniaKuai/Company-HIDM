@@ -1,0 +1,116 @@
+function add(){
+	
+	$('input[name="item"]').val("");
+	$('input[name="value"]').val("");
+	$('input[name="unit"]').val("");
+	$('input[name="id"]').val("");
+	$('#dataModal').modal('show');
+
+
+	$('#editForm input').attr("disabled", false);
+	$('#saveBtn').show();
+}
+
+function putFormValue() {
+	var selects = $('#othersTable').bootstrapTable('getSelections');
+	if (selects.length == 1) {
+		var idV = selects[0].id;
+		var itemV = selects[0].item;
+		var valueV = selects[0].value;
+		var unitV = selects[0].unit;
+		
+		$('input[name="item"]').val(itemV);
+		$('input[name="value"]').val(valueV);
+		$('input[name="unit"]').val(unitV);
+		$('input[name="id"]').val(idV);
+
+		$('#dataModal').modal('show');
+		
+		return true;
+	}
+	
+	return false;
+}
+
+function view(){
+	if (!putFormValue()) {
+		alert('只能选择一条记录查看');
+		
+		return;
+	}
+	
+	$('#editForm input').attr("disabled", true);
+	$('#saveBtn').hide();
+	
+	putFormValue();
+}
+
+function edit(){
+	var selects = $('#othersTable').bootstrapTable('getSelections');
+	if (selects.length != 1) {
+		alert('只能选择一条记录编辑');
+		return;
+	}
+
+	$('#editForm input').attr("disabled", false);
+	$('#saveBtn').show();
+	
+	putFormValue();
+}
+
+function save(){
+	$("#editForm").bootstrapValidator("validate");
+	if (!$("#editForm").data('bootstrapValidator').isValid()) {
+		return;
+	}
+	
+	var itemV = $('input[name="item"]').val();
+	var valueV = $('input[name="value"]').val();
+	var unitV = $('input[name="unit"]').val();
+	
+	var idV = $('input[name="id"]').val();
+	$.post('/coo/others/save',
+		{ 
+		id: idV, item: itemV, value: valueV,unit: unitV
+		},
+		function(result){
+		if (result){
+			doSearch();
+			$('#dataModal').modal('hide');
+		} else {
+			alert('系统错误');
+		}
+	},'json');
+}
+
+function remove(){
+	var rows = $('#othersTable').bootstrapTable('getSelections');
+	if (rows && rows.length > 0){
+		var ids = new Array();
+		for (var i = 0; i < rows.length; i++) {
+			var row = rows[i];
+			
+			ids.push(row.id);
+		}
+		
+		$.post('/coo/others/delete',{ids: ids},function(result){
+			if (result){
+				doSearch();
+			} else {
+				$.messager.show({
+					title: '错误',
+					msg: '系统错误'
+				});
+			}
+		},'json');
+	} else {
+		alert('至少选择一条记录。');
+	}
+}
+
+function doSearch() {
+	var otherItemV = $('input[id="otherItem"]').val();
+    
+    $('#othersTable').bootstrapTable('selectPage', 1);
+	$('#othersTable').bootstrapTable('refresh', {query:{item: otherItemV, page:1}});
+}

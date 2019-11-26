@@ -1,0 +1,95 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<link rel="stylesheet" href="vendors/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css"/>
+	
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="vendors/bootstrapvalidator-0.4.5/dist/js/bootstrapValidator.min.js"></script>
+    <script type="text/javascript" src="js/business/others.js"></script>
+	
+	<script type="text/javascript">
+		
+		$(function(){
+			$('#othersTable').bootstrapTable({
+				pagination: true,
+				pageNumber:1,
+				pageSize:10,
+				pageList: [1, 10, 25, 50],
+				cache:false,
+				sidePagination: "server",
+				height:530,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'item',
+			        title: 'Item'
+			    }, {
+			        field: 'value',
+			        title: 'Value'
+			    }, {
+			        field: 'unit',
+			        title: 'Unit'
+			    }, {
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }],
+			    url : '/coo/others/search',
+			    queryParams : function (params) {
+                    var temp = {   
+                        rows: params.limit,                         //椤甸潰澶у皬
+                        page: (params.offset / params.limit) + 1,   //椤电爜
+                        sort: params.sort,      //鎺掑簭鍒楀悕  
+                        sortOrder: params.order //鎺掍綅鍛戒护锛坉esc锛宎sc锛� 
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+	
+	<h4>Ohters数据管理</h4>
+	
+	<div id="listDiv">
+	<div id="searchDiv">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="input-group">
+            <span class="input-group-addon">Item:</span>
+            <input id="otherItem" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button id="search-file-btn" class="btn btn-primary" type="button" onclick="doSearch()">搜索</button>
+          </div>
+        </div>
+	</div>
+	
+	<div class="btn-group" style="margin-top:2px;margin-bottom:2px">
+        <button type="button" class="btn btn-default" onclick="view()">查看</button>
+        <button type="button" class="btn btn-default" onclick="add()">新增</button>
+        <button type="button" class="btn btn-default" onclick="edit()">编辑</button>
+        <!-- <button type="button" class="btn btn-default" onclick="remove()">删除</button> -->
+    </div>
+	<table id="othersTable"></table>
+	</div>
+	
+	<#include "edit.html">

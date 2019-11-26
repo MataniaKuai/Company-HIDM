@@ -1,0 +1,68 @@
+package com.hidm.coo.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hidm.coo.dao.UtilityDao;
+import com.hidm.coo.entity.Utility;
+import com.hidm.coo.service.UtilityService;
+import com.hidm.coo.vo.UtilitySearchVo;
+import com.hidm.coo.vo.UtilityVo;
+
+@Service(value = "utilityService")
+public class UtilityServiceImpl implements UtilityService {
+    @Autowired
+    private UtilityDao utilityDao;
+
+
+    @Override
+    public int insert(Utility utility) {
+        return utilityDao.insert(utility);
+    }
+
+    @Override
+    public void updateById(Utility utility) {
+        utilityDao.updateById(utility);
+    }
+
+    @Override
+    public int count(UtilitySearchVo utilityVO) {
+        return utilityDao.count(utilityVO);
+    }
+
+    @Override
+    public List<UtilityVo> selectList(UtilitySearchVo utilityVO) {
+        return utilityDao.selectList(utilityVO);
+    }
+
+    @Override
+    public void deleteByIds(Long[] ids) {
+        utilityDao.deleteByIds(ids);
+    }
+
+    @Override
+    public List<UtilityVo> selectAll() {
+        return utilityDao.selectAll();
+    }
+
+    @Override
+    public List<UtilityVo> selectInfoByIds(Long[] ids) {
+        return utilityDao.selectInfoByIds(ids);
+    }
+
+
+	@Override
+	public ArrayList<UtilityVo> selectByUtilityNo(String utility) {
+		
+		return utilityDao.selectByUtiltyNo(utility);
+	}
+
+    @Override
+    public List<UtilityVo> selectInfoByUtilityNo(UtilityVo utilityVo){
+    	return utilityDao.selectInfoByUtilityNo(utilityVo);
+    }
+
+}

@@ -1,0 +1,131 @@
+package com.hidm.coo.controller;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hidm.coo.constant.ReportConstant;
+import com.hidm.coo.constant.StatusConstant;
+import com.hidm.coo.entity.Others;
+import com.hidm.coo.entity.User;
+import com.hidm.coo.service.EQtypeService;
+import com.hidm.coo.service.IEBaseService;
+import com.hidm.coo.service.OthersService;
+import com.hidm.coo.service.ReportService;
+import com.hidm.coo.service.UserService;
+import com.hidm.coo.util.LoginUtil;
+import com.hidm.coo.vo.EQtypeVo;
+import com.hidm.coo.vo.ReportSearchVo;
+import com.hidm.coo.vo.ReportVo;
+
+@Controller
+public class ReportController {
+	@Autowired
+    private EQtypeService eqTypeService;
+    
+    @Autowired
+    private ReportService reportService;
+    
+    @Autowired
+    private OthersService othersService;
+    
+    @Autowired
+    private IEBaseService ieBaseService;
+    
+    @Autowired
+    private UserService userService;
+    /**
+     * 数据对比跳转到列表页面
+     * @param model
+     * @param session
+     * @returnO
+     */
+    @RequestMapping("report/contrastReport")
+    public String index(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	User user = LoginUtil.getUserInfo();
+    	if(user != null) {
+    		model.addAttribute("moudule", user.getMoudule());
+    	}
+    	
+    	//切分Moudule
+    	String moudule = user.getMoudule();
+		String [] modules = moudule.split("/");
+    	if(ReportConstant.ALL.equals(moudule)) {
+    		modules = null;
+    	}
+    	//根据modules查询EQ Type
+    	List<EQtypeVo> eqTypeList = eqTypeService.selectInfoByModules(modules);
+        model.addAttribute("eqTypeList", eqTypeList);
+        Others other1=othersService.selectByName("Lifetime");
+        Others other2=othersService.selectByName("Engineering time Rate(%)");
+        Others other3=othersService.selectByName("Idle time Rate(%)");
+        Others other4=othersService.selectByName("Floor Cost_Fix");
+
+        List<ReportVo> list1 = new ArrayList<ReportVo>();
+        if (null != reportSearchVo && null != reportSearchVo.getEqTypeId()) {
+        	model.addAttribute("currentEqTypeId", reportSearchVo.getEqTypeId());
+            List<ReportVo> list = reportService.selectList(reportSearchVo);
+            //判断user、pro、op、mfg是否都已提交
+            boolean isSubmit = true;
+            String venmodelNoSub = "";
+            for(ReportVo re : list) {
+                if(StatusConstant.INIT == re.getUserSubmit() ||
+                        StatusConstant.INIT == re.getProSubmit() ||
+                        StatusConstant.INIT == re.getOpSubmit() ||
+                        StatusConstant.INIT == re.getMfgSubmit()) {
+                    isSubmit = false;
+                    venmodelNoSub = re.getVendor() + "/" + re.getModel();
+                    break;
+                }
+            }
+            if(isSubmit) {
+                for(ReportVo re : list) {
+                    re.setYear(other1.getValue());
+                    re.setEngineeringTimeRate(other2.getValue());
+                    re.setIdleTimeRate(other3.getValue());
+                    String reworkRate = re.getReworkRate().replaceAll("%", "");
+                    String scrapRate = re.getScrapRate().replaceAll("%", "");
+                    re.setCompositeYieldRate((100-Double.parseDouble(reworkRate)-Double.parseDouble(scrapRate))+"%");
+                    if(re.getHousing() != null && other4.getValue() != null) {
+                        BigDecimal floorCost = new BigDecimal(other4.getValue());
+                        re.setFloorCostAcount(floorCost.multiply(new BigDecimal(re.getHousing())));
+                    }
+                    re.setPartsCost((new BigDecimal(re.getPartsCost()).multiply(new BigDecimal(other1.getValue()))).toString());
+                    
+                    //计算COO Value
+                    String cooValue = ieBaseService.synchToSAP(re.getUserBaseId());
+                    re.setCooValue(cooValue);
+                }
+                model.addAttribute("records", list);
+            }else {
+                model.addAttribute("venmodelNoSub", venmodelNoSub);
+            }
+            reportSearchVo.setVendorModels(null);
+            list1 = reportService.selectList(reportSearchVo);
+        }
+        model.addAttribute("vendorModels", list1);
+        
+        return "/report/manage";
+    }
+    
+    @RequestMapping("report/searchVendorModels")
+    @ResponseBody
+    public Map<String, Object> search(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	List<ReportVo> list = reportService.selectList(reportSearchVo);
+    	
+    	Map<String, Object> result = new HashMap<String, Object>();
+        result.put("vendorModels", list);
+        return result;
+    }
+    
+}

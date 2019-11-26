@@ -1,0 +1,129 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/business/businessHis.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+			$('#busHisTable').bootstrapTable({
+				pagination: true,
+				pageNumber:1,
+				pageSize:10,
+				pageList: [1, 10, 25, 50],
+				cache:false,
+				sidePagination: "server",
+				height:530,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'businessId',
+			        title: 'BUSINESS ID'
+			    }, {
+			        field: 'businessNo',
+			        title: 'BUSINESS NO'
+			    }, {
+			        field: 'businessType',
+			        title: 'BUSINESS Type',
+			        formatter: businessTypeFormatter
+			    }, {
+			        field: 'action',
+			        title: 'ACTION',
+			        formatter: actionFormatter
+			    }, {
+			        field: 'addUser',
+			        title: 'OPERATOR'
+			    }, {
+			        field: 'addTime',
+			        title: 'OPERATE TIME'
+			    },{
+			        field: 'content',
+			        title: 'CONTENT',
+			        formatter:contentFormatter
+			    }, {
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }],
+			    url : '/coo/businessHis/search',
+			    queryParams : function (params) {
+			    	var businessNoV = $('input[id="businessNo"]').val();
+			    	var businessIdV = $('input[id="businessId"]').val();
+			    	var businessTypeV = $('select[id="businessType"]').val();
+                    var temp = {   
+                        rows: params.limit,                         //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名  
+                        sortOrder: params.order, //排位命令（desc，asc） 
+                        businessNo: businessNoV,
+            			businessId: businessIdV,
+            			businessType: businessTypeV
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+			$('.businessType').selectpicker('refresh');
+			
+			$('.form_date').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+
+<h4>操作日志管理</h4>
+
+<div id="listDiv">
+	<div id="searchDiv">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="input-group">
+					<span class="input-group-addon">Business Id:</span> <input
+						id="businessId" class="form-control">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<span class="input-group-addon">Business No:</span> <input
+						id="businessNo" class="form-control">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<span class="input-group-addon">Business Type:</span> 
+					<select  class="form-control selectpicker businessType" data-live-search="true" id="businessType" >
+						<option value="">请选择</option>					
+						<option value ="1">USER数据</option>
+						<option value ="2">PRO数据</option>
+						<option value="3">OP数据</option>
+						<option value="4">MFG数据</option>
+						<option value="5">其他参数</option>
+                        <option value="6">EQ_Type数据</option>
+                        <option value="7">Material coefficient数据</option>
+                        <option value="8">Utility数据</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<button id="search-file-btn" class="btn btn-primary" type="button"
+					onclick="doSearch()">搜索</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<table id="busHisTable"></table>

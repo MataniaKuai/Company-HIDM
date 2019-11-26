@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.UtilityDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.UtilityVo">
+		<id property="id" column="id" />
+		<result property="utilityNo" column="utility_no" />
+		<result property="utilityGroup" column="utility_group" />
+		<result property="utilityName" column="utility_name" />
+		<result property="utilityUnit" column="utility_unit" />
+		<result property="coefficient" column="utility_coefficient" />
+		<result property="utilityPrice" column="utility_price" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="isSap" column="is_sap" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_UTILITY_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_utility(
+		<trim suffixOverrides=",">
+			id,
+			<if test="utilityNo != null">
+				utility_no,
+			</if>
+			<if test="utilityGroup != null">
+				utility_group,
+			</if>
+			<if test="utilityName != null">
+				utility_name,
+			</if>
+			<if test="utilityUnit != null">
+				utility_unit,
+			</if>
+			<if test="coefficient != null">
+				utility_coefficient,
+			</if>
+			<if test="utilityPrice != null">
+				utility_price,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+	       <if test="isSap != null">
+				is_sap,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="utilityNo != null">
+				#{utilityNo},
+			</if>
+			<if test="utilityGroup != null">
+				#{utilityGroup},
+			</if>
+			<if test="utilityName != null">
+				#{utilityName},
+			</if>
+			<if test="utilityUnit != null">
+				#{utilityUnit},
+			</if>
+			<if test="coefficient != null">
+				#{coefficient},
+			</if>
+			<if test="utilityPrice != null">
+				#{utilityPrice},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="isSap != null">
+				#{isSap},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_utility
+		<set>
+			<if test="utilityNo != null">
+				utility_no = #{utilityNo},
+			</if>
+			<if test="utilityGroup != null">
+				utility_group = #{utilityGroup},
+			</if>
+			<if test="utilityName != null">
+				utility_name = #{utilityName},
+			</if>
+			<if test="utilityUnit != null">
+				utility_unit = #{utilityUnit},
+			</if>
+			<if test="coefficient != null">
+				utility_coefficient = #{coefficient},
+			</if>
+			<if test="utilityPrice != null">
+				utility_price = #{utilityPrice},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+			<if test="isSap != null">
+				is_sap = #{isSap},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_utility m
+		<where>
+			<if test="utility != null">
+				<if test="utility.id != null and utility.id != 0">
+					AND m.id = #{utility.id}
+				</if>
+				<if test="utility.utilityNo != null and utility.utilityNo != ''">
+					AND m.utility_no  like '%' || #{utility.utilityNo} || '%'
+				</if>
+				 <if test="utility.utilityGroup != null and utility.utilityGroup != ''">
+                    AND m.utility_group like '%' || #{utility.utilityGroup} || '%'
+                </if>
+                <if test="utility.utilityName != null and utility.utilityName != ''">
+                    AND m.utility_name like '%' || #{utility.utilityName} || '%'
+                </if>				
+				<if test="utility.utilityUnit != null and utility.utilityUnit != ''">
+					AND m.utility_unit = #{utility.utilityUnit}
+				</if>
+				<if test="utility.coefficient != null and utility.coefficient != ''">
+					AND m.utility_coefficient = #{utility.coefficient}
+				</if>
+				<if test="utility.utilityPrice != null and utility.utilityPrice != ''">
+					AND m.utility_price = #{utility.utilityPrice}
+				</if>
+				<if test="utility.delFlag != null and utility.delFlag != 0">
+					AND m.del_flag = #{utility.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from
+        (
+        select t.*, ROWNUM RN from
+        (
+        select * from t_utility m
+        <where>
+            m.del_flag = 0
+            <if test="utility != null">
+                <if test="utility.utilityNo != null and utility.utilityNo != ''">
+                    AND m.utility_no like '%' || #{utility.utilityNo} || '%'
+                </if>
+                <if test="utility.utilityGroup != null and utility.utilityGroup != ''">
+                    AND m.utility_group like '%' || #{utility.utilityGroup} || '%'
+                </if>
+                <if test="utility.utilityName != null and utility.utilityName != ''">
+                    AND m.utility_name like '%' || #{utility.utilityName} || '%'
+                </if>
+            </if>
+        </where>
+        order by m.id desc
+        )t
+        <if test="page != null">
+            where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+        </if>
+        )
+        <if test="page != null">
+            where RN &gt; #{page.rowStart}
+        </if>
+    </select>
+
+    <select id="selectCheckData" resultMap="BaseResultMap">
+        select * from t_utility m
+        <where>
+            m.del_flag = 0
+            <if test="utility != null">
+                <if test="utility.utilityNo != null and utility.utilityNo != ''">
+                    AND m.utility_no =  #{utility.utilityNo}
+                </if>
+            </if>
+        </where>
+        order by m.id desc
+    </select>
+	
+	 <delete id="deleteByIds">
+        delete from t_utility
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from t_utility
+    </select>
+    <select id="selectInfoByIds" resultMap="BaseResultMap">
+        select * from t_utility t where t.id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectInfoByNos" resultMap="BaseResultMap">
+        select * from t_utility t where t.utility_no in
+        <foreach collection="array" open=" (" close=")" item="no" separator=",">
+            #{no}
+        </foreach>
+    </select>
+
+     <select id="selectByUtiltyNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from t_utility t where t.utility_no = #{utilityNo}
+    </select>
+    
+
+    <select id="selectInfoByUtilityNo" resultMap="BaseResultMap">
+        select * from t_utility t where t.utility_no = #{utilityNo}
+    </select>
+
+</mapper>

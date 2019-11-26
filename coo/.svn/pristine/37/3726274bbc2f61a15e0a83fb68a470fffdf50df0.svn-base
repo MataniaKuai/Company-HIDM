@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hidm.coo.dao.IEBaseDao">
+	<resultMap id="BaseResultMap" type="com.hidm.coo.vo.IEBaseVo">
+		<id property="id" column="id" />
+		<result property="userBaseId" column="user_base_id" />
+		<result property="operateLaborSalary" column="operate_Labor_Salary" />
+		<result property="maintainLaborSalary" column="maintain_Labor_Salary" />
+		<result property="operateLaborCost" column="operate_Labor_Cost" />
+		<result property="maintainLaborCost" column="maintain_Labor_Cost" />
+		<result property="floorCost" column="floor_Cost" />
+		<result property="floorCostAcount" column="floor_Cost_Acount" />
+		<result property="addTime" column="add_time" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="delFlag" column="del_flag" />
+		<result property="eqTypeId" column="eq_type_id" />
+		<result property="module" column="user_module" />
+		<result property="vendor" column="vendor" />
+		<result property="model" column="model" />
+		<result property="length" column="user_length" />
+		<result property="width" column="width" />
+		<result property="housing" column="housing" />
+		<result property="manMachine" column="man_machine" />
+		<result property="shift" column="shift" />
+		<result property="uph" column="uph" />
+		<result property="uptimeRate" column="uptime_rate" />
+		<result property="reworkRate" column="rework_rate" />
+		<result property="scrapRate" column="scrap_rate" />
+		<result property="installationCost" column="installation_cost" />
+		<result property="hookupCost" column="hookup_cost" />
+		<result property="installationHookupCost" column="ihookup_cost" />
+		<result property="qualificationCost" column="qua_cost" />
+		<result property="partsCost" column="parts_costs" />
+		<result property="waferCostRework" column="wafer_cost_rework" />
+		<result property="waferCostScrap" column="wafer_cost_scrap" />
+		<result property="operational" column="operational" />
+		<result property="operatert" column="operatert" />
+	</resultMap>
+
+	<!-- 插入数据库用户表 -->
+	<insert id="insert">
+		<selectKey resultType="java.lang.Long" order="BEFORE"
+			keyProperty="id">
+			SELECT T_IE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO t_ie(
+		<trim suffixOverrides=",">
+			id,
+			<if test="userBaseId != null">
+				user_base_id,
+			</if>
+			<if test="operateLaborSalary != null">
+				operate_Labor_Salary,
+			</if>
+			<if test="maintainLaborSalary != null">
+				maintain_Labor_Salary,
+			</if>
+			<if test="operateLaborCost != null">
+				operate_Labor_Cost,
+			</if>
+			<if test="maintainLaborCost != null">
+				maintain_Labor_Cost,
+			</if>
+			<if test="floorCost != null">
+				floor_Cost,
+			</if>
+			<if test="floorCostAcount != null">
+				floor_Cost_Acount,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addUserId != null">
+				add_user_id,
+			</if>
+				<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		)
+		VALUES(
+		<trim suffixOverrides=",">
+			#{id},
+			<if test="userBaseId != null">
+				#{userBaseId},
+			</if>
+			<if test="operateLaborSalary != null">
+				#{operateLaborSalary},
+			</if>
+			<if test="maintainLaborSalary != null">
+				#{maintainLaborSalary},
+			</if>
+			<if test="operateLaborCost != null">
+				#{operateLaborCost},
+			</if>
+			<if test="maintainLaborCost != null">
+				#{maintainLaborCost},
+			</if>
+			<if test="floorCost != null">
+				#{floorCost},
+			</if>
+			<if test="floorCostAcount != null">
+				#{floorCostAcount},
+			</if>
+			<if test="addTime != null">
+				#{addTime},
+			</if>
+			<if test="addUserId != null">
+				#{addUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+		</trim>
+		)
+	</insert>
+
+	<update id="updateById">
+		UPDATE t_ie
+		<set>
+			<if test="userBaseId != null">
+				user_base_id = #{userBaseId},
+			</if>
+			<if test="operateLaborSalary != null">
+				operate_Labor_Salary = #{operateLaborSalary},
+			</if>
+			<if test="maintainLaborSalary != null">
+				maintain_Labor_Salary = #{maintainLaborSalary},
+			</if>
+			<if test="operateLaborCost != null">
+				operate_Labor_Cost = #{operateLaborCost},
+			</if>
+			<if test="maintainLaborCost != null">
+				maintain_Labor_Cost = #{maintainLaborCost},
+			</if>
+			<if test="floorCost != null">
+				floor_Cost = #{floorCost},
+			</if>
+			<if test="floorCostAcount != null">
+				floor_Cost_Acount = #{floorCostAcount},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime},
+			</if>
+			<if test="addUserId != null">
+				add_user_id = #{addUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from t_ie m
+		<where>
+			<if test="ieBase != null">
+				<if test="ieBase.id != null and ieBase.id != 0">
+					AND m.id = #{ieBase.id}
+				</if>
+				<if test="ieBase.userBaseId != null and ieBase.userBaseId != 0">
+					AND m.user_base_id = #{ieBase.userBaseId}
+				</if>
+				<if test="ieBase.operateLaborSalary != null and ieBase.operateLaborSalary != ''">
+					AND m.operate_Labor_Salary = #{ieBase.operateLaborSalary}
+				</if>
+				<if test="ieBase.maintainLaborSalary != null and ieBase.maintainLaborSalary != ''">
+					AND m.maintain_Labor_Salary = #{ieBase.maintainLaborSalary}
+				</if>
+				<if test="ieBase.operateLaborCost != null and ieBase.operateLaborCost != ''">
+					AND m.operate_Labor_Cost = #{ieBase.operateLaborCost}
+				</if>
+				<if test="ieBase.maintainLaborCost != null and ieBase.maintainLaborCost != ''">
+					AND m.maintain_Labor_Cost = #{ieBase.maintainLaborCost}
+				</if>
+				<if test="ieBase.floorCost != null and ieBase.floorCost != ''">
+					AND m.floor_Cost = #{ieBase.floorCost}
+				</if>
+				<if test="ieBase.floorCostAcount != null and ieBase.floorCostAcount != ''">
+					AND m.floor_Cost_Acount = #{ieBase.floorCostAcount}
+				</if>
+				<if test="ieBase.delFlag != null and ieBase.delFlag != 0">
+					AND m.del_flag = #{ieBase.delFlag}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap">
+
+		select * from
+		(
+		select t.*, ROWNUM RN from
+		(
+		select i.*,
+			u.eq_type_id,
+			u.user_module,
+			u.vendor,
+			u.model,
+			u.user_length,
+			u.width,
+			u.housing,
+			u.man_machine,
+			u.shift,
+			u.uph,
+			u.uptime_rate,
+			u.rework_rate,
+			u.scrap_rate,
+			u.installation_cost,
+			u.hookup_cost,
+			u.ihookup_cost,
+			u.qua_cost,
+			u.parts_costs,
+		    o.wafer_cost_rework,
+		    o.wafer_cost_scrap,
+		    m.operational,
+		    m.operatert
+		    from T_IE i
+		    left join T_USER_BASE u on u.id = i.user_base_id
+		    left join T_OP o on o.user_base_id = i.user_base_id
+		    left join T_MFG m on m.user_base_id = i.user_base_id
+		    order by m.id desc
+		)t
+		<if test="page != null">
+			where ROWNUM &lt;= (#{page.rowStart} + #{page.rows})
+		</if>
+		)
+		<if test="page != null">
+			where RN &gt; #{page.rowStart}
+		</if>
+	</select>
+	
+	 <delete id="deleteByIds">
+        delete from t_ie
+        WHERE id in
+        <foreach collection="array" open=" (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    
+     <delete id="deleteByUserBaseIds">
+        delete from t_ie
+        WHERE user_base_id in
+        <foreach collection="array" open=" (" close=")" item="userBaseId" separator=",">
+            #{userBaseId}
+        </foreach>
+    </delete>
+</mapper>

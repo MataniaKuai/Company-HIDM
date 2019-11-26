@@ -1,0 +1,46 @@
+package com.hidm.coo.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hidm.coo.constant.BusinessConstant;
+import com.hidm.coo.entity.OPBase;
+import com.hidm.coo.service.BusinessHisService;
+import com.hidm.coo.service.OPBaseService;
+import com.hidm.coo.vo.OPBaseSearchVo;
+import com.hidm.coo.vo.PaginationVo;
+import com.hidm.coo.vo.OPBaseVo;
+
+@Controller
+public class MCBaseController {
+
+    
+    @Autowired
+    private OPBaseService opBaseService;
+    @Autowired
+    private BusinessHisService businessHisService;
+    /**
+     * user跳转到列表页面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("mcBase/manage")
+    public String index(Model model, HttpSession session) {
+    	
+        return "/mc/manage";
+    }
+
+}

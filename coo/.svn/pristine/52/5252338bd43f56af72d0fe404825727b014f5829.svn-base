@@ -1,0 +1,780 @@
+--
+-- 转存表中的数据 't_permission'
+--
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(1, '/userBase/manage', 'User数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(2, '/proBase/manage', 'PRO数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(3, '/opBase/manage', 'OP数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(4, '/mfgBase/manage', 'MFG数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(5, '/mcBase/manage', 'MC数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(6, '/ieBase/manage', 'IE数据维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(7, '/others/manage', '其他参数维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(8, '/eqType/manage', 'EQ_Type维护');
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(9, '/materialCoefficient/manage', 'Material Coefficient维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(10, '/utility/manage', 'Utility维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(11, '/report/contrastReport', '数据对比');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(12, '/userManage/manage', 'User管理');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(13, '/manage/businessHis', '操作日志管理');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(14, '/vendor/manage', 'Vendor维护');
+commit;
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(15, '/model/manage', 'Model维护');
+commit;
+
+--
+-- 转存表中的数据 't_role'
+--
+INSERT INTO t_role (id, name)
+ values(1, 'admin');
+commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (2, 'user');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (3, 'pro');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (4, 'op');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (5, 'mfg');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (6, 'mc');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (7, 'ie');
+ commit;
+
+INSERT INTO t_role (id, name)
+ VALUES (8, 'contrast');
+ commit;
+
+--
+-- 转存表中的数据 't_role_permission'
+--
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (1,1,12);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (2,1,13);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (3,2,1);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (4,3,2);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (5,4,3);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (6,4,10);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (7,5,4);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (8,6,5);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (9,6,9);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (10,7,6);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (11,7,7);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (12,7,8);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (13,8,11);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (14,2,14);
+commit;
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (15,2,15);
+commit;
+--
+-- 转存表中的数据 't_user'
+--
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(1,'E100225','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(2,'E100636','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(3,'E100041','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(4,'E100223','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(5,'E100200','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(6,'E100615','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(7,'E101161','ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(8,'E100102','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(9,'E100047','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(10,'E100045','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(11,'E100248','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(12,'E101220','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(13,'E100152','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(14,'E100111','PH');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(15,'E100207','WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(16,'E100423','WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(17,'E100112','WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(18,'E100830','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(19,'E100312','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(20,'E100455','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(21,'E100445','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(22,'E100726','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(23,'E100996','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(24,'E100201','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(25,'E100442','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(26,'E100180','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(27,'E101043','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(28,'E100436','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(29,'E101122','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(30,'E100604','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(31,'E100780','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(32,'E100208','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(33,'E100159','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(34,'E100049','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(35,'E100026','DF/TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(36,'E100105','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(37,'E100082','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(38,'E100187','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(39,'E101215','TF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(40,'E100211','DF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(41,'E100541','DF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(42,'E100783','DF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(43,'E101118','DF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(44,'E100215','DF');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(45,'E100509','MFG');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(46,'E100177','MFG');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(47,'E100096','MFG');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(48,'E100435','PRO');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(49,'E100311','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(50,'E100224','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(51,'E100738','OP');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(52,'E100123','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(53,'E100100','MC');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(54,'E100048','MC');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(55,'E100522','MC');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(56,'E100978','MC');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(57,'E100577','IE');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(58,'E100043','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(59,'E100613','IE');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(60,'E100677','IE');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(61,'E100904','IE');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(62,'E100001','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(63,'E100003','DF/PH/ET/TF/WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(64,'E100130','DF/PH/ET/TF/WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(65,'E100434','PH/ET');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(66,'E100033','WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(67,'E100423','WAT');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(68,'E100039','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(69,'E100208','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(70,'E100180','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(71,'E100901','TD');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(72,'E100353','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(73,'E100920','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(74,'E100018','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(75,'E100433','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(76,'E100191','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(77,'E100426','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(78,'E100066','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(79,'E100455','QRA');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(80,'A100014','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(81,'A100015','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(82,'E100485','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(83,'E100953','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(84,'E100593','All');
+commit;
+INSERT INTO t_user(id, user_name, moudule)
+VALUES(85,'E101157','All');
+commit;
+
+
+--
+-- 转存表中的数据 't_user_role'
+--
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(1,1,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(2,2,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(3,3,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(4,4,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(5,5,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(6,6,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(7,7,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(8,8,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(9,9,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(10,10,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(11,11,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(12,12,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(13,13,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(14,14,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(15,15,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(16,16,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(17,17,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(18,18,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(19,19,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(20,20,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(21,21,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(22,22,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(23,23,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(24,24,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(25,25,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(26,26,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(27,27,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(28,28,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(29,29,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(30,30,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(31,31,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(32,32,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(33,33,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(34,34,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(35,35,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(36,36,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(37,37,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(38,38,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(39,39,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(40,40,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(41,41,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(42,42,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(43,43,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(44,44,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(45,45,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(46,46,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(47,47,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(48,48,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(49,49,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(50,50,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(51,51,4);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(52,52,4);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(53,53,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(54,54,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(55,55,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(56,56,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(57,57,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(58,58,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(59,60,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(60,60,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(61,61,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(62,62,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(63,63,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(64,64,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(65,65,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(66,66,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(67,67,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(68,68,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(69,69,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(70,70,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(71,71,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(72,72,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(73,73,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(74,74,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(75,75,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(76,76,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(77,77,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(78,78,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(79,79,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(80,80,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(81,81,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(82,82,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(83,10,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(84,3,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(85,34,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(86,44,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(87,35,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(88,50,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(89,49,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(90,58,8);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(91,52,8);
+commit;
+
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(92,83,1);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(93,83,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(94,83,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(95,83,4);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(96,83,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(97,83,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(98,83,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(99,83,8);
+commit;
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(100,84,1);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(101,84,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(102,84,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(103,84,4);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(104,84,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(105,84,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(106,84,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(107,84,8);
+commit;
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(108,85,1);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(109,85,2);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(110,85,3);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(111,85,4);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(112,85,5);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(113,85,6);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(114,85,7);
+commit;
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(115,85,8);
+commit;
+
+
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(1,'DF');
+commit;
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(2,'ET');
+commit;
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(3,'PH');
+commit;
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(4,'QRA');
+commit;
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(5,'TD');
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(6,'TF');
+commit;
+INSERT INTO T_EQ_Moudule (id, moudule)
+VALUES(7,'WAT');
+commit;

@@ -1,0 +1,73 @@
+package com.hidm.coo.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hidm.coo.service.EQtypeService;
+import com.hidm.coo.service.IEBaseService;
+import com.hidm.coo.service.ReportService;
+import com.hidm.coo.vo.EQtypeVo;
+import com.hidm.coo.vo.ReportSearchVo;
+import com.hidm.coo.vo.ReportVo;
+
+@Controller
+public class ReportController {
+	@Autowired
+    private EQtypeService eqTypeService;
+    
+    @Autowired
+    private ReportService reportService;
+    
+    @Autowired
+    private IEBaseService ieBaseService;
+    /**
+     * 数据对比跳转到列表页面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("report/contrastReport")
+    public String index(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	List<EQtypeVo> eqTypeList = eqTypeService.selectList(null);
+        model.addAttribute("eqTypeList", eqTypeList);
+
+        List<ReportVo> list1 = new ArrayList<ReportVo>();
+        if (null != reportSearchVo && null != reportSearchVo.getEqTypeId()) {
+        	model.addAttribute("currentEqTypeId", reportSearchVo.getEqTypeId());
+            List<ReportVo> list = reportService.selectList(reportSearchVo);
+            model.addAttribute("records", list);
+            reportSearchVo.setVendorModels(null);
+            list1 = reportService.selectList(reportSearchVo);
+            for(int i = 0; i < list1.size(); i++) {
+            	//计算COO Value
+                ieBaseService.synchToSAP(list1.get(i).getUserBaseId());
+            }
+        }
+        model.addAttribute("vendorModels", list1);
+        
+
+        
+        return "/report/manage";
+    }
+    
+    @RequestMapping("report/searchVendorModels")
+    @ResponseBody
+    public Map<String, Object> search(ReportSearchVo reportSearchVo, Model model, HttpSession session) {
+    	List<ReportVo> list = reportService.selectList(reportSearchVo);
+    	
+    	Map<String, Object> result = new HashMap<String, Object>();
+        result.put("vendorModels", list);
+        return result;
+    }
+    
+}

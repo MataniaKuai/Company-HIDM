@@ -1,0 +1,60 @@
+--
+-- 转存表中的数据 't_permission'
+--
+INSERT INTO t_permission(id, url, name)
+ VALUES
+(1, '/userBase/manage', 'User数据维护');
+commit;
+
+
+--
+-- 转存表中的数据 't_role'
+--
+INSERT INTO t_role (id, name)
+ VALUES (1, 'basedata');
+ commit;
+
+INSERT INTO t_role (id, name)
+ values(100, 'admin');
+commit;
+
+--
+-- 转存表中的数据 't_role_permission'
+--
+INSERT INTO t_role_permission(id, rid, pid)
+VALUES (1,1,1);
+commit;
+
+--
+-- 转存表中的数据 't_user'
+--
+INSERT INTO t_user(id, user_name)
+VALUES(1,'E100593');
+commit;
+
+INSERT INTO t_user(id, user_name)
+VALUES(2,'E100505');
+commit;
+
+INSERT INTO t_user(id, user_name)
+VALUES(3,'T100059');
+commit;
+
+--
+-- 转存表中的数据 't_user_role'
+--
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(1,1,1);
+commit;
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(2,1,100);
+commit;
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(3,2,1);
+commit;
+
+INSERT INTO t_user_role (id, userid, rid)
+VALUES(4,3,1);
+commit;

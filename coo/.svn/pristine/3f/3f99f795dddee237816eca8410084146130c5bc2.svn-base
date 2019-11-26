@@ -1,0 +1,313 @@
+    <script>
+    $(document).ready(function() {
+        $("#eqTypeIdO").change(function() {
+           var eqTypeId = $(this).val();
+           var param = {eqTypeId: eqTypeId};
+            
+           $.post('/coo/report/searchVendorModels', param, function(result){
+                if (result){
+                    $("#Vendor-ModelDiv").empty();
+                    var list = result.vendorModels;
+                    for (var i=0; i < list.length; i++)
+                    {
+                        var item = list[i];
+                        var html = "<input type='checkbox' name='Vendor-ModelO' value='" + item.vendor + "/" + item.model + "'>" + item.vendor + "/" + item.model + "&nbsp;";
+                        $("#Vendor-ModelDiv").append(html);
+                    }
+                } else {
+                    alert('系统错误');
+                }
+            },'json');
+        });
+        
+        $("#reportBtn").click(function() {
+            var eqTypeId = $("#eqTypeIdO").val();
+            var vendorModels = [];
+            $("input[name='Vendor-ModelO']:checked").each(function(){
+                var vendorModelV = $(this).val();
+                vendorModels.push(vendorModelV);
+            });
+            
+            if (vendorModels) {
+                var param = {eqTypeId: eqTypeId, vendorModels: vendorModels};
+                showContentWithParam('/coo/report/contrastReport', param);
+            }
+        });
+    });
+    
+    <#if currentEqTypeId??>
+      $("#eqTypeIdO").val("${currentEqTypeId!}");
+    </#if>
+    </script>
+    <style>
+	    table {
+	        font-size: 10pt;
+	    }
+    </style>
+  <div class="row">
+  <label class="col-sm-2 control-label" style="width:22%;text-align:right">EQ Type：</label>
+  <div class="col-sm-4">
+  <select id="eqTypeIdO" class="form-control selectpicker"
+    data-live-search="true" required data-bv-notempty-message="EQ Type不能为空"">
+    <option value="">请选择</option>
+    <#list eqTypeList as eqType>
+      <option value="${eqType.eqType!}">${eqType.eqType!}</option>
+    </#list>
+  </select>
+  </div>
+  </div>
+  
+  <div class="row" style="margin-top:10px">
+    <label class="col-sm-2 control-label" style="width:23%;text-align:right">Vendor-Model：</label>
+    <div id="Vendor-ModelDiv" class="col-sm-8">
+	    <#list vendorModels as item>
+	       <input type="checkbox" name="Vendor-ModelO" value="${item.vendor!}/${item.model!}"/>${item.vendor!}/${item.model!}
+	    </#list>
+    </div>
+  </div>
+
+  <div class="row">
+    <button id="reportBtn" type="button" class="col-sm-1 btn btn-primary" style="margin:0 0 10px 150px">生成报表</button>
+    <div class="col-sm-4">
+      <#if venmodelNoSub??>
+		 <label style="color:red;">${venmodelNoSub!}还未全部提交</label>
+      </#if>
+    </div>
+  </div>
+  <div class="table-basic">
+    <table cellspacing="1" id="table-basic" class="table table-sm table-bordered table-striped">
+        <tr>
+          <th rowspan="4" style="vertical-align: middle; text-align: center; width:100px">Basic</th>
+          <td rowspan="1" style="width:300px">EQ Type</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.eqTypeId!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Module</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.module!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Vendor/Model</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.vendor!}/${record.model!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td><font color="red"><B>COO Value</B></font></td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1"><font color="red"><B>${record.cooValue!}</B></font></td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="6" style="vertical-align: middle; text-align: center">F$</th>
+          <td rowspan="1">Purchase Price</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.purchasePrice!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td rowspan="1">Tax/Duties/Interest</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.tax!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td rowspan="1">Installation and Hookup Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.installationHookupCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Floor Cost(¥)</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.floorCostAcount!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Training Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.trainingCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Qualification Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.qualificationCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+      
+        <tr>
+          <th rowspan="2" style="vertical-align: middle; text-align: center">L$</th>
+          <td>Operational</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.operateLaborCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Maintenance</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.maintainLaborCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="5" style="vertical-align: middle; text-align: center">R$</th>
+          <td>Materials Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.totalMaterialCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Parts Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.partsCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Maintenace & Service Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.mainServiceCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Utility Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.totalUtilityCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Additional training or upgrade Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.additionalCost!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="2" style="vertical-align: middle; text-align: center">Y$</th>
+          <td>Rework Cost</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.waferCostRework!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+         <td>Scrap Cost</td>
+         <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.waferCostScrap!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="1" style="vertical-align: middle; text-align: center">L</th>
+          <td>Year</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.year!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="1" style="vertical-align: middle; text-align: center">T</th>
+          <td>WPH</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.uph!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="3" style="vertical-align: middle; text-align: center">U</th>
+          <td>Uptime rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.uptimeRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Engineering time rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.engineeringTimeRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Idle time rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.idleTimeRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+        
+        <tr>
+          <th rowspan="3" style="vertical-align: middle; text-align: center">Y</th>
+          <td>Composite yield rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.compositeYieldRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Rework rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.reworkRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+        <tr>
+          <td>Scrap rate</td>
+          <#if records??>
+            <#list records as record>
+              <td rowspan="1">${record.scrapRate!}</td>
+            </#list>
+          </#if>
+        </tr>
+    </table>
+  </div>

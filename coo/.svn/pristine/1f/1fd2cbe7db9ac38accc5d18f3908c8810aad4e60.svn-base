@@ -1,0 +1,73 @@
+package com.hidm.coo.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hidm.coo.dao.MaterialCoefficientDao;
+import com.hidm.coo.entity.MaterialCoefficient;
+import com.hidm.coo.service.MaterialCoefficientService;
+import com.hidm.coo.vo.MaterialCoefficientSearchVo;
+import com.hidm.coo.vo.MaterialCoefficientVo;
+
+@Service(value = "materialCoefficientService")
+public class MaterialCoefficientServiceImpl implements MaterialCoefficientService {
+    @Autowired
+    private MaterialCoefficientDao materialCoefficientDao;
+
+
+    @Override
+    public int insert(MaterialCoefficient materialCoefficient) {
+        return materialCoefficientDao.insert(materialCoefficient);
+    }
+
+    @Override
+    public void updateById(MaterialCoefficient materialCoefficient) {
+        materialCoefficientDao.updateById(materialCoefficient);
+    }
+
+    @Override
+    public int count(MaterialCoefficientSearchVo materialCoefficientVO) {
+        return materialCoefficientDao.count(materialCoefficientVO);
+    }
+
+    @Override
+    public List<MaterialCoefficientVo> selectList(MaterialCoefficientSearchVo materialCoefficientVO) {
+        return materialCoefficientDao.selectList(materialCoefficientVO);
+    }
+
+    @Override
+    public void deleteByIds(Long[] ids) {
+        materialCoefficientDao.deleteByIds(ids);
+    }
+
+    @Override
+    public List<MaterialCoefficientVo> selectAll() {
+        return materialCoefficientDao.selectAll();
+    }
+
+    @Override
+    public List<MaterialCoefficientVo> selectInfoByIds(Long[] ids) {
+        return materialCoefficientDao.selectInfoByIds(ids);
+    }
+
+
+	@Override
+	public ArrayList<MaterialCoefficientVo> selectByMaterialNo(String materialNo) {
+		// TODO Auto-generated method stub
+		return materialCoefficientDao.selectByMaterialNo(materialNo);
+	}
+
+    
+    @Override
+    public List<MaterialCoefficientVo> selectInfoByMaterialNo(MaterialCoefficientVo materialCoefficientVo){
+    	return materialCoefficientDao.selectInfoByMaterialNo(materialCoefficientVo);
+    }
+
+    @Override
+    public List<MaterialCoefficientVo> selectCheckData(MaterialCoefficientSearchVo vo) {
+        return materialCoefficientDao.selectCheckData(vo);
+    }
+}

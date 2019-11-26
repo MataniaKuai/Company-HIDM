@@ -1,0 +1,38 @@
+    <div class="modal fade" id="dataModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalLabel">
+                                              User Manage
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">User Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="userName" class="form-control"
+                            required data-bv-notempty-message="EQ Type不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                    <label class="col-sm-1 control-label">Password</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="password" class="form-control"
+                            required data-bv-notempty-message="Module不能为空"
+                            data-bv-stringlength="true"
+                        >
+                    </div>
+                </div>
+                
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="loginName" value="${(user.userName)!''}"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+            </div>
+        </div>
+    </div>
+    </div>

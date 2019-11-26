@@ -1,0 +1,225 @@
+package com.hidm.coo.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hidm.coo.dao.IEBaseDao;
+import com.hidm.coo.dao.ReportDao;
+import com.hidm.coo.entity.EQtype;
+import com.hidm.coo.entity.IEBase;
+import com.hidm.coo.entity.PROBase;
+import com.hidm.coo.service.EQtypeService;
+import com.hidm.coo.service.IEBaseService;
+import com.hidm.coo.util.SAPConn;
+import com.hidm.coo.vo.EQtypeSearchVo;
+import com.hidm.coo.vo.EQtypeVo;
+import com.hidm.coo.vo.IEBaseSearchVo;
+import com.hidm.coo.vo.IEBaseVo;
+import com.hidm.coo.vo.ReportVo;
+import com.sap.conn.jco.JCoDestination;
+import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.JCoParameterList;
+import com.sap.conn.jco.JCoTable;
+
+@Service(value = "ieBaseService")
+public class IEBaseServiceImpl implements IEBaseService {
+	 private static Logger log = Logger.getLogger(IEBaseServiceImpl.class);
+	
+    @Autowired
+    private IEBaseDao ieBaseDao;
+    
+    @Autowired
+    private SAPConn sapConService;
+    
+	@Autowired
+	private ReportDao reportDao;
+	
+    @Autowired
+    private EQtypeService eqTypeService;
+    
+    
+    @Override
+    public int insert(IEBase ieBase) {
+        return ieBaseDao.insert(ieBase);
+    }
+
+    @Override
+    public void updateById(IEBase ieBase) {
+    	ieBaseDao.updateById(ieBase);
+    }
+
+    @Override
+    public int count(IEBaseSearchVo ieBaseVO) {
+        return ieBaseDao.count(ieBaseVO);
+    }
+
+    @Override
+    public List<IEBaseVo> selectList(IEBaseSearchVo ieBaseVO) {
+        return ieBaseDao.selectList(ieBaseVO);
+    }
+
+    @Override
+    public void deleteByIds(Long[] ids) {
+    	ieBaseDao.deleteByIds(ids);
+    }
+
+    @Override
+    public List<IEBaseVo> selectAll() {
+        return ieBaseDao.selectAll();
+    }
+
+    @Override
+    public List<IEBaseVo> selectInfoByIds(Long[] ids) {
+        return ieBaseDao.selectInfoByIds(ids);
+    }
+    
+    @Override
+    public void deleteByUserBaseIds(Long[] ids) {
+    	ieBaseDao.deleteByUserBaseIds(ids);
+    }
+    
+    @Override
+    public IEBase synchToSAP(Long id) {
+    	
+    	ArrayList<ReportVo> list = reportDao.selectStatusById(id);
+    	HashSet<Long> hashSet = new HashSet<Long>();
+    	
+    	for (int i=0; i<list.size(); i++) {
+    		hashSet.add(list.get(i).getiStatus());
+    	}
+    	
+    	
+    	if (hashSet.size() == 1) {
+    		boolean success = false;
+    		JCoFunction function = null;
+    		JCoDestination destination = sapConService.connect();
+    		JCoTable table = null;
+    		try {
+    			boolean hasData = false;
+    			function = destination.getRepository().getFunction("ZCOO_JAVATOSAP_003");
+    			JCoParameterList input = function.getImportParameterList();
+    			hasData = true;
+    			
+    			ArrayList<ReportVo> reportlist = reportDao.selectListById(id);
+    			
+    			input.setValue("IV_EQTYPEID", reportlist.get(0).getEqTypeId());
+    			input.setValue("IV_EQTYPE", reportlist.get(0).getEqTypeId());
+    			input.setValue("IV_MODULE", reportlist.get(0).getModule());
+    			input.setValue("IV_VENDORID", "101");
+    			input.setValue("IV_VENDOR", reportlist.get(0).getVendor());
+    			input.setValue("IV_MODELID", "101");
+    			input.setValue("IV_MODEL", reportlist.get(0).getModel());
+    			input.setValue("IV_OLCOST", reportlist.get(0).getOperateLaborCost());
+    			input.setValue("IV_MLCOST", reportlist.get(0).getMaintainLaborCost());
+    			input.setValue("IV_TOTALMATERIALCOST", reportlist.get(0).getTotalMaterialCost());
+    			input.setValue("IV_TOTALUTILITYCOST", reportlist.get(0).getTotalUtilityCost());
+    			input.setValue("IV_WAFERCOSTREWORK", reportlist.get(0).getWaferCostRework());
+    			input.setValue("IV_WAFERCOSTSCRAP", reportlist.get(0).getWaferCostScrap());
+    			
+    			if (hasData) {
+    				log.info("begin to call SAP to receive. " + input.toXML());
+    				function.execute(destination);
+    				table = function.getTableParameterList().getTable("T_MESSAGE");
+    				log.info("finish to call SAP to receive. T_MESSAGE: " + table.toXML());
+    				table.firstRow();
+    				String sapError = "";
+    				for (int i = 0; i < table.getNumRows(); i++, table.nextRow()) {
+    					String ok = table.getString("ZIS_OK");
+    					if ("S".equals(ok)) {
+    						success = true;
+    					} else {
+    						String message = table.getString("MSG");
+    						sapError = sapError + "[" + message + "] ";
+    						log.error("Fail to connection. ok:" + ok + ", message:" + message);
+    					}
+    				}
+    			}
+    			
+    			if (success) {
+    				JCoParameterList exportParameterList = function.getExportParameterList();
+    				log.info("Success to call SAP to receive. " + table.toXML());
+    				// table.firstRow();
+    				IEBase ieBase = new IEBase();
+    				ieBase.setId(reportlist.get(0).getId());
+    				ieBase.setCooValue(exportParameterList.getString("ex_COOValue"));
+    				System.out.println(exportParameterList.getString("ex_COOValue"));
+    				
+    				ieBaseDao.updateById(ieBase);
+    				
+    				
+    			}
+    		} catch (Exception e) {
+    			log.error("Failed to connection. success: " + success, e);
+    		}
+    		return null;
+    	}
+    	
+		return null;
+	}
+    @Override
+    public IEBase synchToSap(IEBase ieBase) {
+    	 boolean success = false;
+         JCoFunction function = null;
+         JCoDestination destination = sapConService.connect();
+         String ex_olCost;
+         String ex_mlCost;
+         JCoTable table = null;        
+         try {
+         	 boolean hasData = false;
+              function = destination.getRepository().getFunction("ZCOO_JAVATOSAP_005");        
+              JCoParameterList input = function.getImportParameterList();
+              EQtype eqType = new EQtype();
+              eqType.setEqType(ieBase.getEqTypeId());
+              EQtypeSearchVo eqTypeSearchVo = new EQtypeSearchVo();
+              List<EQtypeVo> eqTypeList = eqTypeService.selectList(eqTypeSearchVo);                      
+              hasData = true;
+              input.setValue("IV_EQTYPEID", "100");
+              input.setValue("IV_EQTYPE", eqTypeList.get(0).getId());
+              input.setValue("IV_MODULE", ieBase.getModule());
+              input.setValue("IV_VENDORID", "100");
+              input.setValue("IV_VENDOR", ieBase.getVendor());
+              input.setValue("IV_MODELID", "100");
+              input.setValue("IV_MODEL", ieBase.getModel());
+              input.setValue("IV_OLSALARY", ieBase.getOperateLaborSalary());
+              input.setValue("IV_MLSALARY", ieBase.getMaintainLaborSalary()); 
+              input.setValue("IV_FLOORCOST1", ieBase.getFloorCost());  
+              input.setValue("IV_FLOORCOST2", ieBase.getFloorCostAcount());                  
+              if(hasData) {
+             	 log.info("begin to call SAP to iebase. " + input.toXML());
+             //     function.execute(destination);
+                  table = function.getTableParameterList().getTable("T_MESSAGE");
+                  log.info("finish to call SAP to get iebase description. T_MESSAGE: " + table.toXML());
+                  table.firstRow();
+                  String sapError = "";
+                  ex_olCost= function.getExportParameterList().getString("EX_OLCOST");
+                  ex_mlCost= function.getExportParameterList().getString("EX_MLCOST");
+                                 System.out.println(ex_olCost);
+                                 System.out.println(ex_mlCost); 
+                  for (int i = 0; i < table.getNumRows(); i++, table.nextRow()) {
+                      String ok = table.getString("ZIS_OK");
+                      if ("S".equals(ok)) {
+                          success = true;                          
+                        
+                      } else {
+                          String message = table.getString("MSG");
+                          sapError = sapError + "[" + message + "]";
+                          log.error("Fail to iebase. ok:" + ok + ", message:" + message);
+                      }
+                  }
+              } else {
+             	 log.error("Fail to iebase, no data. " );
+              }
+         	
+         } catch(Exception e) {
+         	log.error("Failed to iebase. success: " + success, e);
+         }              
+    
+    	return ieBase;    
+    }
+    
+}
