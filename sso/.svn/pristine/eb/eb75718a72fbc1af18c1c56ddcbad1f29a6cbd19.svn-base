@@ -1,0 +1,24 @@
+app:
+    name: SSO
+
+server:
+    port: 8082
+    context-path: /SSO
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+        
+mybatis:
+    mapperLocations: classpath:mapping/*.xml
+    
+logging:
+    level:
+        com.hidm.charts.dao: info
