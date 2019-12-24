@@ -1,0 +1,13 @@
+package com.hidm.booksharingscore.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.hidm.booksharingscore.entity.User;
+
+
+@Mapper
+public interface UserDao {
+    public List<User> selectUser(User user);
+}

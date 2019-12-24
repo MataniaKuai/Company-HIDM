@@ -1,0 +1,96 @@
+	<link rel="stylesheet" href="vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<link rel="stylesheet" href="vendors/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css"/>
+	
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="vendors/bootstrapvalidator-0.4.5/dist/js/bootstrapValidator.min.js"></script>
+	 <script type="text/javascript" src="js/business/user.js"></script>
+	<script type="text/javascript">
+	    
+	    function updateSelectWithCache(className, key, url) {
+	    	if (sessionStorage[key] && sessionStorage[key].length > 0) {
+				var list = JSON.parse(sessionStorage[key]);
+				updateSelect(list, className);
+			} else {
+			    $.get(url, {}, function(result){
+				    if (result){
+					    var list = result.rows;
+					    sessionStorage[key] = JSON.stringify(list);
+					    updateSelect(list, className);
+				    } else {
+					    alert('系统错误');
+				    }
+			    },'json');
+			}
+	    }
+	    
+		$(function(){
+			$('#userTable').bootstrapTable({
+				pagination: true,
+				pageNumber:1,
+				pageSize:10,
+				pageList: [1, 10, 25, 50],
+				cache:false,
+				sidePagination: "server",
+				height:468,
+			    columns: [{
+			        checkbox: true,
+			        select: false,
+			    }, {
+			        field: 'userName',
+			        title: '工号'
+			    }, {
+			        field: 'email',
+			        title: '邮箱'
+			    }, {
+			        field: 'id',
+			        title: 'id',
+			        visible: false
+			    }],
+			    url : '/booksharingscore/user/search',
+			    queryParams : function (params) {
+                    var temp = {   
+                        rows: params.limit,                         //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名  
+                        sortOrder: params.order //排位命令（desc，asc） 
+                    };
+                    return temp;
+                },
+		        clickToSelect: true
+			});
+			
+		});
+	</script>
+
+<h4>用户数据管理</h4>
+
+<div id="listDiv">
+	<div id="searchDiv">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="input-group">
+					<span class="input-group-addon">工号:</span> <input type=text
+						id="userName" class="form-control">
+				</div>
+			</div>
+			<div class="col-sm-2">
+					<button id="search-file-btn" class="btn btn-primary" type="button"
+						onclick="doSearch()">搜索</button>
+			</div>
+		</div>
+	</div>
+		<div class="btn-group" style="margin-top: 2px; margin-bottom: 2px">
+			<button type="button" class="btn btn-primary" onclick="add()">新增</button>
+			<button type="button" class="btn btn-primary" onclick="edit()">编辑</button>
+			<button type="button" class="btn btn-primary" onclick="removeUser()">删除</button>
+		</div>
+		<table id="userTable"></table>
+</div>
+
+<#include "edit.html">

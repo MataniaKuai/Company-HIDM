@@ -1,0 +1,21 @@
+app:
+    name: sso
+
+server:
+    port: 8084
+    context-path: /sso
+    session:
+        timeout: 300
+    tomcat:
+        uri-encoding: UTF-8
+
+spring:
+    freemarker:
+        suffix: .html
+        templateEncoding: UTF-8
+        templateLoaderPath: classpath:/views/
+        content-type: text/html
+        
+logging:
+    level:
+        com.hidm.charts.dao: info

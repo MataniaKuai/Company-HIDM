@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.hidm.booksharingscore.dao.ScoreDao">
+    <resultMap id="BaseResultMap" type="com.hidm.booksharingscore.vo.ScoreVo">
+        <id property="id" column="id" />
+        <result property="duration" column="duration" />
+        <result property="phase" column="phase" />
+        <result property="week" column="week" />
+        <result property="title" column="title" />
+        <result property="courseStartDate" column="coursestartdate" />
+        <result property="courseEndDate" column="courseenddate" />
+        <result property="address" column="address" />
+        <result property="lecturerName" column="lecturername" />
+        <result property="fileName" column="filename" />
+        <result property="filePath" column="filepath" />
+        <result property="courseId" column="cid" />
+        <result property="comment" column="comment" />
+        <result property="score" column="score" />
+    </resultMap>
+    
+     <select id="selectList" resultMap="BaseResultMap">
+     SELECT s.*, c.title, c.phase, c.week, c.duration, c.coursestartdate, c.courseenddate, c.address, c.lecturername, c.filename, c.filepath,c.id cid
+     FROM t_course c
+     LEFT JOIN t_score s ON s.courseid = c.id AND s.userid = #{userId}
+     <where>
+	    <if test="course != null">
+		  <if test="course.title != null and course.title != ''">
+			AND c.title = #{course.title}
+		  </if>
+		  <if test="course.courseStartDate != null and course.courseStartDate != ''">
+			AND c.coursestartdate = #{course.courseStartDate}
+		  </if>
+		  <if test="course.courseEndDate != null and course.courseEndDate != ''">
+			AND c.courseenddate = #{course.courseEndDate}
+		  </if>
+		  <if test="course.lecturerName != null and course.lecturerName != ''">
+			AND c.lecturername = #{course.lecturerName}
+		  </if>
+			AND c.status = 2
+		</if>
+	</where>
+	 order by c.id desc
+	<if test="page != null">
+	    limit #{page.rowStart}, #{page.rows}
+	</if>
+    </select>
+    
+    <select id="count" resultType="int">
+	select count(*) from t_course
+		where status = 2
+    </select>
+    
+    <insert id="insert">
+        INSERT INTO t_score(id, courseid, userid, comment, score, add_time)
+        VALUES(#{id}, #{courseId}, #{userId}, #{comment}, #{score}, #{addTime})
+    </insert>
+    
+    <update id="updateById">
+        UPDATE t_score SET   
+            score=#{score}, comment=#{comment}
+        WHERE id=#{id}
+    </update>
+    
+    <select id="countByCidUid" resultType="int">
+	select count(*) from t_score
+		where userid = #{userId} AND courseid = #{courseId}
+    </select>
+    
+    <select id="countRater" resultType="int" parameterType="String">
+	select count(*) from t_score
+	<where>
+		 <if test="userid != null and userid != ''">
+			AND userid = #{userid}
+		 </if>
+	</where>
+    </select>
+    
+    <select id="selectUserByCourseId" parameterType="Long" resultMap="BaseResultMap">
+	select * from t_score
+	<where>
+		 <if test="courseid != null and courseid != 0">
+			AND courseid = #{courseid}
+		 </if>
+	</where>
+    </select>
+    
+    <delete id="deleteByCourseId" parameterType="Long">
+        delete from t_score
+        <where>
+			 <if test="courseId != null and courseId != 0">
+				AND courseid = #{courseId}
+			 </if>
+		</where>
+    </delete>
+    
+    <insert id="insertScoreList" parameterType="java.util.ArrayList">
+        insert into t_score(id, courseid, userid, comment, score, add_time)
+        values
+        <foreach collection="list" index="index" separator="," item="item">
+            (#{item.id},#{item.courseId},#{item.userId},#{item.comment},#{item.score},#{item.addTime})
+        </foreach>
+    </insert>
+</mapper>

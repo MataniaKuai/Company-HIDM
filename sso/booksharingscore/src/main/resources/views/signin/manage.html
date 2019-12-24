@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="My demo">
+	<meta name="description" content="My demo">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<title>读书会分享评分系统</title>
+	<link rel="stylesheet" type="text/css" href="../vendors/bootstrap/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="../vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../vendors/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="../vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="../vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+	<link rel="stylesheet" href="../vendors/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css"/>
+	
+	<script type="text/javascript" src="../vendors/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="../vendors/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="../vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="../vendors/bootstrap-select-1.12.4/dist/js/i18n/defaults-zh_CN.min.js"></script>
+	<script type="text/javascript" src="../vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../vendors/bootstrapvalidator-0.4.5/dist/js/bootstrapValidator.min.js"></script>
+	<script type="text/javascript" src="../js/business/score.js"></script>
+	
+	<script type="text/javascript">
+	    
+	    function updateSelectWithCache(className, key, url) {
+	    	if (sessionStorage[key] && sessionStorage[key].length > 0) {
+				var list = JSON.parse(sessionStorage[key]);
+				updateSelect(list, className);
+			} else {
+			    $.get(url, {}, function(result){
+				    if (result){
+					    var list = result.rows;
+					    sessionStorage[key] = JSON.stringify(list);
+					    updateSelect(list, className);
+				    } else {
+					    alert('系统错误');
+				    }
+			    },'json');
+			}
+	    }
+	    
+		$(function(){
+			var formData = new FormData();
+			$.ajax({
+		        url: "/booksharingscore/signin/search",
+		        type: 'POST',
+		        cache: false,
+		        data: formData,
+		        processData: false,
+		        contentType: false,
+		        dataType:"json",
+		        beforeSend: function() {
+		        },
+		        success: function(data) {
+		        	$('input[name="phase"]').val(data.rows.phase);
+		        	$('input[name="week"]').val(data.rows.week);
+		        	$('input[name="title"]').val(data.rows.title);
+		        	$('input[name="lecturerName"]').val(data.rows.lecturerName);
+		        	$('input[name="address"]').val(data.rows.address);
+		        	$('#form input').attr("disabled", true);
+		        	$('#form input[name=userName]').attr("disabled", false);
+		        	$('#form input[name=password]').attr("disabled", false);
+		        }
+		    });	
+		});
+		
+		function signin() {
+	    	$("#form").submit();
+	    }
+	</script>
+</head>
+<body>
+<div style="width:70%;margin:0 auto; position:absolute; left: 12%; top:-5%;margin-top:50px; margin-left:50px;">
+    <div class="row">
+          <div class="col-md-3">
+<!--               <img src="../images/logo.png"  alt="HiDM" /> -->
+          </div>
+          <div class="col-md-6 text-center">
+              <font size="8">读书会签到</font>
+          </div>
+    </div>
+    <div id="listDiv">
+  		<form id="form" class="form-horizontal" action="/booksharingscore/signin/signin" method="post" role="form">
+               <div class="form-group">
+               	<label class="col-sm-4 control-label">期数</label>
+                   <div class="col-sm-4">
+                      <input type="text" id="phase" name="phase" class="form-control">
+                   </div>
+               </div>
+              <div class="form-group">
+              	  <label class="col-sm-4 control-label">周数</label>
+                  <div class="col-sm-4">
+                      <input type="text" id="week" name="week" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+              	   <label class="col-sm-4 control-label">主题</label>
+                   <div class="col-sm-4">
+                      <input type="text" id="title" name="title" class="form-control">
+                   </div>
+              </div>
+              <div class="form-group">
+              	   <label class="col-sm-4 control-label">讲师姓名</label>
+                   <div class="col-sm-4"><input type="text" name="lecturerName" class="form-control"></div>
+              </div>
+              <div class="form-group">
+              	   <label class="col-sm-4 control-label">地点</label>
+                   <div class="col-sm-4">
+                       <input type="text" name="address" class="form-control">
+                   </div>
+              </div>
+              <br /><br /><br />
+              <div class="form-group">
+                   <div class="col-md-4 col-md-offset-4">
+                      <input type="text" id="userName" name="userName" placeholder="请输入用户名" class="form-control">
+	        		  <input type="password" id="password" name="password" placeholder="请输入密码" class="form-control col-md-12">
+			          <p style = "color:red">${message!}</p>
+	                  <button type="submit" class="btn btn-primary btn-block" onclick="signin()">签到</button>
+                   </div>
+              </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

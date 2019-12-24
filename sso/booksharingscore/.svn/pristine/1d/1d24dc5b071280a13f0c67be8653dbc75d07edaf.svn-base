@@ -1,0 +1,10 @@
+package com.hidm.booksharingscore.constant;
+
+public class CourseConstant {
+	//待开课
+    public static int COURSE_WAITING_START = 0;    
+    //待评分
+    public static int COURSE_WAITING_SCORE = 1;   
+    //已评分
+    public static int COURSE_SCORE = 2;   
+}

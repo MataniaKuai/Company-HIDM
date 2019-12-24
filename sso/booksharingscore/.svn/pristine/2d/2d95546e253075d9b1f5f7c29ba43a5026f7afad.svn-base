@@ -1,0 +1,117 @@
+    <div class="panel panel-default" id="dataDiv" style="display:none;">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				课程信息
+			</h3>
+		</div>
+		<div class="panel-body">
+		    <ul id="myTab" class="nav nav-tabs">
+		      <li class="active">
+		        <a href="#home" data-toggle="tab">
+			                  基本信息
+		        </a>
+	          </li>
+	        </ul>
+	        <div id="myTabContent" class="tab-content">
+	          <div class="tab-pane fade in active" id="home">
+			    <form id="editForm" class="form-horizontal" role="form">
+
+                <div class="form-group">
+                	<label class="col-sm-1 control-label">期数</label>
+                    <div class="col-sm-3">
+                       <input type="text" id="phase" name="phase" class="form-control">
+                    </div>
+                    <label class="col-sm-1 control-label">周数</label>
+                    <div class="col-sm-3">
+                       <input type="text" id="week" name="week" class="form-control">
+                    </div>
+                    <label class="col-sm-1 control-label">主题</label>
+                    <div class="col-sm-3">
+                       <input type="text" id="title" name="title" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                	<label class="col-sm-1 control-label">开始时间</label>
+                    <div class="col-sm-3">
+                    	<input class="form-control form_date" id="courseStartDate" name="courseStartDate" type="text" value="">
+                    </div>
+                    <label class="col-sm-1 control-label">结束时间</label>
+                    <div class="col-sm-3">
+                    	<input class="form-control form_end_date" id="courseEndDate" name="courseEndDate" type="text" value="">
+                    </div>
+                    <label class="col-sm-1 control-label">时长</label>
+                    <div class="col-sm-3">
+                       <input type="text" id="duration" name="duration" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">讲师姓名</label>
+                    <div class="col-sm-3"><input type="text" name="lecturerName" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">讲师工号</label>
+                    <div class="col-sm-3"><input type="text" name="lecturerNo" class="form-control"></div>
+                    
+                    <label class="col-sm-1 control-label">地点</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="address" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">演讲资料</label>
+				    <div class="row" id="uploadFile">
+				    	<div class="col-sm-2">
+				            <div class="input-group">
+        						<input type="file" class="form-control" id="fileName" name="fileName" style="display: none;" onchange="change();">
+        						<input type="text" class="form-control" id="fileNameTmp" name="fileNameTmp" readonly="readonly" onclick="fileName.click(); ">
+   							</div>
+				        </div>
+<!-- 				        <div class="col-sm-2"> -->
+<!--         						<button type="button" class="btn btn-primary" id="select_file" onclick="fileName.click();">浏览  </button> -->
+<!--         						<button id="upload-file-btn" class="btn btn-primary" type="button" onclick="upload()">上传</button> -->
+<!--     					</div> -->
+    				
+          			</div>
+          			
+<!--           			<div class="form-group" id="downloadFile"> -->
+<!--                     	<div class="col-sm-3"> -->
+<!--                     		<a href="#" id = "download" name="download" class="form-control">下载</a> -->
+<!--                     	</div> -->
+<!--                 	</div> -->
+				 </div>
+<!-- 				 pickList控件代码 -->
+				 <div class="tab-content">
+			         <div class="panel panel-default">
+			            <div class="panel-heading">
+			               <h3 class="panel-title">请选择签到人员</h3>
+			            </div>
+			            <div class="panel-body">
+			
+			               <div id="pickList"></div>
+			
+			               <br><br>
+<!-- 			               <button class="btn btn-primary" id="getSelected">Get Selected</button> -->
+			            </div>
+			         </div>
+      			</div>
+                
+ 	            <input type="hidden" name="id">
+                
+                <div class="panel-footer text-right">
+			        <button type="button" name="returnButton"  class="btn btn-default" onclick="closeDataDiv()">返回</button>
+			        <button id="saveBtn" type="button" class="btn btn-primary" onclick="save()">保存</button>
+			        <button id="sendScoreEmail" type="button" class="btn btn-primary" onclick="sendScoreEmailFunction()">确定(给以上人员发送评分邮件)</button>
+		        </div>
+                </form>
+              </div>
+              <div class="tab-pane fade" id="items">
+                
+                <div class="panel-footer text-right">
+			        <button type="button" class="btn btn-default" onclick="closeDataDiv()">返回</button>
+		        </div>
+              </div>
+            </div>
+		</div>
+	</div>
